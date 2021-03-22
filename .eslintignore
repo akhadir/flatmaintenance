@@ -1,0 +1,15 @@
+# Valid
+/src/extensions/**/*
+/e2e/
+**/*.test.*
+scripts/
+node_modules/
+/node_modules/
+node_modules/**/*
+/node_modules/**/*
+/__mocks
+/build/**/*
+/public/**/*
+/coverage/
+/config/**/*
+/src/**/__mocks__/**/*

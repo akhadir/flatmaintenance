@@ -5745,6 +5745,11 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+goober@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.0.3.tgz#5069eb8b63644b9496dfd1662c6b31c2d3b22158"
+  integrity sha512-4CgkQXsNWlJiI2ckYde2JWhwli/MKYyVPwxj3WyCE0uEMjNhFyQcbCtvlmtSFAwkmTJda4y3Ujw2PdX/cDZfYg==
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
@@ -9595,6 +9600,13 @@ react-is@^17.0.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+
+react-multistep@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-multistep/-/react-multistep-5.1.0.tgz#4260731fe42097f7e3b6a11e2163cd3f1ed97eee"
+  integrity sha512-xYoDx8lsonmGsYlmqyH5x/CE95ZUTsDf7Sb7EAIX4Ggbr1XcIXeGFw4nr3BpOdDA/41mM5z8m6RPUxtiVgmlLA==
+  dependencies:
+    goober "2.0.3"
 
 react-refresh@^0.8.3:
   version "0.8.3"
