@@ -1,6 +1,6 @@
 import React from 'react';
 import OnlineTransactionParser from './components/online-transactions';
-import './App.css';
+import './mainapp.css';
 
 const app:React.FC = () => {
   return (
