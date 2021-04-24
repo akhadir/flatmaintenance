@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -6,7 +6,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
-import fileParserUtil from './file-parser-util';
+import fileParserUtil, { BankTransaction } from './file-parser-util';
 import './index.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,25 +28,30 @@ function getSteps() {
     return ['File Upload', 'File Preview', 'Transaction Mapping'];
 }
 
-function getStepContent(step: number) {
-    switch (step) {
-    case 0:
-        return (<FileUpload onUpload={fileParserUtil.parseXLS} />);
-    case 1:
-        return 'Step 2 preview comes here';
-    case 2:
-        return 'Mapping comes here';
-    default:
-        return 'Unknown step';
-    }
-}
 export const OnlineTransactionParser = () => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const parseXLS = useCallback((file: File) => {
+        fileParserUtil.parseXLS(file).then((resp: BankTransaction[]) => {
+            setActiveStep(1);
+        });
+    }, []);
+    const getStepContent = useCallback((step: number) => {
+        switch (step) {
+        case 0:
+            return (<FileUpload onUpload={parseXLS} />);
+        case 1:
+            return 'Step 2 preview comes here';
+        case 2:
+            return 'Mapping comes here';
+        default:
+            return 'Unknown step';
+        }
+    }, [parseXLS]);
     const [skipped, setSkipped] = React.useState(new Set<number>());
     const steps = getSteps();
 
-    const isStepOptional = (step: number) => step === 1;
+    const isStepOptional = (step: number) => false;
 
     const isStepSkipped = (step: number) => skipped.has(step);
 
