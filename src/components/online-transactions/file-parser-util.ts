@@ -68,7 +68,7 @@ export const fileParserUtil = {
             balanceKey = `${XLS_TRANS_KEY_PREFIX}${balanceKey}`;
             trans = data.map((row) => {
                 const out: BankTransaction = {
-                    date: moment(row[dateKey], 'dd/MM/YYYY').toDate(),
+                    date: moment(row[dateKey], 'DD/MM/YYYY').toDate(),
                     desc: row[descKey],
                     chqNo: row[chqNoKey] || '',
                     withDrawal: 0,

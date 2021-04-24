@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
 import fileParserUtil, { BankTransaction } from './file-parser-util';
 import './index.css';
+import FilePreview from '../file-preview';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,9 +31,11 @@ function getSteps() {
 
 export const OnlineTransactionParser = () => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
+    const [bankTransactions, setBankTransactions] = useState<BankTransaction[]>([]);
     const parseXLS = useCallback((file: File) => {
         fileParserUtil.parseXLS(file).then((resp: BankTransaction[]) => {
+            setBankTransactions(resp);
             setActiveStep(1);
         });
     }, []);
@@ -41,13 +44,13 @@ export const OnlineTransactionParser = () => {
         case 0:
             return (<FileUpload onUpload={parseXLS} />);
         case 1:
-            return 'Step 2 preview comes here';
+            return (<FilePreview xlsData={bankTransactions} />);
         case 2:
             return 'Mapping comes here';
         default:
             return 'Unknown step';
         }
-    }, [parseXLS]);
+    }, [bankTransactions, parseXLS]);
     const [skipped, setSkipped] = React.useState(new Set<number>());
     const steps = getSteps();
 
