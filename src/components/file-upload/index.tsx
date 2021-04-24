@@ -5,7 +5,6 @@ import './index.css';
 export const FileUpload = () => {
     const onUpload = useCallback((fileObject) => {
         console.log(fileObject);
-        
     }, []);
     const onError = useCallback((errMsg) => {
         console.log(errMsg);

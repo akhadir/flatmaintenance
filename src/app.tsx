@@ -2,23 +2,21 @@ import React from 'react';
 import OnlineTransactionParser from './components/online-transactions';
 import './app.css';
 
-const app:React.FC = () => {
-  return (
+const App: React.FC = () => (
     <div className="app">
-      <header className="app-header">
-          <img src="/images/ssfa.png" width="80px" height="60px" />
-          <span>Suraksha Admin</span>
-      </header>
-      <div className="app-content">
-        <p>
-            Monthly Maintenance
-        </p>
-        <div>
-          <OnlineTransactionParser />
+        <header className="app-header">
+            <img src="/images/ssfa.png" alt="Suraksha Sunflower Apartment" width="80px" height="60px" />
+            <span>Suraksha Sunflower - Admin</span>
+        </header>
+        <div className="app-content">
+            <h3>
+                Monthly Maintenance
+            </h3>
+            <div>
+                <OnlineTransactionParser />
+            </div>
         </div>
-      </div>
     </div>
-  );
-}
+);
 
-export default app;
+export default App;

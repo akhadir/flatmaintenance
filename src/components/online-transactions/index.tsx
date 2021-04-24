@@ -1,14 +1,19 @@
-import React from 'react'
+import React from 'react';
 import Multistep from 'react-multistep';
+import FileUpload from '../file-upload';
+import './index.css';
 
-export default function OnlineTransactionParser() {
+export const OnlineTransactionParser = () => {
     const steps = [
-        {name: 'StepOne', component: <div>step1</div>},
-        {name: 'StepOne', component: <div>step1</div>},
-      ];
+        { name: 'File Upload', component: <FileUpload /> },
+        { name: 'File Preview', component: <div>step2</div> },
+        { name: 'Transaction Mapping', component: <div>step1</div> },
+    ];
     return (
-        <>
-            <Multistep showNavigation={true} steps={steps}/>
-        </>
+        <div className="wizard">
+            <Multistep showNavigation steps={steps} />
+        </div>
     );
-}
+};
+
+export default OnlineTransactionParser;

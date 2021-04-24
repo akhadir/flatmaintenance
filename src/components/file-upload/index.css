@@ -1,0 +1,13 @@
+.file-upload-wrapper {
+    width: 100%;
+    border: 1px solid;
+    margin-bottom: 18px;
+}
+
+.file-upload-wrapper div {
+    min-height: 100px;
+}
+.file-upload-wrapper div button {
+    margin: 78px auto;
+    display: inherit;
+}
