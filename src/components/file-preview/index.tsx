@@ -17,44 +17,48 @@ const useStyles = makeStyles({
     },
 });
 export type FilePreviewProps = {
+    name: string;
     xlsData: BankTransaction[];
 }
 export const FilePreview = (props: FilePreviewProps) => {
-    const { xlsData: rows } = props;
+    const { xlsData: rows, name } = props;
     const classes = useStyles();
     return (
-        <TableContainer className="xls-file-preview" component={Paper}>
-            <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>#</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell align="right">Cheque No.</TableCell>
-                        <TableCell align="right">Withdrawal</TableCell>
-                        <TableCell align="right">Deposit</TableCell>
-                        <TableCell align="right">Balance</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row, index) => (
-                        <TableRow key={row.desc}>
-                            <TableCell component="th" scope="row">
-                                {index + 1}
-                            </TableCell>
-                            <TableCell component="th" scope="row">
-                                {moment(row.date).format('DD/MM/YYYY')}
-                            </TableCell>
-                            <TableCell>{row.desc}</TableCell>
-                            <TableCell align="right">{row.chqNo}</TableCell>
-                            <TableCell align="right">{row.withDrawal}</TableCell>
-                            <TableCell align="right">{row.deposit}</TableCell>
-                            <TableCell align="right">{row.balance}</TableCell>
+        <>
+            File: <h4>{name}</h4>
+            <TableContainer className="xls-file-preview" component={Paper}>
+                <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            <TableCell>Date</TableCell>
+                            <TableCell>Description</TableCell>
+                            <TableCell align="right">Cheque No.</TableCell>
+                            <TableCell align="right">Withdrawal</TableCell>
+                            <TableCell align="right">Deposit</TableCell>
+                            <TableCell align="right">Balance</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row, index) => (
+                            <TableRow key={row.desc}>
+                                <TableCell component="th" scope="row">
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {moment(row.date).format('DD/MM/YYYY')}
+                                </TableCell>
+                                <TableCell>{row.desc}</TableCell>
+                                <TableCell align="right">{row.chqNo}</TableCell>
+                                <TableCell align="right">{row.withDrawal}</TableCell>
+                                <TableCell align="right">{row.deposit}</TableCell>
+                                <TableCell align="right">{row.balance}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 export default FilePreview;

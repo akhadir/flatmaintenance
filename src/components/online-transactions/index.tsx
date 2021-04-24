@@ -32,8 +32,10 @@ function getSteps() {
 export const OnlineTransactionParser = () => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
+    const [fileName, setFileName] = useState('');
     const [bankTransactions, setBankTransactions] = useState<BankTransaction[]>([]);
     const parseXLS = useCallback((file: File) => {
+        setFileName(file.name);
         fileParserUtil.parseXLS(file).then((resp: BankTransaction[]) => {
             setBankTransactions(resp);
             setActiveStep(1);
@@ -44,13 +46,13 @@ export const OnlineTransactionParser = () => {
         case 0:
             return (<FileUpload onUpload={parseXLS} />);
         case 1:
-            return (<FilePreview xlsData={bankTransactions} />);
+            return (<FilePreview name={fileName} xlsData={bankTransactions} />);
         case 2:
             return 'Mapping comes here';
         default:
             return 'Unknown step';
         }
-    }, [bankTransactions, parseXLS]);
+    }, [bankTransactions, parseXLS, fileName]);
     const [skipped, setSkipped] = React.useState(new Set<number>());
     const steps = getSteps();
 
