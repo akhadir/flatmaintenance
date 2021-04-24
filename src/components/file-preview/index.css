@@ -1,3 +1,4 @@
 .xls-file-preview  {
     max-height: calc(100vh - 261px);
+    min-height: 100px;
 }

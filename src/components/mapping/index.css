@@ -1,0 +1,13 @@
+.mapping-wrapper {
+    display: flex;
+}
+.mapping-wrapper > div {
+    border: 1px solid;
+    flex: 1;
+    min-height: 200px;
+    max-height: calc(100vh - 231px);
+    overflow: auto;
+}
+.mapping-wrapper > div:first-child {
+    margin-right: 20px
+}

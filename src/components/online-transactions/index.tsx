@@ -9,6 +9,7 @@ import FileUpload from '../file-upload';
 import fileParserUtil, { BankTransaction } from './file-parser-util';
 import './index.css';
 import FilePreview from '../file-preview';
+import Mapping from '../mapping';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -48,7 +49,7 @@ export const OnlineTransactionParser = () => {
         case 1:
             return (<FilePreview name={fileName} xlsData={bankTransactions} />);
         case 2:
-            return 'Mapping comes here';
+            return (<Mapping xlsData={bankTransactions} />);
         default:
             return 'Unknown step';
         }

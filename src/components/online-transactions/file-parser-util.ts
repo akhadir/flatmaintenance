@@ -27,9 +27,7 @@ export const fileParserUtil = {
                 const workBook = XLSX.read(e.target.result, {
                     type: 'binary',
                 });
-                console.log(workBook.SheetNames);
                 const worksheet = workBook.Sheets[workBook.SheetNames[0]];
-                console.log(worksheet);
                 // const option = { header: 10 };
                 const data = XLSX.utils.sheet_to_json(worksheet);
                 const trans = fileParserUtil.parseTransactions(data as { [key: string]: string; }[]);
