@@ -1,5 +1,5 @@
 import React from 'react';
-import { BankTransaction } from '../online-transactions/file-parser-util';
+import { BankTransaction } from '../../services/xlsjs';
 import TransPreview from './trans-preview';
 import './index.css';
 import { CatView } from './cat-view';

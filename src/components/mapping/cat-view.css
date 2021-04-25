@@ -10,18 +10,21 @@
 .cat-view .MuiTreeItem-label {
     line-height: 32px;
 }
-.cat-view > ul {
+.cat-view .cat-tree {
     height: calc(100% - 40px);
     width: 100%;
     overflow: auto;
     position: absolute;
 }
-.cat-view ul li > div {
+.cat-view .cat-tree ul {
+    max-width: inherit;
+}
+.cat-view .cat-tree ul li > div {
     line-height: 32px;
     min-height: 32px;
     border-bottom: 1px solid white;
 }
-.cat-view .MuiTreeItem-group {
+.cat-view .cat-tree .MuiTreeItem-group {
     margin-left: 0;
     padding-left: 17px;
 }

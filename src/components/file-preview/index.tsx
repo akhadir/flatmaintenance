@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import './index.css';
-import { BankTransaction } from '../online-transactions/file-parser-util';
+import { BankTransaction } from '../../services/xlsjs';
 
 const useStyles = makeStyles({
     table: {

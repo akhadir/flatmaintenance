@@ -6,7 +6,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
-import fileParserUtil, { BankTransaction } from './file-parser-util';
+import fileParserUtil, { BankTransaction } from '../../services/xlsjs';
 import './index.css';
 import FilePreview from '../file-preview';
 import Mapping from '../mapping';

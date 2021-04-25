@@ -1,9 +1,11 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+import gsheetUtil from '../../services/googleapi';
 import './cat-view.css';
 
 const useStyles = makeStyles({
@@ -53,10 +55,10 @@ const transCategories: catItem[] = [
 
 export const CatView = () => {
     const classes = useStyles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const exp: string[] = [];
+    const [categories, setCategories] = useState<catItem[]>([]);
+    // const exp: string[] = [];
     const getTreeItem = useCallback((item: catItem, nodeId: string) => {
-        exp.push(nodeId);
+        // exp.push(nodeId);
         let out;
         if (item.children && item.children.length) {
             const children = item.children.map((child, cindex) => getTreeItem(child, `${nodeId}${cindex}`));
@@ -69,20 +71,46 @@ export const CatView = () => {
             out = (<TreeItem key={nodeId} nodeId={nodeId} label={item.label} />);
         }
         return out;
-    }, [exp]);
-    const treeItem = transCategories.map((child, index) => getTreeItem(child, `${index}`));
-
+    }, []);
+    const treeItem = categories.map((child, index) => getTreeItem(child, `${index}`));
+    useEffect(() => {
+        (async () => {
+            await gsheetUtil.init();
+            await gsheetUtil.getSheetByTitle('Summary');
+            const sheetCol = gsheetUtil.getColumn(0);
+            const expList = sheetCol.map((col) => col.value);
+            const stopRowVal = 'Total Expense';
+            const filteredExpList = [];
+            for (let i = 1; i < expList.length - 1; i += 1) {
+                if (expList[i] !== stopRowVal) {
+                    filteredExpList.push(expList[i]);
+                    transCategories[2].children = filteredExpList.map((expense: any) => ({
+                        key: expense,
+                        label: expense,
+                    }));
+                    setCategories([...transCategories]);
+                } else {
+                    break;
+                }
+            }
+        })();
+    }, []);
     return (
         <div className="cat-view">
             <div className="cat-view-header">Categories</div>
-            <TreeView
-                className={classes.root}
-                expanded={exp}
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-            >
-                {treeItem}
-            </TreeView>
+            {categories.length ? (
+                <div className="cat-tree">
+                    <TreeView
+                        className={classes.root}
+                        defaultCollapseIcon={<ExpandMoreIcon />}
+                        defaultExpandIcon={<ChevronRightIcon />}
+                    >
+                        {treeItem}
+                    </TreeView>
+                </div>
+            ) : (
+                <CircularProgress />
+            )}
         </div>
     );
 };
