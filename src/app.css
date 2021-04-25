@@ -1,17 +1,24 @@
+body * {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
 .app {
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
+    text-align: left;
 }
 .app h3 {
-  margin: 0.5rem 0;
+    margin: 0.5rem 0;
 }
 .app-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 body {
     margin: 2px;
+}
+.error {
+    color: red;
+    margin: 3px 0;
+    font-size: 13px;
 }
 .app p {
     margin: 5px 0;
@@ -23,26 +30,26 @@ body {
 }
 
 .app-header {
-  background-color: #BBB186;
-  display: flex;
-  font-size: calc(10px + 2vmin);
-  color: #FFFDF1;
+    background-color: #BBB186;
+    display: flex;
+    font-size: calc(10px + 2vmin);
+    color: #FFFDF1;
 }
 
 .app-header span {
-  margin-left: 20px;
-  margin-top: 18px;
+    margin-left: 20px;
+    margin-top: 18px;
 }
 .app-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 .app-content {
     padding: 10px;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 h4 {
     margin: 5px;
@@ -56,8 +63,8 @@ h4 {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: grey;
-  border-radius: 5px;
+    background: grey;
+    border-radius: 5px;
 }
 
 @keyframes app-logo-spin {

@@ -1,4 +1,6 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, {
+    memo, useCallback, useEffect, useState,
+} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -94,6 +96,7 @@ export const CatView = () => {
                 }
             }
         })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <div className="cat-view">
