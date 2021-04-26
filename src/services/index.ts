@@ -28,12 +28,12 @@ export const setCredentials = (secret: string = '') => {
     if (secret) {
         const emailB = CryptoJS.AES.decrypt(appConfig.ENC_CLIENT_EMAIL, secret);
         const pkB = CryptoJS.AES.decrypt(appConfig.ENC_PRIVATE_KEY, secret);
-        if (emailB.sigBytes > 0 && pkB.sigBytes > 0) {
+        try {
             appConfig.clientEmail = emailB.toString(CryptoJS.enc.Utf8);
             appConfig.privateKey = pkB.toString(CryptoJS.enc.Utf8);
             appConfig.secret = secret;
             out = true;
-        } else {
+        } catch (e) {
             appConfig.secret = '';
             out = false;
         }

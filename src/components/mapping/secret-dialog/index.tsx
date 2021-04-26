@@ -28,6 +28,13 @@ export default function SecretDialog(props: SecretDialogProps) {
     const handleChange = useCallback((e: any) => {
         setSecret(e.target.value);
     }, []);
+    const handleEnter = useCallback((e: any) => {
+        const ENTER_KEYCODE = 13;
+        const keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode === ENTER_KEYCODE) {
+            props.handleSecret(secret);
+        }
+    }, [props, secret]);
     return (
         <Dialog
             open={open}
@@ -40,7 +47,7 @@ export default function SecretDialog(props: SecretDialogProps) {
                 <DialogContentText id="alert-dialog-slide-description">
                     Check with other committee members, if secret key is not known.
                 </DialogContentText>
-                <Input type="password" value={secret} onChange={handleChange} />
+                <Input type="password" value={secret} onChange={handleChange} onKeyPress={handleEnter} />
                 <div className="error">{props.errorMsg}</div>
             </DialogContent>
             <DialogActions>
