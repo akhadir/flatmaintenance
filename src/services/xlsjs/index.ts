@@ -1,5 +1,6 @@
 import XLSX from 'xlsx';
 import moment from 'moment';
+import { BankTransaction } from '../service-types';
 
 // eslint-disable-next-line no-shadow
 export const XLS_TRANS_KEY_PREFIX = '__EMPTY_';
@@ -11,14 +12,7 @@ export const xLSTransKeys = {
     DEPOSIT_KEY: '17',
     BALANCE_KEY: ['22', '20'],
 };
-export type BankTransaction = {
-    date: Date;
-    desc: string;
-    chqNo: string;
-    withDrawal: number;
-    deposit: number;
-    balance: number;
-}
+
 export const fileParserUtil = {
     parseXLS: (file: File) => {
         const prom = new Promise<BankTransaction[]>((resolve, reject) => {

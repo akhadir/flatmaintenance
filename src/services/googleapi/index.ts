@@ -36,10 +36,10 @@ const gsheetUtil: GSheetUtil = {
                 }).then(() => {
                     doc.loadInfo().then(() => {
                         resolve(doc);
-                    }).catch((e) => {
+                    }).catch((e: any) => {
                         console.log(e);
                     });
-                }).catch((e) => {
+                }).catch((e: any) => {
                     console.log(e);
                 });
             } catch (e) {

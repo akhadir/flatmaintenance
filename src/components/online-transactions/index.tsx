@@ -6,12 +6,13 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
-import fileParserUtil, { BankTransaction } from '../../services/xlsjs';
+import fileParserUtil from '../../services/xlsjs';
 import FilePreview from '../file-preview';
 import Mapping from '../mapping';
 import AppContext, { appConfig, setCredentials } from '../../services';
-import './index.css';
 import SecretDialog from '../mapping/secret-dialog';
+import { BankTransaction } from '../../services/service-types';
+import './index.css';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -5,10 +5,10 @@ import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
-import { BankTransaction } from '../../services/xlsjs';
 import TransPreview from './trans-preview';
 import { CatView } from './cat-view';
 import mergeIcon from './merge-cells.svg';
+import { BankTransaction } from '../../services/service-types';
 import './index.css';
 
 export type MappingProps = {
@@ -49,11 +49,10 @@ export const Mapping = (props: MappingProps) => {
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
                         <MenuItem value="">
-                            <em>Select a Filter</em>
+                            <em>All Transactions</em>
                         </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value="mapped">Only Mapped</MenuItem>
+                        <MenuItem value="unmapped">Only Unmapped</MenuItem>
                     </Select>
                 </div>
                 <div>
