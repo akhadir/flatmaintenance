@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import { BankTransaction } from '../../services/service-types';
+import { Transaction } from '../../services/service-types';
 import './trans-preview.css';
 
 const useStyles = makeStyles({
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     },
 });
 export type TransPreviewProps = {
-    xlsData: BankTransaction[];
+    xlsData: Transaction[];
 }
 export const TransPreview = (props: TransPreviewProps) => {
     const { xlsData: rows } = props;

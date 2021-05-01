@@ -11,7 +11,7 @@ import FilePreview from '../file-preview';
 import Mapping from '../mapping';
 import AppContext, { appConfig, setCredentials } from '../../services';
 import SecretDialog from '../mapping/secret-dialog';
-import { BankTransaction } from '../../services/service-types';
+import { Transaction } from '../../services/service-types';
 import './index.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,10 +39,10 @@ export const OnlineTransactionParser = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [fileName, setFileName] = useState('');
     const [secret, setSecret] = useState('');
-    const [bankTransactions, setBankTransactions] = useState<BankTransaction[]>([]);
+    const [bankTransactions, setBankTransactions] = useState<Transaction[]>([]);
     const parseXLS = useCallback((file: File) => {
         setFileName(file.name);
-        fileParserUtil.parseXLS(file).then((resp: BankTransaction[]) => {
+        fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
             setBankTransactions(resp);
             setActiveStep(1);
         });

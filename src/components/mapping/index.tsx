@@ -8,11 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import TransPreview from './trans-preview';
 import { CatView } from './cat-view';
 import mergeIcon from './merge-cells.svg';
-import { BankTransaction } from '../../services/service-types';
+import { Transaction } from '../../services/service-types';
 import './index.css';
 
 export type MappingProps = {
-    xlsData: BankTransaction[];
+    xlsData: Transaction[];
 }
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

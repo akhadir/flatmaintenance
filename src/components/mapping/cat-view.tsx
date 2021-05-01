@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import gsheetUtil from '../../services/googleapi';
-import { catItem } from '../../services/service-types';
+import { CatItem } from '../../services/service-types';
 import './cat-view.css';
 import AppContext from '../../services';
 
@@ -24,9 +24,9 @@ export const CatView = () => {
     const classes = useStyles();
     const { appData } = useContext(AppContext);
     const { transCategories } = appData;
-    const [categories, setCategories] = useState<catItem[]>([]);
+    const [categories, setCategories] = useState<CatItem[]>([]);
     // const exp: string[] = [];
-    const getTreeItem = useCallback((item: catItem, nodeId: string) => {
+    const getTreeItem = useCallback((item: CatItem, nodeId: string) => {
         // exp.push(nodeId);
         let out;
         if (item.children && item.children.length) {

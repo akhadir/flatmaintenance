@@ -1,25 +1,33 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-export type BankTransaction = {
+export type Transaction = {
     date: Date;
     desc: string;
     chqNo: string;
     withDrawal: number;
     deposit: number;
     balance: number;
+    mappedCatItem?: CatItem[];
+    type: 'CASH' | 'ONLINE';
 };
 
-export type catItem = {
+export type CatItem = {
     key: string;
     value?: any;
     label: string;
-    children?: catItem[];
-}
-
+    children?: CatItem[];
+    mappedTrans?: Transaction[];
+    amount?: number;
+};
+export type TransCatMapping = {
+    mappedCatItem?: CatItem[];
+    mappedTrans?: Transaction[];
+    splitAmount?: number[];
+};
 export type AppData = {
-    transactions: BankTransaction[];
+    transactions: Transaction[];
     transactionFinYear: string;
-    transCategories: catItem[];
+    transCategories: CatItem[];
 };
 
 export type AppConfig = {

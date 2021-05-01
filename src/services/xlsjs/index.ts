@@ -1,6 +1,6 @@
 import XLSX from 'xlsx';
 import moment from 'moment';
-import { BankTransaction } from '../service-types';
+import { Transaction } from '../service-types';
 
 // eslint-disable-next-line no-shadow
 export const XLS_TRANS_KEY_PREFIX = '__EMPTY_';
@@ -15,7 +15,7 @@ export const xLSTransKeys = {
 
 export const fileParserUtil = {
     parseXLS: (file: File) => {
-        const prom = new Promise<BankTransaction[]>((resolve, reject) => {
+        const prom = new Promise<Transaction[]>((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const workBook = XLSX.read(e.target.result, {
@@ -43,7 +43,7 @@ export const fileParserUtil = {
     },
 
     parseTransactions: (input: { [key: string]: string; }[]) => {
-        let trans: BankTransaction[] = [];
+        let trans: Transaction[] = [];
         if (input.length) {
             let balanceKey = xLSTransKeys.BALANCE_KEY[0];
             const balanceVal = input[0][`${XLS_TRANS_KEY_PREFIX}${balanceKey}`];
@@ -59,13 +59,14 @@ export const fileParserUtil = {
             const chqNoKey = `${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.CHQ_NO_KEY}`;
             balanceKey = `${XLS_TRANS_KEY_PREFIX}${balanceKey}`;
             trans = data.map((row) => {
-                const out: BankTransaction = {
+                const out: Transaction = {
                     date: moment(row[dateKey], 'DD/MM/YYYY').toDate(),
                     desc: row[descKey],
                     chqNo: row[chqNoKey] || '',
                     withDrawal: 0,
                     deposit: 0,
                     balance: fileParserUtil.parseAmount(row[balanceKey]),
+                    type: 'ONLINE',
                 };
                 if (row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.WITHDRAWAL_KEY}`]) {
                     out.withDrawal = fileParserUtil.parseAmount(

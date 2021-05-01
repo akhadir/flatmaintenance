@@ -2,7 +2,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import React from 'react';
 import CryptoJS from 'crypto-js';
 import moment from 'moment';
-import { AppConfig, AppData, catItem } from './service-types';
+import { AppConfig, AppData, CatItem } from './service-types';
 
 export const setCredentials = (secret: string = '') => {
     let out = false;
@@ -33,7 +33,7 @@ const flatNumbers = [
     '401', '402', '403', '404', '405', '406', '407', '408', '409', '410', '411', '412',
 ];
 
-const transCategories: catItem[] = [
+const transCategories: CatItem[] = [
     {
         key: 'maintenance',
         label: 'Maintenance',
@@ -78,5 +78,12 @@ if (appConfig.secret) {
     setCredentials(appConfig.secret);
 }
 const AppContext = React.createContext(appConfig);
+
+// eslint-disable-next-line no-shadow
+export enum TransactionFilters {
+    all = 'All Transaction',
+    mapped = 'Only Mapped',
+    unmapped = 'Only Unmapped',
+}
 
 export default AppContext;
