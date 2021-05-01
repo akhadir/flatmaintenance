@@ -8,7 +8,7 @@
     z-index: 1;
 }
 .cat-view .MuiTreeItem-label {
-    line-height: 32px;
+    line-height: 33px;
 }
 .cat-view .cat-tree {
     height: calc(100% - 40px);
@@ -22,9 +22,47 @@
 .cat-view .cat-tree ul li > div {
     line-height: 32px;
     min-height: 32px;
-    border-bottom: 1px solid white;
+}
+.cat-view .cat-tree ul li {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 .cat-view .cat-tree .MuiTreeItem-group {
     margin-left: 0;
+    padding-left: 0;
+}
+.cat-view .cat-tree .MuiTreeItem-group li {
     padding-left: 17px;
+}
+.cat-view .cat-tree .MuiTreeItem-root:hover {
+    background-color: #F5F5F5;
+}
+.cat-view .cat-tree .MuiTreeItem-root:hover .MuiTreeItem-root {
+    background-color: white;
+}
+.cat-view .cat-tree .MuiTreeItem-root:hover .MuiTreeItem-root:hover {
+    background-color: #F5F5F5 !important
+}
+.cat-view .cat-tree .MuiTreeItem-root:hover .MuiTreeItem-root.Mui-selected {
+    background-color: #E8EAF6!important;
+}
+.cat-view .cat-tree .MuiTreeItem-root[aria-expanded="true"] > .MuiTreeItem-content {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+.cat-view .cat-tree .MuiTreeItem-root.Mui-selected > .MuiTreeItem-content {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+.cat-view .cat-tree .MuiTreeItem-root.Mui-selected {
+    background-color: #E8EAF6;
+}
+.cat-view .cat-tree .MuiTreeItem-root.Mui-selected .MuiTreeItem-root {
+    background-color: white;
+}
+.cat-view .cat-tree .MuiTreeItem-root.Mui-selected .MuiTreeItem-root:hover {
+    background-color: #F5F5F5;
+}
+.MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label {
+    background-color: inherit !important;
+}
+.MuiTreeItem-label:hover {
+    background-color: inherit !important
 }
