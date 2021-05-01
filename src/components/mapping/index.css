@@ -1,13 +1,19 @@
+.action-wrapper,
 .mapping-wrapper {
     display: flex;
 }
+.action-wrapper > div {
+    flex: 1;
+}
 .mapping-wrapper > div {
-    border: 1px solid;
+    border: 1px solid grey;
+    border-radius: 2px;
     flex: 1;
     min-height: 200px;
-    max-height: calc(100vh - 231px);
+    max-height: calc(100vh - 235px);
     overflow: auto;
 }
+.action-wrapper > div:first-child,
 .mapping-wrapper > div:first-child {
-    margin-right: 20px
+        margin-right: 20px;
 }

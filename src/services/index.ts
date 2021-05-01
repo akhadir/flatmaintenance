@@ -12,8 +12,7 @@ export type AppConfig = {
     doc: GoogleSpreadsheet;
 }
 export const appConfig: AppConfig = {
-    secret: '',
-    // Config variables
+    secret: sessionStorage.getItem('session-id') || '',
     SPREADSHEET_ID: '1DkvPBSTUHJB9nnd31pfR7-n-71e4OtV5jHs2LHaWcKM',
     // eslint-disable-next-line max-len
     ENC_CLIENT_EMAIL: 'U2FsdGVkX19lrOkAqkI1YRZkdHSjXZc+dtJNUzOhSlqaydB6Gxi4lm9MpS7+2/W7OtInfOCmh739buu1z1jzT/jJrAeRX2+hKkxc+3qsduw=',
@@ -32,6 +31,7 @@ export const setCredentials = (secret: string = '') => {
             appConfig.clientEmail = emailB.toString(CryptoJS.enc.Utf8);
             appConfig.privateKey = pkB.toString(CryptoJS.enc.Utf8);
             appConfig.secret = secret;
+            sessionStorage.setItem('session-id', secret);
             out = true;
         } catch (e) {
             appConfig.secret = '';
@@ -43,7 +43,9 @@ export const setCredentials = (secret: string = '') => {
     }
     return out;
 };
-
+if (appConfig.secret) {
+    setCredentials(appConfig.secret);
+}
 const AppContext = React.createContext(appConfig);
 
 export default AppContext;
