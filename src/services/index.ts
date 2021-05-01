@@ -38,7 +38,7 @@ const transCategories: CatItem[] = [
         key: 'maintenance',
         label: 'Maintenance',
         children: flatNumbers.map((val) => ({
-            key: val,
+            key: `maintenance-${val}`,
             label: val,
         })),
     },
@@ -46,7 +46,7 @@ const transCategories: CatItem[] = [
         key: 'corpus',
         label: 'Corpus Fund',
         children: flatNumbers.map((val) => ({
-            key: val,
+            key: `corpus-${val}`,
             label: val,
         })),
     },
@@ -54,6 +54,32 @@ const transCategories: CatItem[] = [
         key: 'monthly',
         label: 'Monthly Expenses',
         children: [],
+    },
+    {
+        key: 'others',
+        label: 'Others',
+        children: [
+            {
+                key: 'fine',
+                label: 'Fine',
+            },
+            {
+                key: 'extra',
+                label: 'Other Income',
+            },
+            {
+                key: 'account-transfer',
+                label: 'Movement to/from FD/RD',
+            },
+            {
+                key: 'tenant-deposit',
+                label: 'Tenant Deposit',
+            },
+            {
+                key: 'rd-deposit',
+                label: 'Deposit to RD account',
+            },
+        ],
     },
 ];
 

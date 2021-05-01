@@ -9,8 +9,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import gsheetUtil from '../../services/googleapi';
 import { CatItem } from '../../services/service-types';
-import './cat-view.css';
 import AppContext from '../../services';
+import TransSheet from '../../services/sheet';
+import './cat-view.css';
 
 const useStyles = makeStyles({
     root: {
@@ -19,15 +20,13 @@ const useStyles = makeStyles({
         maxWidth: 400,
     },
 });
-
+const transSheet = new TransSheet();
 export const CatView = () => {
     const classes = useStyles();
     const { appData } = useContext(AppContext);
     const { transCategories } = appData;
     const [categories, setCategories] = useState<CatItem[]>([]);
-    // const exp: string[] = [];
     const getTreeItem = useCallback((item: CatItem, nodeId: string) => {
-        // exp.push(nodeId);
         let out;
         if (item.children && item.children.length) {
             const children = item.children.map((child, cindex) => getTreeItem(child, `${nodeId}${cindex}`));
@@ -44,24 +43,10 @@ export const CatView = () => {
     const treeItem = categories.map((child, index) => getTreeItem(child, `${index}`));
     useEffect(() => {
         (async () => {
+            const catList = await transSheet.getExpenseCategories();
             await gsheetUtil.init();
-            await gsheetUtil.getSheetByTitle('Summary');
-            const sheetCol = gsheetUtil.getColumn(0);
-            const expList = sheetCol.map((col) => col.value);
-            const stopRowVal = 'Total Expense';
-            const filteredExpList = [];
-            for (let i = 1; i < expList.length - 1; i += 1) {
-                if (expList[i] !== stopRowVal) {
-                    filteredExpList.push(expList[i]);
-                    transCategories[2].children = filteredExpList.map((expense: any) => ({
-                        key: expense,
-                        label: expense,
-                    }));
-                    setCategories([...transCategories]);
-                } else {
-                    break;
-                }
-            }
+            transCategories[2].children = catList;
+            setCategories([...transCategories]);
         })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

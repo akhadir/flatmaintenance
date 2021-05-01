@@ -18,6 +18,7 @@ export type GSheetUtil = {
     getSheetRow: (sheetId: string, row: number) => Promise<GoogleSpreadsheetRow[]>;
     getRow: (row: number) => Promise<GoogleSpreadsheetRow[]>;
     getColumn: (col: number) => GoogleSpreadsheetCell[];
+    getColumnWithSheet: (sheet: GoogleSpreadsheetWorksheet, col: number) => GoogleSpreadsheetCell[];
     getSheetColumn: (sheetId: string, col: number) => GoogleSpreadsheetCell[];
     getSheetCell: (sheetId: string, row: number, column: number) => GoogleSpreadsheetCell;
     getCell: (row: number, column: number) => GoogleSpreadsheetCell;
@@ -90,6 +91,14 @@ const gsheetUtil: GSheetUtil = {
     },
     getColumn: (col: number) => {
         const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        const result = [];
+        const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
+        for (let i = 0; i < len - 1; i += 1) {
+            result.push(sheet.getCell(i, col));
+        }
+        return result;
+    },
+    getColumnWithSheet: (sheet: GoogleSpreadsheetWorksheet, col: number) => {
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
