@@ -11,6 +11,15 @@ export type Transaction = {
     type: 'CASH' | 'ONLINE';
 };
 
+export type MonthlySheetDataType = {
+    Date: string;
+    Desc: string;
+    ChqNo: string;
+    Amount: number;
+    Balance: number;
+    Type: 'CASH' | 'ONLINE';
+};
+
 export type CatItem = {
     key: string;
     value?: any;

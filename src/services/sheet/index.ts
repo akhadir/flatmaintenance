@@ -1,12 +1,13 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import { months } from 'moment';
+import moment from 'moment';
+import { appConfig } from '..';
 import gsheetUtil from '../googleapi';
-import { CatItem, Transaction } from '../service-types';
+import { CatItem, MonthlySheetDataType, Transaction } from '../service-types';
 
 export interface Sheet {
     getExpenseCategories(): Promise<CatItem[]>;
     getMonthData(monthSheet: string): Promise<Transaction[]>;
-    setMonthData(monthSheet: string, transactionData: Transaction): Promise<boolean>;
+    setMonthData(monthSheet: string): Promise<boolean>;
 }
 const EXP_STOP_ROW_VAL = 'Total Expense';
 const CAT_COLUMN = 0;
@@ -73,12 +74,12 @@ export class TransSheet implements Sheet {
     private async parseMonthlySheet(sheet: GoogleSpreadsheetWorksheet) {
         const rows = await sheet.getRows();
         const out: Transaction[] = rows.map((row) => ({
-            date: row.Date,
+            date: moment(row.Date, 'DD/MM/YYYY').toDate(),
             desc: row.Desc,
             chqNo: row.ChqNo,
-            withDrawal: row.Amount < 0 ? row.Amount : 0,
-            deposit: row.Amount >= 0 ? row.Amount : 0,
-            balance: row.Balance,
+            withDrawal: parseFloat(row.Amount) < 0 ? parseFloat(row.Amount) : 0,
+            deposit: parseFloat(row.Amount) >= 0 ? parseFloat(row.Amount) : 0,
+            balance: parseFloat(row.Balance),
             type: row.Type,
         }));
         return out;
@@ -104,11 +105,57 @@ export class TransSheet implements Sheet {
         return prom;
     }
 
-    public setMonthData(monthSheet: string, transactionData: Transaction) {
-        const prom = new Promise<boolean>((resolve, reject) => {
-            resolve(true);
+    private pushSheetData(trans: Transaction, rows: MonthlySheetDataType[]) {
+        rows.push({
+            Date: moment(trans.date).format('DD/MM/YYYY'),
+            Desc: trans.desc,
+            Balance: trans.balance,
+            Amount: trans.deposit - trans.withDrawal,
+            ChqNo: trans.chqNo,
+            Type: trans.type,
         });
-        return prom;
+    }
+
+    private transCompare(sheetData: Transaction, fileData: Transaction) {
+        return (
+            moment(sheetData.date).format('DD/MM/YYY') === moment(fileData.date).format('DD/MM/YYY') &&
+            sheetData.desc === fileData.desc &&
+            sheetData.withDrawal === fileData.withDrawal &&
+            sheetData.deposit === fileData.deposit &&
+            sheetData.type === fileData.type
+        );
+    }
+
+    private async mergeSheetData(sheet: GoogleSpreadsheetWorksheet, sheetData: Transaction[]) {
+        const { transactions } = appConfig.appData;
+        const rows: MonthlySheetDataType[] = [];
+        if (sheetData.length > 0) {
+            await transactions.forEach((trans) => {
+                const fIndex = sheetData.findIndex((sData) => this.transCompare(sData, trans));
+                if (fIndex === -1) {
+                    this.pushSheetData(trans, rows);
+                }
+            });
+            sheetData.forEach((sheetTrans) => {
+                const fIndex = transactions.findIndex((fileData) => this.transCompare(fileData, sheetTrans));
+                if (fIndex === -1) {
+                    transactions.push(sheetTrans);
+                }
+            });
+        } else {
+            transactions.forEach((trans) => this.pushSheetData(trans, rows));
+        }
+        if (rows.length) {
+            await sheet.addRows(rows);
+        }
+        return true;
+    }
+
+    public async setMonthData(monthSheet: string) {
+        const fetchedData = await this.getMonthData(monthSheet);
+        const sheet = await this.getSheet(monthSheet);
+        await this.mergeSheetData(sheet, fetchedData);
+        return true;
     }
 }
 

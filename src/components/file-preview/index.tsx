@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from 'react';
+import React, { useCallback, useState, useContext, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,20 +25,30 @@ export type FilePreviewProps = {
 }
 export const FilePreview = (props: FilePreviewProps) => {
     const { xlsData: rows, name } = props;
-    const months: { [key: string]: string; } = {};
-    rows.forEach((row) => {
-        const month = moment(row.date).format('MMM-YY');
-        months[month] = month;
-    });
+    const months: { [key: string]: string; } = useMemo(() => {
+        const monthList: { [key: string]: string; } = {};
+        rows.forEach((row) => {
+            const month = moment(row.date).format('MMM-YY');
+            monthList[month] = month;
+        });
+        return monthList;
+    }, [rows]);
     const monthsArray = Object.values(months);
     const [selMonth, setSelMonth] = useState(monthsArray.length === 1 ? monthsArray[0] : '');
     const classes = useStyles();
     const { appData } = useContext(AppContext);
     appData.transSheetMonth = selMonth;
     const handleMonthChange = useCallback((e) => {
-        setSelMonth(e.target.value);
-        appData.transSheetMonth = e.target.value;
+        if (e.target.value) {
+            appData.transSheetMonth = e.target.value;
+            setSelMonth(e.target.value);
+        }
     }, [appData]);
+    let filteredRows = rows;
+    if (selMonth) {
+        filteredRows = rows.filter((row) => moment(row.date).format('MMM-YY') === selMonth);
+        appData.transactions = filteredRows;
+    }
     return (
         <>
             <div className="preview-header">
@@ -46,6 +56,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                     File: <h4>{name}</h4>
                 </div>
                 <div className="month-filter">
+                    Month: &nbsp;
                     <Select
                         value={selMonth}
                         onChange={handleMonthChange}
@@ -73,7 +84,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row, index) => (
+                        {filteredRows.map((row, index) => (
                             <TableRow key={row.desc}>
                                 <TableCell component="th" scope="row">
                                     {index + 1}

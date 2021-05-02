@@ -45,6 +45,7 @@ export const OnlineTransactionParser = () => {
     const parseXLS = useCallback((file: File) => {
         setFileName(file.name);
         fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
+            appConfig.appData.transactions = resp;
             setBankTransactions(resp);
             setErrorMsg('');
             setActiveStep(1);
@@ -69,7 +70,7 @@ export const OnlineTransactionParser = () => {
 
     const isStepSkipped = useCallback((step: number) => skipped.has(step), [skipped]);
 
-    const handleNext = useCallback(() => {
+    const handleNext = useCallback(async () => {
         let newSkipped = skipped;
         if (isStepSkipped(activeStep)) {
             newSkipped = new Set(newSkipped.values());
@@ -88,7 +89,7 @@ export const OnlineTransactionParser = () => {
         case 1: {
             const monthSheet = appConfig.appData.transSheetMonth;
             if (monthSheet) {
-                transSheet.getMonthData(monthSheet).then((result) => {
+                await transSheet.setMonthData(monthSheet).then((result) => {
                     if (result) {
                         console.log('Month Created');
                     }
