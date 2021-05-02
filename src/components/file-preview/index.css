@@ -1,4 +1,14 @@
-.xls-file-preview  {
+.xls-file-preview {
     max-height: calc(100vh - 201px);
     min-height: 100px;
+}
+.preview-header {
+    display: flex;
+}
+.preview-header > div {
+    flex: 1;
+}
+.preview-header .month-filter {
+    text-align: right;
+    width: auto;
 }

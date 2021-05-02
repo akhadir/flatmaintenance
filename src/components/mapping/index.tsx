@@ -46,7 +46,7 @@ export const Mapping = (props: MappingProps) => {
                         onChange={() => {}}
                         displayEmpty
                         className="mapping-filter"
-                        inputProps={{ 'aria-label': 'Without label' }}
+                        inputProps={{ 'aria-label': 'Mapping Filter' }}
                     >
                         <MenuItem value="">
                             <em>All Transactions</em>

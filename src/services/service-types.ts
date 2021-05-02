@@ -28,6 +28,7 @@ export type AppData = {
     transactions: Transaction[];
     transactionFinYear: string;
     transCategories: CatItem[];
+    transSheetMonth: string;
 };
 
 export type AppConfig = {

@@ -3,6 +3,7 @@ import {
     GoogleSpreadsheetCell,
     GoogleSpreadsheetRow,
     GoogleSpreadsheetWorksheet,
+    WorksheetBasicProperties,
 } from 'google-spreadsheet';
 import { appConfig } from '..';
 
@@ -24,6 +25,7 @@ export type GSheetUtil = {
     getCell: (row: number, column: number) => GoogleSpreadsheetCell;
     saveSheetCells: (sheetId: string, cells: GoogleSpreadsheetCell[]) => Promise<void>;
     saveCells: (cells: GoogleSpreadsheetCell[]) => Promise<void>;
+    addSheet: (input: WorksheetBasicProperties) => Promise<GoogleSpreadsheetWorksheet>;
 }
 const gsheetUtil: GSheetUtil = {
     currentSheet: '',
@@ -53,8 +55,10 @@ const gsheetUtil: GSheetUtil = {
     getSpreadSheet: () => appConfig.doc,
     getSheetByTitle: async (sheetTitle: string) => {
         const sheet = appConfig.doc?.sheetsByTitle[sheetTitle];
-        gsheetUtil.currentSheet = sheet.sheetId;
-        await sheet.loadCells();
+        if (sheet) {
+            gsheetUtil.currentSheet = sheet.sheetId;
+            await sheet.loadCells();
+        }
         return sheet;
     },
     getSheet: async (sheetId: string) => {
@@ -135,6 +139,7 @@ const gsheetUtil: GSheetUtil = {
         const result = sheet.saveCells(cells);
         return result;
     },
+    addSheet: (input: WorksheetBasicProperties) => appConfig.doc.addSheet(input),
 };
 
 export default gsheetUtil;

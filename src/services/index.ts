@@ -85,8 +85,13 @@ const transCategories: CatItem[] = [
 
 const appData: AppData = {
     transCategories,
-    transactionFinYear: moment().format('YYYY'),
+    transactionFinYear: moment().format('YY'),
+    transSheetMonth: '',
     transactions: [],
+};
+
+export const setSheetMonth = (sheetTitle: string) => {
+    appData.transSheetMonth = sheetTitle;
 };
 
 export const appConfig: AppConfig = {

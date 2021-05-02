@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
 import fileParserUtil from '../../services/xlsjs';
@@ -11,6 +12,7 @@ import FilePreview from '../file-preview';
 import Mapping from '../mapping';
 import AppContext, { appConfig, setCredentials } from '../../services';
 import SecretDialog from '../mapping/secret-dialog';
+import transSheet from '../../services/sheet';
 import { Transaction } from '../../services/service-types';
 import './index.css';
 
@@ -44,6 +46,7 @@ export const OnlineTransactionParser = () => {
         setFileName(file.name);
         fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
             setBankTransactions(resp);
+            setErrorMsg('');
             setActiveStep(1);
         });
     }, []);
@@ -59,23 +62,50 @@ export const OnlineTransactionParser = () => {
             return 'Unknown step';
         }
     }, [bankTransactions, parseXLS, fileName]);
-    const [skipped, setSkipped] = React.useState(new Set<number>());
+    const [skipped, setSkipped] = useState(new Set<number>());
     const steps = getSteps();
 
     const isStepOptional = (step: number) => false;
 
-    const isStepSkipped = (step: number) => skipped.has(step);
+    const isStepSkipped = useCallback((step: number) => skipped.has(step), [skipped]);
 
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         let newSkipped = skipped;
         if (isStepSkipped(activeStep)) {
             newSkipped = new Set(newSkipped.values());
             newSkipped.delete(activeStep);
         }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        switch (activeStep) {
+        case 0: {
+            if (fileName) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                setErrorMsg('');
+            } else {
+                setErrorMsg('Select a file.');
+            }
+            break;
+        }
+        case 1: {
+            const monthSheet = appConfig.appData.transSheetMonth;
+            if (monthSheet) {
+                transSheet.getMonthData(monthSheet).then((result) => {
+                    if (result) {
+                        console.log('Month Created');
+                    }
+                });
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                setErrorMsg('');
+            } else {
+                setErrorMsg('Select a month to proceed.');
+            }
+            break;
+        }
+        default:
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setErrorMsg('');
+        }
         setSkipped(newSkipped);
-    };
+    }, [activeStep, fileName, isStepSkipped, skipped]);
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -106,6 +136,7 @@ export const OnlineTransactionParser = () => {
     }
     return (
         <>
+            {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
             {!appConfig.secret ? (
                 <SecretDialog errorMsg={errorMsg} handleSecret={setSecret} />
             ) : (

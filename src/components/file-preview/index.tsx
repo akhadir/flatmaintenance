@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,8 +8,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import './index.css';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Transaction } from '../../services/service-types';
+import './index.css';
+import AppContext from '../../services';
 
 const useStyles = makeStyles({
     table: {
@@ -22,10 +25,40 @@ export type FilePreviewProps = {
 }
 export const FilePreview = (props: FilePreviewProps) => {
     const { xlsData: rows, name } = props;
+    const months: { [key: string]: string; } = {};
+    rows.forEach((row) => {
+        const month = moment(row.date).format('MMM-YY');
+        months[month] = month;
+    });
+    const monthsArray = Object.values(months);
+    const [selMonth, setSelMonth] = useState(monthsArray.length === 1 ? monthsArray[0] : '');
     const classes = useStyles();
+    const { appData } = useContext(AppContext);
+    appData.transSheetMonth = selMonth;
+    const handleMonthChange = useCallback((e) => {
+        setSelMonth(e.target.value);
+        appData.transSheetMonth = e.target.value;
+    }, [appData]);
     return (
         <>
-            File: <h4>{name}</h4>
+            <div className="preview-header">
+                <div>
+                    File: <h4>{name}</h4>
+                </div>
+                <div className="month-filter">
+                    <Select
+                        value={selMonth}
+                        onChange={handleMonthChange}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Month Filter' }}
+                    >
+                        <MenuItem value=""><em>Select a Month:</em></MenuItem>
+                        {monthsArray.map((month) => (
+                            <MenuItem value={month}>{month}</MenuItem>
+                        ))}
+                    </Select>
+                </div>
+            </div>
             <TableContainer className="xls-file-preview" component={Paper}>
                 <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
                     <TableHead>

@@ -10,7 +10,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import gsheetUtil from '../../services/googleapi';
 import { CatItem } from '../../services/service-types';
 import AppContext from '../../services';
-import TransSheet from '../../services/sheet';
+import transSheet from '../../services/sheet';
 import './cat-view.css';
 
 const useStyles = makeStyles({
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
         maxWidth: 400,
     },
 });
-const transSheet = new TransSheet();
 export const CatView = () => {
     const classes = useStyles();
     const { appData } = useContext(AppContext);
