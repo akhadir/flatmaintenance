@@ -1,0 +1,186 @@
+{
+    "Maintenance Collection": [{
+        "credit": [{
+            "opr": "in",
+            "value": [2600, 2700, 2800, 5400, 5600, 8100, 5200]
+        }],
+        "description": [{
+            "opr": "having",
+            "value": ["maintenance"]
+        }]
+    }],
+    "Audit Fees": [{
+        "description": [{
+            "opr": "having",
+            "value": ["N YASWANTH", "YASWANTH"]
+        }]
+    }],
+    "Corpus Fund": [{
+        "debit": [{
+            "opr": "in",
+            "value": [7500, 15000, 22500, 30000, 37500]
+        }]
+    }],
+    "Fine": [{
+        "credit": [{
+            "opr": "in",
+            "value": [100, 200, 300]
+        }]
+    }],
+    "Bescom": [{
+        "description": [{
+            "opr": "having",
+            "value": ["BESCOM", "Electricity", "BENGALORE ONE"]
+        }]
+    }],
+    "BWSSB": [{
+        "description": [{
+            "opr": "having",
+            "value": ["BANGALORE WATER SUPPLY"]
+        }]
+    }],
+    "Security": [{
+        "description": [{
+            "opr": "having",
+            "value": ["MUNIRAJU", "MUNIRAJU K C"]
+        }]
+    }],
+    "House Keeping Salary": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["Housekeeping.+Salary", "House keeping.+Salary"]
+        }]
+    }],
+    "Gardner": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["Gardner.+Salary", "garden.+work"]
+        }]
+    }],
+    "Garbage Collection Vendor (Hasirudala)/BBMP": [{
+        "description": [{
+            "opr": "having",
+            "value": ["SYED ALI BASHA"]
+        }]
+    }],
+    "Lift Maintenance (Johnson)": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["JOHNSON.+LIFTS"]
+        }]
+    }],
+    "HK items (bleaching powder,garbage bin etc)": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["Housekeeping.+Items", "Housekeeping.+Material", "HK .+Material", "bleaching", "garbage drum", "powder", "mop", "dust", "dustbin", "soap", "detergent", "broom", "switch", "tubelight", "switch", "light", "bulb", "Phenoyl", "powder", "phenoyl", "sanitizer", "cleaner", "dettol", "bottle", "neem oil", "tap"]
+        }]
+    }],
+    "Electrical / Plumbing Repairs": [{
+        "description": [{
+            "opr": "having",
+            "value": ["electric repair", "electric work", "electric", "Chamundi", "plumbing"]
+        }]
+    }],
+    "Apartment repairs related": [{
+        "description": [{
+            "opr": "havimg",
+            "value": ["cement work", "cement"]
+        }]
+    }],
+    "CCTV / Intercomm": [{
+        "description": [{
+            "opr": "having",
+            "value": ["SHANKAR TELECOM LINKS", "Intercom"]
+        }]
+    }],
+    "Septic Tank Repairs / Cleaning": [{
+        "description": [{
+            "opr": "having",
+            "value": ["septik", "septic", "septic tank", "sewage tank"]
+        }]
+    }],
+    "Water Tanks Cleaning": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["water.+tank"]
+        }]
+    }],
+    "Generator Maintenance and Repair": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["venus.+energy"]
+        }]
+    }],
+    "SMS Charges/Cheque book (Vijaya Bank)": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["SMS .+Alert", "cheque .+book", "charges", "chq .+book"]
+        }]
+    }],
+    "Health Club Maintenance": [{
+        "description": [{
+            "opr": "having",
+            "value": ["gym"]
+        }]
+    }],
+    "Festival/Holiday Celebration": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["diwali.+work", "celebration"]
+        }]
+    }],
+    "Drinking Water for Employees": [{
+        "description": [{
+            "opr": "regex",
+            "value": [""]
+        }]
+    }],
+    "Diesel": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["Diesel"]
+        }]
+    }],
+    "BAF Subscription Charges": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["BAF .+charges"]
+        }]
+    }],
+    "Annual Bonus": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["bonus"]
+        }]
+    }],
+    "Interest on account": [{
+        "description": [{
+            "opr": "having",
+            "value": "89630100005613"
+        }]
+    }],
+    "Movement to/from FD/RD": [{
+        "description": [{
+            "opr": "having",
+            "value": ["TO TRANSFER", "Repayment credit"]
+        }]
+    }],
+    "Tenant credit from the Owners": [{
+        "credit": [{
+            "opr": "==",
+            "value": 1000
+        }]
+    }],
+    "Apartment developments": [{
+        "description": [{
+            "opr": "having",
+            "value": ["pen", "folder", "files"]
+        }]
+    }],
+    "Misc expenses": [{
+        "description": [{
+            "opr": "regex",
+            "value": ["apartment.+work", "paid to raju"]
+        }]
+    }]
+}

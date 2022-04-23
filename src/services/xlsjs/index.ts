@@ -14,23 +14,19 @@ export const xLSTransKeys = {
 };
 
 export const fileParserUtil = {
-    parseXLS: (file: File) => {
-        const prom = new Promise<Transaction[]>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e: any) => {
-                const workBook = XLSX.read(e.target.result, {
-                    type: 'binary',
-                });
-                const worksheet = workBook.Sheets[workBook.SheetNames[0]];
-                // const option = { header: 10 };
-                const data = XLSX.utils.sheet_to_json(worksheet);
-                const trans = fileParserUtil.parseTransactions(data as { [key: string]: string; }[]);
-                resolve(trans);
-            };
-            reader.readAsBinaryString(file);
-        });
-        return prom;
-    },
+    parseXLS: (file: File) => new Promise<Transaction[]>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            const workBook = XLSX.read(e.target.result, {
+                type: 'binary',
+            });
+            const worksheet = workBook.Sheets[workBook.SheetNames[0]];
+            const data = XLSX.utils.sheet_to_json(worksheet);
+            const trans = fileParserUtil.parseTransactions(data as { [key: string]: string; }[]);
+            resolve(trans);
+        };
+        reader.readAsBinaryString(file);
+    }),
 
     parseAmount: (input: any) => {
         let out: any;

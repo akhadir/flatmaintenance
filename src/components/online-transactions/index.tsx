@@ -162,7 +162,7 @@ export const OnlineTransactionParser = () => {
                                 })}
                             </Stepper>
                             <div>
-                                {activeStep === steps.length ? (
+                                {activeStep === steps.length && (
                                     <div>
                                         <Typography className={classes.instructions}>
                                             All steps completed - you&apos;re finished
@@ -171,7 +171,8 @@ export const OnlineTransactionParser = () => {
                                             Reset
                                         </Button>
                                     </div>
-                                ) : (
+                                )}
+                                {activeStep !== steps.length && (
                                     <div>
                                         <Typography className={classes.instructions}>
                                             {getStepContent(activeStep)}
@@ -200,7 +201,7 @@ export const OnlineTransactionParser = () => {
                                                 onClick={handleNext}
                                                 className={classes.button}
                                             >
-                                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                                {(activeStep === steps.length - 1 && 'Finish') || 'Next'}
                                             </Button>
                                         </div>
                                     </div>

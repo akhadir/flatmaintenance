@@ -62,7 +62,7 @@ module.exports = {
         // TypeScript interfaces / types for props replaces this
         'react/prop-types': 'off',
         'react/require-default-props': 'off',
-        'react/no-unused-prop-types' : 'off',
+        'react/no-unused-prop-types': 'off',
         // Rule is forcing manual reformatting of stuff - no automated
         // reformat seems to be working
         indent: ['error', 4],
@@ -128,6 +128,8 @@ module.exports = {
                 tsx: 'never',
             },
         ],
+        'no-shadow': 'off',
+        '@typescript-eslint/no-shadow': ['error'],
     },
     overrides: [
         {
