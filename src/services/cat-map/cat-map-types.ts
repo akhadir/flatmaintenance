@@ -11,5 +11,5 @@ export type FieldQuery = {
     [fieldName: string]: Query[];
 };
 export type CatFieldMap = {
-    [category: TransCategory | string]: FieldQuery[];
+    [category: string]: FieldQuery[];
 }

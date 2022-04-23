@@ -1,0 +1,15 @@
+
+TODO: Field Query Executor
+TODO: Category Transaction Executor
+TODO: Integration with Wizard
+TODO: Disabling Montly from Wizard
+TODO: Saving Transactions to Xcel
+TODO: Support for Cash Transactions
+TODO: Support for Compiled Transactions
+TODO: Updating Summary sheet
+        - Adding Missing Mappings
+        - Updating the sheet instead of Overriding
+TODO: Updating Maintenance Summary Sheet
+TODO: Updating Corpus Fund Sheet
+TODO: Updating Tenant Deposit Sheet
+TODO: Cross sheet linking
