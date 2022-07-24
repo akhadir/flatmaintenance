@@ -5,7 +5,7 @@ import {
     GoogleSpreadsheetWorksheet,
     WorksheetBasicProperties,
 } from 'google-spreadsheet';
-import { appConfig } from '..';
+import { sheetConfig } from '..';
 
 // Config variables
 export type GSheetUtil = {
@@ -13,6 +13,7 @@ export type GSheetUtil = {
     init: () => Promise<GoogleSpreadsheet>;
     getSpreadSheet: () => GoogleSpreadsheet | undefined;
     getSheetByTitle: (sheetTitle: string) => Promise<GoogleSpreadsheetWorksheet>;
+    getSheetByTitleAsJson: (sheetTitle: string) => Promise<{ [key: string]: any }[]>;
     getSheet: (sheetId: string) => Promise<GoogleSpreadsheetWorksheet>;
     appendSheet: (sheetId: string, row: { [key: string]: string | number }) => Promise<GoogleSpreadsheetRow>;
     append: (row: { [key: string]: string | number }) => Promise<GoogleSpreadsheetRow>;
@@ -29,32 +30,58 @@ export type GSheetUtil = {
 }
 const gsheetUtil: GSheetUtil = {
     currentSheet: '',
-    init: () => {
-        const prom = new Promise<GoogleSpreadsheet>((resolve, reject) => {
-            const { doc } = appConfig;
-            try {
-                doc.useServiceAccountAuth({
-                    client_email: appConfig.clientEmail || '',
-                    private_key: appConfig.privateKey || '',
-                }).then(() => {
-                    doc.loadInfo().then(() => {
-                        resolve(doc);
-                    }).catch((e: any) => {
-                        console.log(e);
-                    });
-                }).catch((e: any) => {
-                    console.log(e);
-                });
-            } catch (e) {
+    init: () => new Promise<GoogleSpreadsheet>((resolve, reject) => {
+        const { doc } = sheetConfig;
+        doc.useServiceAccountAuth({
+            client_email: sheetConfig.clientEmail || '',
+            private_key: sheetConfig.privateKey || '',
+        }).then(() => {
+            doc.loadInfo().then(() => {
+                resolve(doc);
+            }).catch((e: any) => {
                 console.log(e);
-                reject(e);
-            }
+            });
+        }).catch((e: any) => {
+            console.log(e);
+            reject(e);
         });
-        return prom;
+    }),
+    getSpreadSheet: () => sheetConfig.doc,
+    getSheetByTitleAsJson: async (sheetTitle: string): Promise<{ [key: string]: any }[]> => {
+        const sheetInfo: any[] = [];
+        const sheetObj = await gsheetUtil.getSheetByTitle(sheetTitle);
+        let headers: string[] = sheetObj.headerValues;
+        let colCount = sheetObj.columnCount;
+        if (!headers || headers.length === 0) {
+            headers = [];
+            for (let j = 0; j < colCount; j += 1) {
+                const { value } = sheetObj.getCell(0, j);
+                if (value) {
+                    headers.push(sheetObj.getCell(0, j).value.toString());
+                }
+            }
+        }
+        colCount = headers.length;
+        const { rowCount } = sheetObj;
+        for (let i = 1; i < rowCount; i += 1) {
+            const sheet: any = {};
+            const allValues: any[] = [];
+            for (let j = 0; j < colCount; j += 1) {
+                const head = headers[j];
+                const val = sheetObj.getCell(i, j).value;
+                sheet[head] = val;
+                allValues.push(val);
+            }
+            if (allValues.some((val) => val !== null)) {
+                sheetInfo.push(sheet);
+            } else {
+                break;
+            }
+        }
+        return sheetInfo;
     },
-    getSpreadSheet: () => appConfig.doc,
     getSheetByTitle: async (sheetTitle: string) => {
-        const sheet = appConfig.doc?.sheetsByTitle[sheetTitle];
+        const sheet = sheetConfig.doc?.sheetsByTitle[sheetTitle];
         if (sheet) {
             gsheetUtil.currentSheet = sheet.sheetId;
             await sheet.loadCells();
@@ -63,38 +90,34 @@ const gsheetUtil: GSheetUtil = {
     },
     getSheet: async (sheetId: string) => {
         gsheetUtil.currentSheet = sheetId;
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
         await sheet.loadCells();
         return sheet;
     },
     appendSheet: (sheetId: string, row: { [key: string]: string | number }) => {
-        const sheet = appConfig.doc.sheetsById[sheetId];
-        const result = sheet.addRow(row);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
+        return sheet.addRow(row);
     },
     append: (row: { [key: string]: string | number }) => {
-        const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
-        const result = sheet.addRow(row);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        return sheet.addRow(row);
     },
     getSheetRow: (sheetId: string, row: number) => {
-        const sheet = appConfig.doc.sheetsById[sheetId];
-        const result = sheet.getRows({
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
+        return sheet.getRows({
             limit: 1,
             offset: row,
         });
-        return result;
     },
     getRow: (row: number) => {
-        const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
-        const result = sheet.getRows({
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        return sheet.getRows({
             limit: 1,
             offset: row,
         });
-        return result;
     },
     getColumn: (col: number) => {
-        const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
@@ -111,7 +134,7 @@ const gsheetUtil: GSheetUtil = {
         return result;
     },
     getSheetColumn: (sheetId: string, col: number) => {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
@@ -120,26 +143,22 @@ const gsheetUtil: GSheetUtil = {
         return result;
     },
     getSheetCell: (sheetId: string, row: number, column: number) => {
-        const sheet = appConfig.doc.sheetsById[sheetId];
-        const result = sheet.getCell(row, column);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
+        return sheet.getCell(row, column);
     },
     getCell: (row: number, column: number) => {
-        const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
-        const result = sheet.getCell(row, column);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        return sheet.getCell(row, column);
     },
     saveSheetCells: (sheetId: string, cells: GoogleSpreadsheetCell[]) => {
-        const sheet = appConfig.doc.sheetsById[sheetId];
-        const result = sheet.saveCells(cells);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[sheetId];
+        return sheet.saveCells(cells);
     },
     saveCells: (cells: GoogleSpreadsheetCell[]) => {
-        const sheet = appConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
-        const result = sheet.saveCells(cells);
-        return result;
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        return sheet.saveCells(cells);
     },
-    addSheet: (input: WorksheetBasicProperties) => appConfig.doc.addSheet(input),
+    addSheet: (input: WorksheetBasicProperties) => sheetConfig.doc.addSheet(input),
 };
 
 export default gsheetUtil;

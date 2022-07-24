@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import moment from 'moment';
-import { appConfig } from '..';
+import { sheetConfig } from '..';
 import gsheetUtil from '../googleapi';
 import { CatItem, MonthlySheetDataType, Transaction } from '../service-types';
 
@@ -30,7 +30,7 @@ export class TransSheet implements Sheet {
         if (!this.sheetIntialized) {
             await this.initProm;
         }
-        const prom = new Promise<GoogleSpreadsheetWorksheet>((resolve, reject) => {
+        return new Promise<GoogleSpreadsheetWorksheet>((resolve, reject) => {
             if (this.sheets.has(sheetTitle)) {
                 resolve(this.sheets.get(sheetTitle) as GoogleSpreadsheetWorksheet);
             } else {
@@ -44,11 +44,10 @@ export class TransSheet implements Sheet {
                 });
             }
         });
-        return prom;
     }
 
     public async getExpenseCategories() {
-        const prom = new Promise<CatItem[]>((resolve, reject) => {
+        return new Promise<CatItem[]>((resolve, reject) => {
             let result: CatItem[] = [];
             this.getSheet(SUMMARY_SHEET).then((sheet) => {
                 const sheetCol = gsheetUtil.getColumnWithSheet(sheet, CAT_COLUMN);
@@ -68,7 +67,6 @@ export class TransSheet implements Sheet {
                 resolve(result);
             });
         });
-        return prom;
     }
 
     private async parseMonthlySheet(sheet: GoogleSpreadsheetWorksheet) {
@@ -86,7 +84,7 @@ export class TransSheet implements Sheet {
     }
 
     public getMonthData(monthSheet: string) {
-        const prom = new Promise<Transaction[]>((resolve, reject) => {
+        return new Promise<Transaction[]>((resolve, reject) => {
             this.getSheet(monthSheet).then(async (sheet) => {
                 const result = await this.parseMonthlySheet(sheet);
                 resolve(result);
@@ -102,7 +100,6 @@ export class TransSheet implements Sheet {
                 });
             });
         });
-        return prom;
     }
 
     private pushSheetData(trans: Transaction, rows: MonthlySheetDataType[]) {
@@ -127,10 +124,10 @@ export class TransSheet implements Sheet {
     }
 
     private async mergeSheetData(sheet: GoogleSpreadsheetWorksheet, sheetData: Transaction[]) {
-        const { transactions } = appConfig.appData;
+        const { transactions } = sheetConfig.appData;
         const rows: MonthlySheetDataType[] = [];
         if (sheetData.length > 0) {
-            await transactions.forEach((trans) => {
+            transactions.forEach((trans) => {
                 const fIndex = sheetData.findIndex((sData) => this.transCompare(sData, trans));
                 if (fIndex === -1) {
                     this.pushSheetData(trans, rows);

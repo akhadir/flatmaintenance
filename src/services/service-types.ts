@@ -40,7 +40,7 @@ export type AppData = {
     transSheetMonth: string;
 };
 
-export type AppConfig = {
+export type GoogleSheetConfig = {
     secret: string;
     SPREADSHEET_ID: string;
     ENC_CLIENT_EMAIL: string;

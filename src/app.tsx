@@ -1,6 +1,9 @@
 import React from 'react';
-import OnlineTransactionParser from './components/online-transactions';
+import { Provider } from 'react-redux';
+import store from './services/redux/store';
+// import OnlineTransactionParser from './components/online-transactions';
 import './app.css';
+import Categorizer from './components/categorizer';
 
 const App: React.FC = () => (
     <div className="app">
@@ -9,11 +12,14 @@ const App: React.FC = () => (
             <span>Suraksha Sunflower - Admin</span>
         </header>
         <div className="app-content">
-            <h3>
+            {/* <h3>
                 Monthly Maintenance
-            </h3>
+            </h3> */}
             <div>
-                <OnlineTransactionParser />
+                <Provider store={store}>
+                    {/* <OnlineTransactionParser /> */}
+                    <Categorizer />
+                </Provider>
             </div>
         </div>
     </div>

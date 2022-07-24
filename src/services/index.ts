@@ -2,26 +2,31 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import React from 'react';
 import CryptoJS from 'crypto-js';
 import moment from 'moment';
-import { AppConfig, AppData, CatItem } from './service-types';
+import { GoogleSheetConfig, AppData, CatItem } from './service-types';
 
 export const setCredentials = (secret: string = '') => {
-    let out = false;
+    const out = {
+        res: false,
+        error: '',
+    };
     if (secret) {
-        const emailB = CryptoJS.AES.decrypt(appConfig.ENC_CLIENT_EMAIL, secret);
-        const pkB = CryptoJS.AES.decrypt(appConfig.ENC_PRIVATE_KEY, secret);
+        const emailB = CryptoJS.AES.decrypt(sheetConfig.ENC_CLIENT_EMAIL, secret);
+        const pkB = CryptoJS.AES.decrypt(sheetConfig.ENC_PRIVATE_KEY, secret);
         try {
-            appConfig.clientEmail = emailB.toString(CryptoJS.enc.Utf8);
-            appConfig.privateKey = pkB.toString(CryptoJS.enc.Utf8);
-            appConfig.secret = secret;
+            sheetConfig.clientEmail = emailB.toString(CryptoJS.enc.Utf8);
+            sheetConfig.privateKey = pkB.toString(CryptoJS.enc.Utf8);
+            sheetConfig.secret = secret;
             sessionStorage.setItem('session-id', secret);
-            out = true;
+            out.res = true;
         } catch (e) {
-            appConfig.secret = '';
-            out = false;
+            sheetConfig.secret = '';
+            out.res = false;
+            out.error = 'Invalid Secret Provided';
         }
     } else {
-        appConfig.secret = '';
-        out = false;
+        sheetConfig.secret = '';
+        out.res = false;
+        out.error = 'Empty Secret Set';
     }
     return out;
 };
@@ -94,7 +99,7 @@ export const setSheetMonth = (sheetTitle: string) => {
     appData.transSheetMonth = sheetTitle;
 };
 
-export const appConfig: AppConfig = {
+export const sheetConfig: GoogleSheetConfig = {
     secret: sessionStorage.getItem('session-id') || '',
     SPREADSHEET_ID: '1DkvPBSTUHJB9nnd31pfR7-n-71e4OtV5jHs2LHaWcKM',
     // eslint-disable-next-line max-len
@@ -105,10 +110,10 @@ export const appConfig: AppConfig = {
     appData,
 };
 
-if (appConfig.secret) {
-    setCredentials(appConfig.secret);
+if (sheetConfig.secret) {
+    setCredentials(sheetConfig.secret);
 }
-const AppContext = React.createContext(appConfig);
+const AppContext = React.createContext(sheetConfig);
 
 // eslint-disable-next-line no-shadow
 export enum TransactionFilters {

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -10,7 +10,7 @@ import FileUpload from '../file-upload';
 import fileParserUtil from '../../services/xlsjs';
 import FilePreview from '../file-preview';
 import Mapping from '../mapping';
-import AppContext, { appConfig, setCredentials } from '../../services';
+import AppContext, { sheetConfig, setCredentials } from '../../services';
 import SecretDialog from '../mapping/secret-dialog';
 import transSheet from '../../services/sheet';
 import { Transaction } from '../../services/service-types';
@@ -45,7 +45,7 @@ export const OnlineTransactionParser = () => {
     const parseXLS = useCallback((file: File) => {
         setFileName(file.name);
         fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
-            appConfig.appData.transactions = resp;
+            sheetConfig.appData.transactions = resp;
             setBankTransactions(resp);
             setErrorMsg('');
             setActiveStep(1);
@@ -87,7 +87,7 @@ export const OnlineTransactionParser = () => {
             break;
         }
         case 1: {
-            const monthSheet = appConfig.appData.transSheetMonth;
+            const monthSheet = sheetConfig.appData.transSheetMonth;
             if (monthSheet) {
                 await transSheet.setMonthData(monthSheet).then((result) => {
                     if (result) {
@@ -129,19 +129,23 @@ export const OnlineTransactionParser = () => {
     const handleReset = useCallback(() => {
         setActiveStep(0);
     }, []);
-    if (secret) {
-        if (!setCredentials(secret)) {
-            setErrorMsg('Wrong secret. Enter it again.');
-            setSecret('');
+    useEffect(() => {
+        if (secret) {
+            if (!setCredentials(secret)) {
+                setErrorMsg('Wrong secret. Enter it again.');
+                setSecret('');
+            } else {
+                setErrorMsg('');
+            }
         }
-    }
+    }, [secret]);
     return (
         <>
             {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-            {!appConfig.secret ? (
+            {!sheetConfig.secret ? (
                 <SecretDialog errorMsg={errorMsg} handleSecret={setSecret} />
             ) : (
-                <AppContext.Provider value={appConfig}>
+                <AppContext.Provider value={sheetConfig}>
                     <div className="wizard">
                         <div className={classes.root}>
                             <Stepper activeStep={activeStep}>

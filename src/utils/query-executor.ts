@@ -7,10 +7,10 @@ class QueryExecutor {
         this.query = inpQuery;
     }
 
-    public run(fieldVal: any, transType?: TransType) {
+    public run(fieldVal: any, transType?: TransType): boolean {
         let res = false;
         const { opr, value: queryVal, type } = this.query;
-        if (transType && type === transType) {
+        if (fieldVal && queryVal && transType && (!type || type === transType)) {
             switch (opr) {
             case '==': {
                 res = fieldVal.toString() === queryVal.toString();
@@ -37,14 +37,16 @@ class QueryExecutor {
                 break;
             }
             case 'having': {
-                if (Array.isArray(queryVal)) {
-                    res = queryVal.some((item) => {
-                        const qval = item.toString();
-                        return fieldVal.toLowerCase().indexof(qval.toLowerCase()) > -1;
-                    });
-                } else {
-                    const qval = queryVal.toString();
-                    res = fieldVal.toLowerCase().indexof(qval.toLowerCase()) > -1;
+                if (typeof fieldVal === 'string') {
+                    if (Array.isArray(queryVal)) {
+                        res = queryVal.some((item) => {
+                            const qval = item.toString();
+                            return fieldVal.toLowerCase().indexOf(qval.toLowerCase()) > -1;
+                        });
+                    } else {
+                        const qval = queryVal.toString();
+                        res = fieldVal.toLowerCase().indexOf(qval.toLowerCase()) > -1;
+                    }
                 }
                 break;
             }
@@ -53,7 +55,7 @@ class QueryExecutor {
                     res = queryVal.some((item) => {
                         const qval = item.toString();
                         const reg = new RegExp(qval, 'i');
-                        res = fieldVal.match(reg)?.length > 0;
+                        return fieldVal.match(reg)?.length > 0;
                     });
                 } else {
                     const qval = queryVal.toString();

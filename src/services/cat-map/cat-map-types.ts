@@ -7,9 +7,9 @@ export type Query = {
     value: string[] | string | number | boolean;
     type?: TransType;
 };
-export type FieldQuery = {
-    [fieldName: string]: Query[];
+export type ColQuery = {
+    [colName: string]: Query[];
 };
 export type CatFieldMap = {
-    [category: string]: FieldQuery[];
-}
+    [category: string]: ColQuery[];
+};
