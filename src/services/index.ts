@@ -74,7 +74,7 @@ const transCategories: CatItem[] = [
             },
             {
                 key: 'account-transfer',
-                label: 'Movement to/from FD/RD',
+                label: 'FD Deposit',
             },
             {
                 key: 'tenant-deposit',
