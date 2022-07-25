@@ -8,11 +8,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Transaction } from '../../services/service-types';
+import { Button } from '@material-ui/core';
 import './index.css';
 import AppContext from '../../services';
+import { Transaction } from '../../services/service-types';
 
 const useStyles = makeStyles({
     table: {
@@ -28,7 +27,7 @@ export const FilePreview = (props: FilePreviewProps) => {
     const months: { [key: string]: string; } = useMemo(() => {
         const monthList: { [key: string]: string; } = {};
         rows.forEach((row) => {
-            const month = moment(row.date).format('MMM-YY');
+            const month = moment(row.Date).format('MMM-YY');
             monthList[month] = month;
         });
         return monthList;
@@ -46,16 +45,29 @@ export const FilePreview = (props: FilePreviewProps) => {
     }, [appData]);
     let filteredRows = rows;
     if (selMonth) {
-        filteredRows = rows.filter((row) => moment(row.date).format('MMM-YY') === selMonth);
+        filteredRows = rows.filter((row) => moment(row.Date).format('MMM-YY') === selMonth);
         appData.transactions = filteredRows;
     }
+    const saveSheet = useCallback(() => {
+        // gsheetUtil.addSheet({
+        //     headerValues: [
+        //         'Date', 'Description', 'Cheque No', 'Debit', 'Credit', 'Total', 'Category',
+        //     ],
+        //     title: 'Online Transactions',
+        // }).then((sheet) => {
+        //     resolve([]);
+        // });
+    }, []);
     return (
         <>
             <div className="preview-header">
                 <div>
                     File: <h4>{name}</h4>
                 </div>
-                <div className="month-filter">
+                <div className="tools">
+                    <Button variant="outlined" onClick={saveSheet}>Save Sheet</Button>
+                </div>
+                {/* <div className="month-filter">
                     Month: &nbsp;
                     <Select
                         value={selMonth}
@@ -68,7 +80,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                             <MenuItem value={month}>{month}</MenuItem>
                         ))}
                     </Select>
-                </div>
+                </div> */}
             </div>
             <TableContainer className="xls-file-preview" component={Paper}>
                 <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
@@ -78,25 +90,25 @@ export const FilePreview = (props: FilePreviewProps) => {
                             <TableCell>Date</TableCell>
                             <TableCell>Description</TableCell>
                             <TableCell align="right">Cheque No.</TableCell>
-                            <TableCell align="right">Withdrawal</TableCell>
-                            <TableCell align="right">Deposit</TableCell>
-                            <TableCell align="right">Balance</TableCell>
+                            <TableCell align="right">Debit</TableCell>
+                            <TableCell align="right">Credit</TableCell>
+                            <TableCell align="right">Total</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {filteredRows.map((row, index) => (
-                            <TableRow key={row.desc}>
+                            <TableRow key={row.Description}>
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {moment(row.date).format('DD/MM/YYYY')}
+                                    {moment(row.Date).format('DD/MM/YYYY')}
                                 </TableCell>
-                                <TableCell>{row.desc}</TableCell>
-                                <TableCell align="right">{row.chqNo}</TableCell>
-                                <TableCell align="right">{row.withDrawal}</TableCell>
-                                <TableCell align="right">{row.deposit}</TableCell>
-                                <TableCell align="right">{row.balance}</TableCell>
+                                <TableCell>{row.Description}</TableCell>
+                                <TableCell align="right">{row['Cheque No']}</TableCell>
+                                <TableCell align="right">{row.debit}</TableCell>
+                                <TableCell align="right">{row.credit}</TableCell>
+                                <TableCell align="right">{row.total}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

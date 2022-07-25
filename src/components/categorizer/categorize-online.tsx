@@ -5,16 +5,16 @@ import moment from 'moment';
 import Table from '@material-ui/core/Table';
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTransactions } from '../../services/redux/transactions/trans-actions';
+import { fetchOnlineTransactions } from '../../services/redux/transactions/trans-actions';
 import { TransData } from '../../services/redux/transactions/trans-types';
 
-function CategorizeCash() {
+function CategorizeOnline() {
     const sheetInfo: TransData = useSelector((state: any) => state.trans);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchTransactions() as any);
+        dispatch(fetchOnlineTransactions('Online Transactions') as any);
     }, [dispatch]);
-    const sheetData = sheetInfo.cashTransData;
+    const sheetData = sheetInfo.onlineTransData;
     const headers = useMemo(() => {
         let out: string[] = [];
         if (sheetData && sheetData.length > 1) {
@@ -24,7 +24,7 @@ function CategorizeCash() {
     }, [sheetData]);
     return (
         <>
-            <div className="cash-trans">
+            <div className="online-trans">
                 {sheetInfo.loading && <CircularProgress />}
                 {!sheetInfo.loading && (
                     <Table>
@@ -56,4 +56,4 @@ function CategorizeCash() {
     );
 }
 
-export default CategorizeCash;
+export default CategorizeOnline;

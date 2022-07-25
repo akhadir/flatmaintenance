@@ -2,11 +2,21 @@ export default {
     'Maintenance Collection': [{
         Credit: [{
             opr: 'in',
-            value: [2600, 2700, 2800, 5400, 5600, 8100, 5200, 10800],
+            value: [
+                '2,600.00', '2600',
+                '2,700.00', '2700',
+                '2,800.00', '2800',
+                '5,400.00', '5400',
+                '5,500.00', '5500',
+                '5,600.00', '5600',
+                '8,100.00', '8100',
+                '5,200.00', '5200',
+                '10,800.00', '10800',
+            ],
         }],
         Description: [{
             opr: 'having',
-            value: ['maintenance'],
+            value: ['maintenance', 'neft', 'upi', 'imps'],
         }],
     }],
     'Audit Fees': [{
@@ -18,19 +28,30 @@ export default {
     'Corpus Fund': [{
         Credit: [{
             opr: 'in',
-            value: [7500, 15000, 22500, 30000, 37500],
+            value: [
+                '7500', '7,500.00',
+                '15,000.00', '15000',
+                '22,500.00', '22500',
+                '30,000.00', '30000',
+                '37,500.00', '37500',
+                '45,000.00', '45000',
+            ],
+        }],
+        Description: [{
+            opr: 'having',
+            value: ['corpus', 'neft', 'upi', 'imps'],
         }],
     }],
     Fine: [{
         Credit: [{
             opr: 'in',
-            value: [100, 200, 300],
+            value: ['100', '200', '300'],
         }],
     }],
     Bescom: [{
         Description: [{
             opr: 'having',
-            value: ['BESCOM', 'Electricity', 'BENGALORE ONE'],
+            value: ['BESCOM', 'Electricity', 'BANGALORE ONE'],
         }],
     }],
     BWSSB: [{
@@ -39,10 +60,16 @@ export default {
             value: ['BANGALORE WATER SUPPLY', 'BWSSB'],
         }],
     }],
-    Security: [{
+    'CCTV / Intercomm': [{
         Description: [{
             opr: 'having',
-            value: ['MUNIRAJU', 'MUNIRAJU K C'],
+            value: ['SHANKAR TELECOM LINKS', 'Intercom'],
+        }],
+    }],
+    Security: [{
+        Debit: [{
+            opr: 'in',
+            value: ['35,000.00', '35000'],
         }],
     }],
     'House Keeping Salary': [{
@@ -116,12 +143,6 @@ export default {
             value: ['electric repair', 'electric work', 'electric', 'Chamundi', 'plumbing'],
         }],
     }],
-    'CCTV / Intercomm': [{
-        Description: [{
-            opr: 'having',
-            value: ['SHANKAR TELECOM LINKS', 'Intercom'],
-        }],
-    }],
     'Septic Tank Repairs / Cleaning': [{
         Description: [{
             opr: 'having',
@@ -137,13 +158,13 @@ export default {
     'Generator Maintenance and Repair': [{
         Description: [{
             opr: 'regex',
-            value: ['venus.+energy'],
+            value: ['venus.+energy', 'kirloskar'],
         }],
     }],
     'SMS Charges/Cheque book (Vijaya Bank)': [{
         Description: [{
             opr: 'regex',
-            value: ['SMS .+Alert', 'cheque .+book', 'charges', 'chq .+book'],
+            value: ['SMS .+Alert', 'cheque.+book', 'charges', 'chq.+book'],
         }],
     }],
     'Health Club Maintenance': [{
@@ -188,16 +209,16 @@ export default {
             value: ['89630100005613'],
         }],
     }],
-    'Movement to/from FD/RD': [{
+    'FD Deposit': [{
         Description: [{
             opr: 'having',
             value: ['TO TRANSFER', 'Repayment Credit'],
         }],
     }],
-    'Tenant Credit from the Owners': [{
+    'Tenant Deposit from the Owners': [{
         Credit: [{
-            opr: '==',
-            value: 1000,
+            opr: 'in',
+            value: ['10,000.00', '10000'],
         }],
     }],
     'Apartment Safety': [{
@@ -236,16 +257,50 @@ export default {
             ],
         }],
     }],
+    'Borewell And Motor Maintenance': [{
+        Description: [{
+            opr: 'having',
+            value: ['borewell', 'motor', 'coil'],
+        }],
+    }],
     'Apartment repairs related': [{
         Description: [{
             opr: 'having',
-            value: ['cement work', 'cement', 'service', 'repair', 'borewell', 'motor', 'spanner'],
+            value: ['cement work', 'cement', 'service', 'repair', 'spanner'],
         }],
     }],
     'Misc expenses': [{
         Description: [{
             opr: 'regex',
             value: ['apartment.+work', 'paid to raju', 'tea'],
+        }],
+    }],
+    'Extra Payment Received': [{
+        Credit: [{
+            opr: 'in',
+            value: ['1', '1.00'],
+        }],
+    }],
+    'Other Income': [{
+        Description: [{
+            opr: 'having',
+            value: ['income', 'other'],
+        }],
+        Credit: [{
+            opr: '>',
+            value: 0,
+        }],
+    }],
+    'Cash Withdrawal / in hand': [{
+        Description: [{
+            opr: 'regex',
+            value: ['cash', 'withdrawal', 'bank', 'basavaraj', 'carry.+forwarded'],
+        }],
+    }],
+    'Deposit to RD account': [{
+        Description: [{
+            opr: 'having',
+            value: ['3715125', 'SI:89630300010611'],
         }],
     }],
 };

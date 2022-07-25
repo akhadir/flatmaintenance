@@ -36,15 +36,15 @@ export const TransPreview = (props: TransPreviewProps) => {
                     </TableHead>
                     <TableBody>
                         {rows.map((row, index) => (
-                            <TableRow key={row.desc}>
+                            <TableRow key={row.Description}>
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {moment(row.date).format('DD/MM/YYYY')}
+                                    {moment(row.Date).format('DD/MM/YYYY')}
                                 </TableCell>
-                                <TableCell>{row.desc}</TableCell>
-                                <TableCell>{(-1 * row.withDrawal) + row.deposit}</TableCell>
+                                <TableCell>{row.Description}</TableCell>
+                                <TableCell>{(-1 * row.debit) + row.credit}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

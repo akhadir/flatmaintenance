@@ -56,20 +56,20 @@ export const fileParserUtil = {
             balanceKey = `${XLS_TRANS_KEY_PREFIX}${balanceKey}`;
             trans = data.map((row) => {
                 const out: Transaction = {
-                    date: moment(row[dateKey], 'DD/MM/YYYY').toDate(),
-                    desc: row[descKey],
-                    chqNo: row[chqNoKey] || '',
-                    withDrawal: 0,
-                    deposit: 0,
-                    balance: fileParserUtil.parseAmount(row[balanceKey]),
+                    Date: moment(row[dateKey], 'DD/MM/YYYY').toDate(),
+                    Description: row[descKey],
+                    'Cheque No': row[chqNoKey] || '',
+                    debit: 0,
+                    credit: 0,
+                    total: fileParserUtil.parseAmount(row[balanceKey]),
                     type: 'ONLINE',
                 };
                 if (row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.WITHDRAWAL_KEY}`]) {
-                    out.withDrawal = fileParserUtil.parseAmount(
+                    out.debit = fileParserUtil.parseAmount(
                         row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.WITHDRAWAL_KEY}`]);
                 }
                 if (row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DEPOSIT_KEY}`]) {
-                    out.deposit = fileParserUtil.parseAmount(
+                    out.credit = fileParserUtil.parseAmount(
                         row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DEPOSIT_KEY}`]);
                 }
                 return out;

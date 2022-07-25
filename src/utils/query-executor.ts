@@ -66,7 +66,7 @@ class QueryExecutor {
             }
             case 'in': {
                 if (Array.isArray(queryVal)) {
-                    res = queryVal.indexOf(fieldVal) > -1;
+                    res = queryVal.indexOf(fieldVal.toString()) > -1;
                 }
                 break;
             }

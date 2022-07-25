@@ -20,4 +20,13 @@ describe('Testing Library:::QueryExecutor', () => {
         const out = qExec.run('Housekeeping Salary', 'debit');
         expect(out).toBeFalsy();
     });
+    it('Tests bug-fix scenario - 2', async () => {
+        expect(QueryExecutor).toBeDefined();
+        const qExec = new QueryExecutor({
+            opr: 'in',
+            value: ['2600', '2700', '2800', '5400', '5600', '8100', '5200', '10800'],
+        });
+        const out = qExec.run(2700, 'credit');
+        expect(out).toBeTruthy();
+    });
 });

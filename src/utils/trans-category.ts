@@ -7,7 +7,7 @@ export enum TransCategory {
     'Security' = 'Security',
     'Gardener' = 'Gardener',
     'Garbage Collection Vendor (Hasirudala)/BBMP' = 'Garbage Collection Vendor (Hasirudala)/BBMP',
-    'Garbage Materials' = 'Garbage Materials',
+    'Borewell And Motor Maintenance' = 'Borewell And Motor Maintenance',
     'Annual Bonus' = 'Annual Bonus',
     'Lift Maintenance (Johnson)' = 'Lift Maintenance (Johnson)',
     'HK items (bleaching powder,garbage bin etc)' = 'HK items (bleaching powder,garbage bin etc)',
@@ -33,6 +33,6 @@ export enum TransCategory {
     'Extra Payment Received' = 'Extra Payment Received',
     'Corpus Fund' = 'Corpus Fund',
     'Tenant Deposit from the Owners' = 'Tenant Deposit from the Owners',
-    'Movement to/from FD/RD' = 'Movement to/from FD/RD',
+    'FD Deposit' = 'FD Deposit',
 }
 export default { TransCategory };

@@ -6,6 +6,8 @@ import {
     WorksheetBasicProperties,
 } from 'google-spreadsheet';
 import { sheetConfig } from '..';
+import catIndex from '../cat-map/cat-index';
+import monthIndex from '../cat-map/month-index';
 
 // Config variables
 export type GSheetUtil = {
@@ -25,6 +27,8 @@ export type GSheetUtil = {
     getSheetCell: (sheetId: string, row: number, column: number) => GoogleSpreadsheetCell;
     getCell: (row: number, column: number) => GoogleSpreadsheetCell;
     saveSheetCells: (sheetId: string, cells: GoogleSpreadsheetCell[]) => Promise<void>;
+    saveSheetWithJSON: (json: { [key: string]: any }[]) => Promise<void>;
+    updateCategorySheet: (json: { [month: string]: { [cat: string]: any }}) => Promise<void>;
     saveCells: (cells: GoogleSpreadsheetCell[]) => Promise<void>;
     addSheet: (input: WorksheetBasicProperties) => Promise<GoogleSpreadsheetWorksheet>;
 }
@@ -47,7 +51,7 @@ const gsheetUtil: GSheetUtil = {
         });
     }),
     getSpreadSheet: () => sheetConfig.doc,
-    getSheetByTitleAsJson: async (sheetTitle: string): Promise<{ [key: string]: any }[]> => {
+    getSheetByTitleAsJson: async (sheetTitle: string): Promise<{ [key: string]: any; }[]> => {
         const sheetInfo: any[] = [];
         const sheetObj = await gsheetUtil.getSheetByTitle(sheetTitle);
         let headers: string[] = sheetObj.headerValues;
@@ -68,7 +72,7 @@ const gsheetUtil: GSheetUtil = {
             const allValues: any[] = [];
             for (let j = 0; j < colCount; j += 1) {
                 const head = headers[j];
-                const val = sheetObj.getCell(i, j).value;
+                const val = sheetObj.getCell(i, j).formattedValue;
                 sheet[head] = val;
                 allValues.push(val);
             }
@@ -94,11 +98,11 @@ const gsheetUtil: GSheetUtil = {
         await sheet.loadCells();
         return sheet;
     },
-    appendSheet: (sheetId: string, row: { [key: string]: string | number }) => {
+    appendSheet: (sheetId: string, row: { [key: string]: string | number; }) => {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         return sheet.addRow(row);
     },
-    append: (row: { [key: string]: string | number }) => {
+    append: (row: { [key: string]: string | number; }) => {
         const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
         return sheet.addRow(row);
     },
@@ -159,6 +163,43 @@ const gsheetUtil: GSheetUtil = {
         return sheet.saveCells(cells);
     },
     addSheet: (input: WorksheetBasicProperties) => sheetConfig.doc.addSheet(input),
+    saveSheetWithJSON: (json: { [key: string]: any; }[]): Promise<void> => {
+        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+        if (json && json.length) {
+            const headers = Object.keys(json[0]);
+            const colCount = headers.length;
+            const rowCount = json.length;
+            for (let i = 0; i < rowCount; i += 1) {
+                const row = json[i];
+                for (let j = 0; j < colCount; j += 1) {
+                    const cell = sheet.getCell(i + 1, j);
+                    const newVal = row[headers[j]];
+                    if (cell.formattedValue !== newVal) {
+                        cell.value = newVal;
+                    }
+                }
+            }
+        }
+        return sheet.saveUpdatedCells();
+    },
+    updateCategorySheet: async (json: { [month: string]: { [cat: string]: any; }; }): Promise<void> => {
+        const sheet = await gsheetUtil.getSheetByTitle('Summary');
+        await sheet.loadCells();
+        const months = Object.keys(json);
+        months.forEach((month) => {
+            const monthData = json[month];
+            const categories = Object.keys(monthData);
+            const colIndex: number = monthIndex[month];
+            categories.forEach((cat) => {
+                const rowIndex = catIndex[cat];
+                if (typeof rowIndex !== 'undefined' && typeof colIndex !== 'undefined') {
+                    const cell = sheet.getCell(rowIndex, colIndex);
+                    cell.value = monthData[cat];
+                }
+            });
+        });
+        return sheet.saveUpdatedCells();
+    },
 };
 
 export default gsheetUtil;

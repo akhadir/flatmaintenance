@@ -1,12 +1,12 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 export type Transaction = {
-    date: Date;
-    desc: string;
-    chqNo: string;
-    withDrawal: number;
-    deposit: number;
-    balance: number;
+    Date: Date;
+    Description: string;
+    'Cheque No': string;
+    debit: number;
+    credit: number;
+    total: number;
     mappedCatItem?: CatItem[];
     type: 'CASH' | 'ONLINE';
 };

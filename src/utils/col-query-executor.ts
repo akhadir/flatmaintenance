@@ -1,5 +1,5 @@
 import { ColQuery, TransType } from '../services/cat-map/cat-map-types';
-import { CashTransType } from '../services/redux/cash-trans/cash-trans-types';
+import { TransactionType } from '../services/redux/transactions/trans-types';
 import QueryExecutor from './query-executor';
 
 export default class ColQueryExecutor {

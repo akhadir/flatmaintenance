@@ -104,21 +104,21 @@ export class TransSheet implements Sheet {
 
     private pushSheetData(trans: Transaction, rows: MonthlySheetDataType[]) {
         rows.push({
-            Date: moment(trans.date).format('DD/MM/YYYY'),
-            Desc: trans.desc,
-            Balance: trans.balance,
-            Amount: trans.deposit - trans.withDrawal,
-            ChqNo: trans.chqNo,
+            Date: moment(trans.Date).format('DD/MM/YYYY'),
+            Desc: trans.Description,
+            Balance: trans.total,
+            Amount: trans.credit - trans.debit,
+            ChqNo: trans['Cheque No'],
             Type: trans.type,
         });
     }
 
     private transCompare(sheetData: Transaction, fileData: Transaction) {
         return (
-            moment(sheetData.date).format('DD/MM/YYY') === moment(fileData.date).format('DD/MM/YYY') &&
-            sheetData.desc === fileData.desc &&
-            sheetData.withDrawal === fileData.withDrawal &&
-            sheetData.deposit === fileData.deposit &&
+            moment(sheetData.Date).format('DD/MM/YYY') === moment(fileData.Date).format('DD/MM/YYY') &&
+            sheetData.Description === fileData.Description &&
+            sheetData.debit === fileData.debit &&
+            sheetData.credit === fileData.credit &&
             sheetData.type === fileData.type
         );
     }
