@@ -1,5 +1,5 @@
-import { ColQuery, TransType } from '../services/cat-map/cat-map-types';
-import { TransactionType } from '../services/redux/transactions/trans-types';
+import { ColQuery, Query, TransType } from '../services/cat-map/cat-map-types';
+import LogicalExecutor from './logical-executor';
 import QueryExecutor from './query-executor';
 
 export default class ColQueryExecutor {
@@ -9,11 +9,25 @@ export default class ColQueryExecutor {
         this.query = inpQuery;
     }
 
-    run(transaction: { [index: string]: any }, transType?: TransType) {
-        return Object.keys(this.query).every((columnName) => this.query[columnName].every((query) => {
-            const qExecutor = new QueryExecutor(query);
-            const fieldVal: any = transaction[columnName];
-            return qExecutor.run(fieldVal, transType);
-        }));
+    run(transaction: { [index: string]: any }) {
+        return Object.keys(this.query).every((columnName) => {
+            const children = this.query[columnName];
+            let out = false;
+            if (Array.isArray(children)) {
+                out = children.every((query) => {
+                    const qExecutor = new QueryExecutor(query);
+                    const fieldVal: any = transaction[columnName];
+                    return qExecutor.run(fieldVal);
+                });
+            } else {
+                const logicalExec = new LogicalExecutor(children);
+                out = logicalExec.run((query) => {
+                    const qExecutor = new QueryExecutor(query as Query);
+                    const fieldVal: any = transaction[columnName];
+                    return qExecutor.run(fieldVal);
+                });
+            }
+            return out;
+        });
     }
 }

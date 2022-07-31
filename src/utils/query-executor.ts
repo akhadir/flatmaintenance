@@ -7,10 +7,10 @@ class QueryExecutor {
         this.query = inpQuery;
     }
 
-    public run(fieldVal: any, transType?: TransType): boolean {
+    public run(fieldVal: any): boolean {
         let res = false;
-        const { opr, value: queryVal, type } = this.query;
-        if (fieldVal && queryVal && transType && (!type || type === transType)) {
+        const { opr, value: queryVal } = this.query;
+        if (fieldVal && queryVal) {
             switch (opr) {
             case '==': {
                 res = fieldVal.toString() === queryVal.toString();

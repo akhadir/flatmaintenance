@@ -72,12 +72,12 @@ export class TransSheet implements Sheet {
     private async parseMonthlySheet(sheet: GoogleSpreadsheetWorksheet) {
         const rows = await sheet.getRows();
         const out: Transaction[] = rows.map((row) => ({
-            date: moment(row.Date, 'DD/MM/YYYY').toDate(),
-            desc: row.Desc,
-            chqNo: row.ChqNo,
-            withDrawal: parseFloat(row.Amount) < 0 ? parseFloat(row.Amount) : 0,
-            deposit: parseFloat(row.Amount) >= 0 ? parseFloat(row.Amount) : 0,
-            balance: parseFloat(row.Balance),
+            Date: moment(row.Date, 'DD/MM/YYYY').toDate(),
+            Description: row.Desc,
+            'Cheque No': row.ChqNo,
+            debit: parseFloat(row.Amount) < 0 ? parseFloat(row.Amount) : 0,
+            credit: parseFloat(row.Amount) >= 0 ? parseFloat(row.Amount) : 0,
+            total: parseFloat(row.Balance),
             type: row.Type,
         }));
         return out;

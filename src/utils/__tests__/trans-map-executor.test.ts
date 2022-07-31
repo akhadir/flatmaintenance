@@ -2,12 +2,16 @@ import { TransactionType } from '../../services/redux/transactions/trans-types';
 import TransMapExecutor from '../trans-map-executor';
 
 jest.mock('../../services/cat-map/cat-map', () => ({
-    'House Keeping Salary': [{
-        Description: [{
-            opr: 'regex',
-            value: ['Housekeeping.+Salary', 'House keeping.+Salary'],
-        }],
-    }],
+    'House Keeping Salary': 
+        {
+            'and':
+                [{
+                    Description: [{
+                        opr: 'regex',
+                        value: ['Housekeeping.+Salary', 'House keeping.+Salary'],
+                    }],
+                }],
+        },
 }));
 
 describe('Testing Library:::TransMapExecutor', () => {

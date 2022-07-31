@@ -1,7 +1,8 @@
+import { LogicalMap } from '../../services/cat-map/cat-map-types';
 import ColQueryExecutor from '../col-query-executor';
 
 describe('Testing Library:::ColQueryExecutor', () => {
-    it('Tests Scenario - 1' , async () => {
+    it('Tests Scenario - 1' , () => {
         expect(ColQueryExecutor).toBeDefined();
         const colQExec = new ColQueryExecutor({
             Credit: [{
@@ -19,11 +20,11 @@ describe('Testing Library:::ColQueryExecutor', () => {
             Credit: 2700,
             Debit: null,
             Total: 122323,
-        }, 'credit');
+        });
         expect(out).toBeTruthy();
     });
 
-    it('Tests Scenario - 2', async () => {
+    it('Tests Scenario - 2', () => {
         const colQExec = new ColQueryExecutor({
             Credit: [{
                 opr: 'in',
@@ -41,7 +42,86 @@ describe('Testing Library:::ColQueryExecutor', () => {
             "Debit": null,
             "Credit": "2,700.00",
             "Total": "10,44,754.21"
-        }, 'credit');
+        });
         expect(out).toBeTruthy();
+    });
+
+    it('Tests Scenario With Logical Expression - AND', () => {
+        const colQExec = new ColQueryExecutor({
+            Description: {
+                'and': [
+                    {
+                        opr: 'having',
+                        value: ['upi'],
+                    },
+                    {
+                        opr: 'having',
+                        value: ['okaxis'],
+                    },
+                ],
+            } as unknown as LogicalMap,
+        });
+        const out = colQExec.run({
+            "Date": "02/04/2021",
+            "Description": "UPI/109219775040/19:52:21/UPI/rohinimh19@okaxis/U",
+            "Cheque No": null,
+            "Debit": null,
+            "Credit": "2,700.00",
+            "Total": "10,44,754.21"
+        });
+        expect(out).toBeTruthy();
+        const out2 = colQExec.run({
+            "Date": "02/04/2021",
+            "Description": "UPI/109219775040/19:52:21/UPI/rohinimh19@icici/U",
+            "Cheque No": null,
+            "Debit": null,
+            "Credit": "2,700.00",
+            "Total": "10,44,754.21"
+        });
+        expect(out2).toBeFalsy();
+    });
+
+    it('Tests Scenario With Logical Expression - OR', () => {
+        const colQExec = new ColQueryExecutor({
+            Description: {
+                'or': [
+                    {
+                        opr: 'having',
+                        value: ['upi'],
+                    },
+                    {
+                        opr: 'having',
+                        value: ['okaxis'],
+                    },
+                ],
+            } as unknown as LogicalMap,
+        });
+        const out = colQExec.run({
+            "Date": "02/04/2021",
+            "Description": "UPI/109219775040/19:52:21/UPI/rohinimh19@okaxis/U",
+            "Cheque No": null,
+            "Debit": null,
+            "Credit": "2,700.00",
+            "Total": "10,44,754.21"
+        });
+        expect(out).toBeTruthy();
+        const out2 = colQExec.run({
+            "Date": "02/04/2021",
+            "Description": "upi/109219775040/19:52:21/UPI/rohinimh19@icici/U",
+            "Cheque No": null,
+            "Debit": null,
+            "Credit": "2,700.00",
+            "Total": "10,44,754.21"
+        });
+        expect(out2).toBeTruthy();
+        const out3 = colQExec.run({
+            "Date": "02/04/2021",
+            "Description": "NEFT/109219775040/19:52:21/UPI/rohinimh19@icici/U",
+            "Cheque No": null,
+            "Debit": null,
+            "Credit": "2,700.00",
+            "Total": "10,44,754.21"
+        });
+        expect(out3).toBeTruthy();
     });
 });

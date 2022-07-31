@@ -266,7 +266,7 @@ export default {
     'Apartment repairs related': [{
         Description: [{
             opr: 'having',
-            value: ['cement work', 'cement', 'service', 'repair', 'spanner'],
+            value: ['cement work', 'cement', 'service', 'repair', 'spanner', 'fixing'],
         }],
     }],
     'Misc expenses': [{
