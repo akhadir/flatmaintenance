@@ -1,7 +1,7 @@
 import moment from 'moment';
 import TransMapExecutor from '../../../utils/trans-map-executor';
-import incomeCat from '../../cat-map/income-cat';
 import gsheetUtil from '../../googleapi';
+import catMapJson from '../../cat-map/cat-map';
 import { TransactionType, TransActions, MonthlyCatSplit } from './trans-types';
 
 export const loadTransactions = () => ({
@@ -46,7 +46,7 @@ export function fetchTransactions(sheetName = 'Cash Transactions') {
         dispatch(loadTransactions());
         gsheetUtil.init().then(() => {
             gsheetUtil.getSheetByTitleAsJson(sheetName).then((value) => {
-                const transMapExec = new TransMapExecutor();
+                const transMapExec = new TransMapExecutor(catMapJson as any);
                 transMapExec.run(value as TransactionType[]);
                 dispatch(loadCashTransactionSuccess(value as any));
                 gsheetUtil.saveSheetWithJSON(value);
@@ -62,7 +62,7 @@ export function fetchOnlineTransactions(sheetName = 'Online Transactions') {
         dispatch(loadTransactions());
         gsheetUtil.init().then(() => {
             gsheetUtil.getSheetByTitleAsJson(sheetName).then((value) => {
-                const transMapExec = new TransMapExecutor();
+                const transMapExec = new TransMapExecutor(catMapJson as any);
                 transMapExec.run(value as TransactionType[]);
                 dispatch(loadOnlineTransactionSuccess(value as any));
                 gsheetUtil.saveSheetWithJSON(value);

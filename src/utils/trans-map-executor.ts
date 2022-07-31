@@ -1,6 +1,5 @@
 import { CatFieldMap, ColQuery, LogicalMap } from '../services/cat-map/cat-map-types';
 import { TransactionType } from '../services/redux/transactions/trans-types';
-import CatMapJson from '../services/cat-map/cat-map';
 import ColQueryExecutor from './col-query-executor';
 import { TransCategory } from './trans-category';
 import LogicalExecutor from './logical-executor';
@@ -8,12 +7,12 @@ import LogicalExecutor from './logical-executor';
 export default class TransMapExecutor {
     catFieldMap: CatFieldMap;
 
-    public constructor() {
-        this.catFieldMap = CatMapJson as any;
+    public constructor(catMapJson: CatFieldMap) {
+        this.catFieldMap = catMapJson;
     }
 
     public run(cashTransactions: TransactionType[]) {
-        const categories: string[] = Object.keys(CatMapJson);
+        const categories: string[] = Object.keys(this.catFieldMap);
         cashTransactions.forEach((ctrans) => {
             if (!ctrans.Category) {
                 const category: TransCategory | undefined = categories.find(

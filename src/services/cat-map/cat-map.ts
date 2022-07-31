@@ -276,9 +276,13 @@ export default {
         }],
     }],
     'Extra Payment Received': [{
+        Description: [{
+            opr: 'having',
+            value: ['maintenance', 'neft', 'upi', 'imps'],
+        }],
         Credit: [{
-            opr: 'in',
-            value: ['1', '1.00'],
+            opr: 'regex',
+            value: ['\\d'],
         }],
     }],
     'Other Income': [{
@@ -291,12 +295,22 @@ export default {
             value: 0,
         }],
     }],
-    'Cash Withdrawal / in hand': [{
-        Description: [{
-            opr: 'regex',
-            value: ['cash', 'withdrawal', 'bank', 'basavaraj', 'carry.+forwarded'],
-        }],
-    }],
+    'Cash Withdrawal / in hand': {
+        or: [
+            {
+                Description: [{
+                    opr: 'regex',
+                    value: ['cash', 'withdrawal', 'bank', 'basavaraj', 'carry.+forwarded', 'self'],
+                }],
+            },
+            {
+                'Cheque No': [{
+                    opr: 'regex',
+                    value: ['\\d+'],
+                }],
+            },
+        ],
+    },
     'Deposit to RD account': [{
         Description: [{
             opr: 'having',

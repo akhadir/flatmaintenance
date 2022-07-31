@@ -1,7 +1,6 @@
 import { TransactionType } from '../../services/redux/transactions/trans-types';
 import TransMapExecutor from '../trans-map-executor';
-
-jest.mock('../../services/cat-map/cat-map', () => ({
+const catMap = {
     'House Keeping Salary': 
         {
             'and':
@@ -12,7 +11,7 @@ jest.mock('../../services/cat-map/cat-map', () => ({
                     }],
                 }],
         },
-}));
+}
 
 describe('Testing Library:::TransMapExecutor', () => {
 
@@ -21,7 +20,7 @@ describe('Testing Library:::TransMapExecutor', () => {
     });
 
     it('Tests basic usecase', () => {
-        const transMapExec = new TransMapExecutor();
+        const transMapExec = new TransMapExecutor(catMap as any);
         let inputTransaction: TransactionType = {
             Credit: null,
             Debit: 1000,
@@ -34,7 +33,7 @@ describe('Testing Library:::TransMapExecutor', () => {
     });
 
     it('Tests basic usecase - 2', () => {
-        const transMapExec = new TransMapExecutor();
+        const transMapExec = new TransMapExecutor(catMap as any);
         let inputTransaction: TransactionType = {
             "Date": "02/04/2021",
             "Description": "UPI/109219775040/19:52:21/UPI/rohinimh19@okaxis/U",
