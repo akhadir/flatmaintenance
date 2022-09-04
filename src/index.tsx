@@ -1,11 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
-import reportWebVitals from './reportWebVitals';
+import { Router, Link } from '@reach/router';
+import OnlineTransactionParser from './online';
+import Categorizer from './categorizer';
+import './index.css';
+// import reportWebVitals from './reportWebVitals';
+
+const Home = (props: any) => <OnlineTransactionParser />;
+const Cat = (props: any) => <Categorizer />;
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <header className="app-header">
+            <img src="/images/ssfa.png" alt="Suraksha Sunflower Apartment" width="80px" height="60px" />
+            <span>Suraksha Sunflower </span>
+            <nav className="nav-bar">
+                <Link to="/">Parse Online</Link> |{' '}
+                <Link to="cat">Categorize Transactions</Link>
+            </nav>
+        </header>
+        <Router>
+            <Home path="/" />
+            <Cat path="cat" />
+        </Router>
     </React.StrictMode>,
     document.getElementById('root'),
 );
@@ -14,4 +31,4 @@ export default {};
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// reportWebVitals();

@@ -9,10 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
 import fileParserUtil from '../../services/xlsjs';
 import FilePreview from '../file-preview';
-import Mapping from '../mapping';
+import FileSave from '../file-save';
+// import Mapping from '../mapping';
 import AppContext, { sheetConfig, setCredentials } from '../../services';
 import SecretDialog from '../mapping/secret-dialog';
-import transSheet from '../../services/sheet';
+// import transSheet from '../../services/sheet';
 import { Transaction } from '../../services/service-types';
 import './index.css';
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-    return ['File Upload', 'File Preview', 'Transaction Mapping'];
+    return ['File Upload', 'File Preview', 'Save'];
 }
 
 export const OnlineTransactionParser = () => {
@@ -58,7 +59,7 @@ export const OnlineTransactionParser = () => {
         case 1:
             return (<FilePreview name={fileName} xlsData={bankTransactions} />);
         case 2:
-            return (<Mapping xlsData={bankTransactions} />);
+            return (<FileSave />);
         default:
             return 'Unknown step';
         }
@@ -87,18 +88,8 @@ export const OnlineTransactionParser = () => {
             break;
         }
         case 1: {
-            const monthSheet = sheetConfig.appData.transSheetMonth;
-            if (monthSheet) {
-                await transSheet.setMonthData(monthSheet).then((result) => {
-                    if (result) {
-                        console.log('Month Created');
-                    }
-                });
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-                setErrorMsg('');
-            } else {
-                setErrorMsg('Select a month to proceed.');
-            }
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setErrorMsg('');
             break;
         }
         default:
@@ -205,7 +196,7 @@ export const OnlineTransactionParser = () => {
                                                 onClick={handleNext}
                                                 className={classes.button}
                                             >
-                                                {(activeStep === steps.length - 1 && 'Finish') || 'Next'}
+                                                {(activeStep === steps.length - 1 && 'Save') || 'Next'}
                                             </Button>
                                         </div>
                                     </div>

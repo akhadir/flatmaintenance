@@ -64,9 +64,9 @@ export const FilePreview = (props: FilePreviewProps) => {
                 <div>
                     File: <h4>{name}</h4>
                 </div>
-                <div className="tools">
+                {/* <div className="tools">
                     <Button variant="outlined" onClick={saveSheet}>Save Sheet</Button>
-                </div>
+                </div> */}
                 {/* <div className="month-filter">
                     Month: &nbsp;
                     <Select
