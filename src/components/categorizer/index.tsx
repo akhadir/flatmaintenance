@@ -1,7 +1,9 @@
-import { Button, Radio } from '@material-ui/core';
+import {
+    Button, Radio, Step, StepLabel, Stepper, Typography,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import ReactJson from 'react-json-view';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import gsheetUtil from '../../services/googleapi';
 import { initializeGoogleSheet } from '../../services/redux/google-sheet/sheet-actions';
@@ -38,6 +40,10 @@ function Categorizer() {
             setMessage('Summary Updated');
         });
     }, [monthlyCatSplit]);
+    const [activeStep, setActiveStep] = useState(0);
+    const steps = useMemo(() => (['Cash Transactions', 'Online Transactions', 'Calculated Mappings']), []);
+    const isStepOptional = useCallback((index: number) => false, []);
+    const isCompletedStep = useCallback((index: number) => false, []);
     return (
         <div>
             {!!message && <Alert severity="info">{message}</Alert> }
@@ -46,6 +52,23 @@ function Categorizer() {
                 <SecretDialog errorMsg={initError} handleSecret={setSecret} />
             )}
             <h2>Categorize Transactions</h2>
+            <Stepper activeStep={activeStep}>
+                {steps.map((label, index) => {
+                    const stepProps: { completed?: boolean } = {};
+                    const labelProps: { optional?: React.ReactNode } = {};
+                    if (isStepOptional(index)) {
+                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                    }
+                    if (isCompletedStep(index)) {
+                        stepProps.completed = false;
+                    }
+                    return (
+                        <Step key={label} {...stepProps}>
+                            <StepLabel {...labelProps}>{label}</StepLabel>
+                        </Step>
+                    );
+                })}
+            </Stepper>
             <div>
                 <Radio
                     checked={type === 'cash'}
