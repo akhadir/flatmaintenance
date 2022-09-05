@@ -51,13 +51,13 @@ export default {
     Bescom: [{
         Description: [{
             opr: 'having',
-            value: ['BESCOM', 'Electricity', 'BANGALORE ONE'],
+            value: ['BESCOM', 'Electricity'],
         }],
     }],
     BWSSB: [{
         Description: [{
             opr: 'having',
-            value: ['BANGALORE WATER SUPPLY', 'BWSSB'],
+            value: ['BANGALORE WATER SUPPLY', 'BWSSB', 'BANGALORE ONE'],
         }],
     }],
     'CCTV / Intercomm': [{
@@ -69,7 +69,7 @@ export default {
     Security: [{
         Debit: [{
             opr: 'in',
-            value: ['35,000.00', '35000'],
+            value: ['35,000.00', '35000', '41000', '41,000.00'],
         }],
     }],
     'House Keeping Salary': [{
@@ -84,16 +84,22 @@ export default {
             ],
         }],
     }],
-    Gardner: [{
+    'Garden Maintenance': [{
         Description: [{
             opr: 'regex',
-            value: ['Gardner.+Salary', 'garden.+work', 'Manure'],
+            value: ['garden', 'Gardner.+Salary', 'garden.+work', 'Manure'],
         }],
     }],
     'Garbage Collection Vendor (Hasirudala)/BBMP': [{
         Description: [{
             opr: 'having',
             value: ['SYED ALI BASHA'],
+        }],
+    }],
+    'Borewell And Motor Maintenance': [{
+        Description: [{
+            opr: 'having',
+            value: ['borewell', 'motor', 'coil', 'winding'],
         }],
     }],
     'Lift Maintenance (Johnson)': [{
@@ -146,7 +152,7 @@ export default {
     'Septic Tank Repairs / Cleaning': [{
         Description: [{
             opr: 'having',
-            value: ['septik', 'septic', 'septic tank', 'sewage tank', 'sewage work'],
+            value: ['septik', 'septic', 'septic tank', 'sewage tank', 'sewage work', 'sewage pipe'],
         }],
     }],
     'Water Tanks Cleaning': [{
@@ -221,6 +227,15 @@ export default {
             value: ['10,000.00', '10000'],
         }],
     }],
+    'Apartment Work By Security and Others': [{
+        Description: [{
+            opr: 'regex',
+            value: [
+                'Apartment.+Work',
+                'Cleaning.+Rain Water',
+            ],
+        }],
+    }],
     'Apartment Safety': [{
         Description: [{
             opr: 'having',
@@ -234,6 +249,7 @@ export default {
                 'cutting tree',
                 'fire',
                 'extinguisher',
+                'rat poison',
             ],
         }],
     }],
@@ -241,6 +257,7 @@ export default {
         Description: [{
             opr: 'having',
             value: [
+                'stationery',
                 'pen',
                 'paper',
                 'folder',
@@ -257,22 +274,16 @@ export default {
             ],
         }],
     }],
-    'Borewell And Motor Maintenance': [{
-        Description: [{
-            opr: 'having',
-            value: ['borewell', 'motor', 'coil'],
-        }],
-    }],
     'Apartment repairs related': [{
         Description: [{
             opr: 'having',
-            value: ['cement work', 'cement', 'service', 'repair', 'spanner', 'fixing'],
+            value: ['cement work', 'cement', 'service', 'repair', 'spanner', 'fixing', 'fixed'],
         }],
     }],
     'Misc expenses': [{
         Description: [{
-            opr: 'regex',
-            value: ['apartment.+work', 'paid to raju', 'tea'],
+            opr: 'having',
+            value: ['tea', 'coffee'],
         }],
     }],
     'Extra Payment Received': [{

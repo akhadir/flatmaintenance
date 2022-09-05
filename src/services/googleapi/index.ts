@@ -8,6 +8,8 @@ import {
 import { sheetConfig } from '..';
 import catIndex from '../cat-map/cat-index';
 import monthIndex from '../cat-map/month-index';
+import maintIndex from '../maint-map/flat-index';
+import maintenenceMonthIndex from '../maint-map/month-index';
 
 // Config variables
 export type GSheetUtil = {
@@ -29,6 +31,7 @@ export type GSheetUtil = {
     saveSheetCells: (sheetId: string, cells: GoogleSpreadsheetCell[]) => Promise<void>;
     saveSheetWithJSON: (json: { [key: string]: any }[]) => Promise<void>;
     updateCategorySheet: (json: { [month: string]: { [cat: string]: any }}) => Promise<void>;
+    udpateMaintenanceSheet: (json: { [month: string]: { [flat: string]: any }}) => Promise<void>;
     saveCells: (cells: GoogleSpreadsheetCell[]) => Promise<void>;
     addSheet: (input: WorksheetBasicProperties) => Promise<GoogleSpreadsheetWorksheet>;
 }
@@ -189,12 +192,32 @@ const gsheetUtil: GSheetUtil = {
         months.forEach((month) => {
             const monthData = json[month];
             const categories = Object.keys(monthData);
-            const colIndex: number = monthIndex[month];
+            const mIndex = month.replace(/-\d+$/, '');
+            const colIndex: number = monthIndex[mIndex];
             categories.forEach((cat) => {
                 const rowIndex = catIndex[cat];
                 if (typeof rowIndex !== 'undefined' && typeof colIndex !== 'undefined') {
                     const cell = sheet.getCell(rowIndex, colIndex);
                     cell.value = monthData[cat];
+                }
+            });
+        });
+        return sheet.saveUpdatedCells();
+    },
+    udpateMaintenanceSheet: async (json: { [month: string]: { [flat: string]: any; }; }): Promise<void> => {
+        const sheet = await gsheetUtil.getSheetByTitle('Maintanence');
+        await sheet.loadCells();
+        const months = Object.keys(json);
+        months.forEach((month) => {
+            const monthData = json[month];
+            const flats = Object.keys(maintIndex);
+            const mIndex = month.replace(/-\d+$/, '');
+            const colIndex: number = maintenenceMonthIndex[mIndex];
+            flats.forEach((flat) => {
+                const rowIndex = maintIndex[flat];
+                if (typeof rowIndex !== 'undefined' && typeof colIndex !== 'undefined') {
+                    const cell = sheet.getCell(rowIndex, colIndex);
+                    cell.value = monthData[flat];
                 }
             });
         });

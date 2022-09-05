@@ -18,7 +18,7 @@ export enum TransCategory {
     'CCTV / Intercomm' = 'CCTV / Intercomm',
     'Misc expenses' = 'Misc expenses',
     'Apartment developments' = 'Apartment developments',
-    'Apartment Cleaning' = 'Apartment Cleaning',
+    'Apartment Work By Security and Others' = 'Apartment Work By Security and Others',
     'Septic Tank Repairs / Cleaning' = 'Septic Tank Repairs / Cleaning',
     'Water Tanks Cleaning' = 'Water Tanks Cleaning',
     'Generator Maintenance and Repair' = 'Generator Maintenance and Repair',

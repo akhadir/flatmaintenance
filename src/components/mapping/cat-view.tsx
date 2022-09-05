@@ -12,6 +12,7 @@ import { CatItem } from '../../services/service-types';
 import AppContext from '../../services';
 import transSheet from '../../services/sheet';
 import './cat-view.css';
+import { TransCategory } from '../../utils/trans-category';
 
 const useStyles = makeStyles({
     root: {

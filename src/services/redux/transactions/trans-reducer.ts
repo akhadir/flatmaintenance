@@ -54,6 +54,17 @@ const transReducder = (state = initValues, action: { type: TransActions, payload
             ...state,
             monthlyCatSplit: undefined,
         };
+    case TransActions.UPDATE_MONTHLY_MAINT_SPLIT:
+        return {
+            ...state,
+            monthlyMaintSplit: action.payload,
+            loading: false,
+        };
+    case TransActions.RESET_MONTHLY_MAINT_SPLIT:
+        return {
+            ...state,
+            monthlyMaintSplit: undefined,
+        };
     case TransActions.RESET_TRANS:
         return initValues;
     default:

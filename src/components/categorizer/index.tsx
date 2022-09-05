@@ -8,11 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import gsheetUtil from '../../services/googleapi';
 import { initializeGoogleSheet } from '../../services/redux/google-sheet/sheet-actions';
 import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
-import { doMonthlyCatSplit } from '../../services/redux/transactions/trans-actions';
-import { TransData } from '../../services/redux/transactions/trans-types';
+import {
+    doMonthlyCatSplit,
+    doMonthlyMaintSplit,
+    filterTransactions,
+} from '../../services/redux/transactions/trans-actions';
+import { TransactionType, TransData } from '../../services/redux/transactions/trans-types';
 import SecretDialog from '../mapping/secret-dialog';
 import CategorizeCash from './categorize-cash';
 import CategorizeOnline from './categorize-online';
+import { TransCategory } from '../../utils/trans-category';
 
 function Categorizer() {
     const [message, setMessage] = useState<string>();
@@ -22,7 +27,7 @@ function Categorizer() {
     const sheetData: GoogleSheet = useSelector((state: any) => state.sheet);
     const { initError } = sheetData;
     const transData: TransData = useSelector((state: any) => state.trans);
-    const { monthlyCatSplit, cashTransData, onlineTransData } = transData;
+    const { monthlyCatSplit, cashTransData, onlineTransData, monthlyMaintSplit } = transData;
     useEffect(() => {
         if (secret) {
             dispatch(initializeGoogleSheet(secret) as any);
@@ -34,12 +39,30 @@ function Categorizer() {
             setType(undefined);
         }
     }, [cashTransData, dispatch, onlineTransData]);
+    const splitMonthlyMaintenance = useCallback(() => {
+        if (cashTransData && onlineTransData) {
+            const filteredTransData: TransactionType[] = filterTransactions(
+                [...cashTransData as TransactionType[], ...onlineTransData as TransactionType[]],
+                [
+                    TransCategory['Maintenance Collection'],
+                ],
+            );
+            dispatch(doMonthlyMaintSplit(filteredTransData as any, {}) as any);
+            setType(undefined);
+        }
+    }, [cashTransData, dispatch, onlineTransData]);
     const saveCategorized = useCallback(() => {
         gsheetUtil.updateCategorySheet(monthlyCatSplit as any).then(() => {
             console.log('Saved');
             setMessage('Summary Updated');
         });
     }, [monthlyCatSplit]);
+    const saveMaitenenceSplit = useCallback(() => {
+        gsheetUtil.udpateMaintenanceSheet(monthlyMaintSplit as any).then(() => {
+            console.log('Saved');
+            setMessage('Maintenence Split Updated');
+        });
+    }, [monthlyMaintSplit]);
     const [activeStep, setActiveStep] = useState(0);
     const steps = useMemo(() => (['Cash Transactions', 'Online Transactions', 'Calculated Mappings']), []);
     const isStepOptional = useCallback((index: number) => false, []);
@@ -89,20 +112,35 @@ function Categorizer() {
                     disabled={!cashTransData || !onlineTransData}
                     onClick={splitMonthly}
                 >
-                    Categorize Monthly
+                    Categorize Transactions Monthly
                 </Button>&nbsp;&nbsp;&nbsp;
                 <Button
                     variant="outlined"
                     disabled={!monthlyCatSplit}
                     onClick={saveCategorized}
                 >
-                    Save Categorized
+                    Save Categorized Transactions
+                </Button>&nbsp;&nbsp;&nbsp;
+                <Button
+                    variant="outlined"
+                    disabled={!cashTransData || !onlineTransData}
+                    onClick={splitMonthlyMaintenance}
+                >
+                    Categorize Maintenance Monthly
+                </Button>&nbsp;&nbsp;&nbsp;
+                <Button
+                    variant="outlined"
+                    disabled={!monthlyMaintSplit}
+                    onClick={saveMaitenenceSplit}
+                >
+                    Save Categorized Maintenance
                 </Button>
             </div>
             {!initError && !!sheetData.sheetConfig.secret && (
                 <>
                     {type === 'cash' && <CategorizeCash />}
                     {type === 'online' && <CategorizeOnline />}
+                    {!type && !!monthlyMaintSplit && <ReactJson src={monthlyMaintSplit} />}
                     {!type && !!monthlyCatSplit && <ReactJson src={monthlyCatSplit} />}
                 </>
             )}
