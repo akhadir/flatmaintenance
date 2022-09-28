@@ -1,0 +1,12 @@
+.stepper-header {
+    display: flex;
+}
+.stepper-header .steps {
+    flex: auto;
+}
+.stepper-header .nav {
+    padding-top: 18px;
+}
+.control {
+    text-align: right;
+}
