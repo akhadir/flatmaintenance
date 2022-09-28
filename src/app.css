@@ -48,7 +48,9 @@ body {
     min-height: 60px;
     box-shadow: 2px 3px 3px grey;
 }
-
+a[aria-current="page"] {
+    color: #BBB186 !important;
+}
 .app-header span {
     margin-left: 20px;
     margin-top: 18px;

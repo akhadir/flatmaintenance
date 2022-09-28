@@ -54,10 +54,18 @@ function App() {
             <div className="app">
                 <ProSidebar collapsed={collapsed}>
                     <Menu iconShape="circle">
-                        <MenuItem icon={<HomeIcon />}><Link to="/">Parse Online</Link></MenuItem>
-                        <MenuItem icon={<CategoryIcon />}><Link to="cat">Categorize Transactions</Link></MenuItem>
-                        <MenuItem icon={<ReceiptIcon />}><Link to="bills">Upload Bills</Link></MenuItem>
-                        <MenuItem icon={<CurrencyRupeeIcon />}><Link to="cash">Cash Transactions</Link></MenuItem>
+                        <MenuItem icon={<HomeIcon />} title="Parse Online Transactions">
+                            <Link to="/">Parse Online Transactions</Link>
+                        </MenuItem>
+                        <MenuItem icon={<CategoryIcon />} title="Categorize Transactions">
+                            <Link to="cat">Categorize Transactions</Link>
+                        </MenuItem>
+                        <MenuItem icon={<ReceiptIcon />} title="Upload Bills">
+                            <Link to="bills">Upload Bills</Link>
+                        </MenuItem>
+                        <MenuItem icon={<CurrencyRupeeIcon />} title="Cash Transactions">
+                            <Link to="cash">Cash Transactions</Link>
+                        </MenuItem>
                         {/* <SubMenu title="Components">
                             <MenuItem>Component 1</MenuItem>
                             <MenuItem>Component 2</MenuItem>
