@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import FileUpload from '../file-upload';
 import fileParserUtil from '../../services/xlsjs';
 import FilePreview from '../file-preview';
 import FileSave from '../file-save';
-// import Mapping from '../mapping';
-import AppContext, { sheetConfig, setCredentials } from '../../services';
-import SecretDialog from '../mapping/secret-dialog';
-// import transSheet from '../../services/sheet';
 import { Transaction } from '../../services/service-types';
+import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
 import './index.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,10 +36,10 @@ function getSteps() {
 
 export const OnlineTransactionParser = () => {
     const classes = useStyles();
+    const { sheetConfig } : GoogleSheet = useSelector((state: any) => state.sheet);
     const [errorMsg, setErrorMsg] = useState<string>('');
     const [activeStep, setActiveStep] = useState(0);
     const [fileName, setFileName] = useState('');
-    const [secret, setSecret] = useState('');
     const [bankTransactions, setBankTransactions] = useState<Transaction[]>([]);
     const parseXLS = useCallback((file: File) => {
         setFileName(file.name);
@@ -51,7 +49,7 @@ export const OnlineTransactionParser = () => {
             setErrorMsg('');
             setActiveStep(1);
         });
-    }, []);
+    }, [sheetConfig.appData]);
     const getStepContent = useCallback((step: number) => {
         switch (step) {
         case 0:
@@ -120,93 +118,75 @@ export const OnlineTransactionParser = () => {
     const handleReset = useCallback(() => {
         setActiveStep(0);
     }, []);
-    useEffect(() => {
-        if (secret) {
-            if (!setCredentials(secret)) {
-                setErrorMsg('Wrong secret. Enter it again.');
-                setSecret('');
-            } else {
-                setErrorMsg('');
-            }
-        }
-    }, [secret]);
     return (
-        <>
+        <div className="wizard">
             {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-            {!sheetConfig.secret ? (
-                <SecretDialog errorMsg={errorMsg} handleSecret={setSecret} />
-            ) : (
-                <AppContext.Provider value={sheetConfig}>
-                    <div className="wizard">
-                        <div className={classes.root}>
-                            <Stepper activeStep={activeStep}>
-                                {steps.map((label, index) => {
-                                    const stepProps: { completed?: boolean } = {};
-                                    const labelProps: { optional?: React.ReactNode } = {};
-                                    if (isStepOptional(index)) {
-                                        labelProps.optional = <Typography variant="caption">Optional</Typography>;
-                                    }
-                                    if (isStepSkipped(index)) {
-                                        stepProps.completed = false;
-                                    }
-                                    return (
-                                        <Step key={label} {...stepProps}>
-                                            <StepLabel {...labelProps}>{label}</StepLabel>
-                                        </Step>
-                                    );
-                                })}
-                            </Stepper>
+            <div className={classes.root}>
+                <Stepper activeStep={activeStep}>
+                    {steps.map((label, index) => {
+                        const stepProps: { completed?: boolean } = {};
+                        const labelProps: { optional?: React.ReactNode } = {};
+                        if (isStepOptional(index)) {
+                            labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                        }
+                        if (isStepSkipped(index)) {
+                            stepProps.completed = false;
+                        }
+                        return (
+                            <Step key={label} {...stepProps}>
+                                <StepLabel {...labelProps}>{label}</StepLabel>
+                            </Step>
+                        );
+                    })}
+                </Stepper>
+                <div>
+                    {activeStep === steps.length && (
+                        <div>
+                            <Typography className={classes.instructions}>
+                                All steps completed - you&apos;re finished
+                            </Typography>
+                            <Button onClick={handleReset} className={classes.button}>
+                                Reset
+                            </Button>
+                        </div>
+                    )}
+                    {activeStep !== steps.length && (
+                        <div>
+                            <Typography className={classes.instructions}>
+                                {getStepContent(activeStep)}
+                            </Typography>
                             <div>
-                                {activeStep === steps.length && (
-                                    <div>
-                                        <Typography className={classes.instructions}>
-                                            All steps completed - you&apos;re finished
-                                        </Typography>
-                                        <Button onClick={handleReset} className={classes.button}>
-                                            Reset
-                                        </Button>
-                                    </div>
+                                <Button
+                                    disabled={activeStep === 0}
+                                    onClick={handleBack}
+                                    className={classes.button}
+                                >
+                                    Back
+                                </Button>
+                                {isStepOptional(activeStep) && (
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleSkip}
+                                        className={classes.button}
+                                    >
+                                        Skip
+                                    </Button>
                                 )}
-                                {activeStep !== steps.length && (
-                                    <div>
-                                        <Typography className={classes.instructions}>
-                                            {getStepContent(activeStep)}
-                                        </Typography>
-                                        <div>
-                                            <Button
-                                                disabled={activeStep === 0}
-                                                onClick={handleBack}
-                                                className={classes.button}
-                                            >
-                                                Back
-                                            </Button>
-                                            {isStepOptional(activeStep) && (
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleSkip}
-                                                    className={classes.button}
-                                                >
-                                                    Skip
-                                                </Button>
-                                            )}
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleNext}
-                                                className={classes.button}
-                                            >
-                                                {(activeStep === steps.length - 1 && 'Save') || 'Next'}
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}
+                                >
+                                    {(activeStep === steps.length - 1 && 'Save') || 'Next'}
+                                </Button>
                             </div>
                         </div>
-                    </div>
-                </AppContext.Provider>
-            )}
-        </>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };
 

@@ -1,31 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Link } from '@reach/router';
-import OnlineTransactionParser from './online';
-import Categorizer from './categorizer';
-import ImageParser from './components/image-parser';
+import App from './app';
 import './index.css';
 // import reportWebVitals from './reportWebVitals';
 
-const Home = (props: any) => <OnlineTransactionParser />;
-const Cat = (props: any) => <Categorizer />;
-const Bills = (props: any) => <ImageParser />;
 ReactDOM.render(
     <React.StrictMode>
-        <header className="app-header">
-            <img src="/images/ssfa.png" alt="Suraksha Sunflower Apartment" width="80px" height="60px" />
-            <span>Suraksha Sunflower </span>
-            <nav className="nav-bar">
-                <Link to="/">Parse Online</Link> |{' '}
-                <Link to="cat">Categorize Transactions</Link> |{' '}
-                <Link to="bills">Upload Bills</Link>
-            </nav>
-        </header>
-        <Router>
-            <Home path="/" />
-            <Cat path="cat" />
-            <Bills path="bills" />
-        </Router>
+        <App />
     </React.StrictMode>,
     document.getElementById('root'),
 );

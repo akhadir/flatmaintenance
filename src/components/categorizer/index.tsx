@@ -14,7 +14,6 @@ import {
     filterTransactions,
 } from '../../services/redux/transactions/trans-actions';
 import { TransactionType, TransData } from '../../services/redux/transactions/trans-types';
-import SecretDialog from '../mapping/secret-dialog';
 import CategorizeCash from './categorize-cash';
 import CategorizeOnline from './categorize-online';
 import { TransCategory } from '../../utils/trans-category';
@@ -71,9 +70,6 @@ function Categorizer() {
         <div>
             {!!message && <Alert severity="info">{message}</Alert> }
             {!!initError && <Alert severity="error">{initError}</Alert>}
-            {!sheetData.sheetConfig.secret && (
-                <SecretDialog errorMsg={initError} handleSecret={setSecret} />
-            )}
             <h2>Categorize Transactions</h2>
             <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
