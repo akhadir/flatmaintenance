@@ -9,7 +9,7 @@ export default {
             id: 'wizard',
             config: {
                 steps: ['Uploaded Bills', 'Upload Bills', 'Process Bills', 'Save Bills'],
-                optionalSteps: [0, 1],
+                isStepOptional: [true, false, false, false],
             },
             children: [
                 {

@@ -1,0 +1,11 @@
+.wizard .stepper-header {
+    display: flex;
+}
+.wizard .stepper-header .steps {
+    flex: auto;
+}
+.wizard .stepper-header .nav {
+}
+.wizard .control {
+    text-align: right;
+}

@@ -4,6 +4,7 @@ export type LayoutType = {
     id?: string;
     name?: string;
     children?: LayoutType[];
+    config?: any;
 };
 
 export type LayoutProps = {

@@ -1,13 +1,17 @@
 import React from 'react';
 import { LayoutType } from '../../layout-types';
+import Wizard from '../../../../components/wizard';
 
 function page(layout: LayoutType, compMap: any) {
     const { type, key } = layout;
-    if (type === 'page') {
+    if (type === 'wizard') {
         if (key) {
             compMap[key] = {
-                comp: ({ children }: any) => (<div className="page">{children}</div>),
-                props: {},
+                comp: Wizard,
+                props: {
+                    steps: layout.config.steps,
+                    isStepOptional: layout.config.isStepOptional,
+                },
             };
         }
     }
