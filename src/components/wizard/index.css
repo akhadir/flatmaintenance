@@ -4,7 +4,11 @@
 .wizard .stepper-header .steps {
     flex: auto;
 }
-.wizard .stepper-header .nav {
+.wizard .stepper-nav {
+    margin-top: 5px;
+}
+.wizard .stepper-nav button {
+    margin-right: 5px;
 }
 .wizard .control {
     text-align: right;
