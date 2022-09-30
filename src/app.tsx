@@ -15,7 +15,7 @@ import Categorizer from './workspaces/categorizer';
 import BillParser from './workspaces/bills';
 import CashTransactions from './workspaces/cash';
 import SecretDialog from './components/mapping/secret-dialog';
-import { sheetConfig, setCredentials } from './services';
+import { setCredentials } from './services';
 import './app.css';
 import 'react-pro-sidebar/dist/css/styles.css';
 
@@ -27,6 +27,7 @@ const Cash = (props: any) => <CashTransactions />;
 function App() {
     const [errorMsg, setErrorMsg] = useState<string>('');
     const [secret, setSecret] = useState('');
+    const [secretSuccess, setSecretSuccess] = useState<boolean>(false);
     useEffect(() => {
         if (secret) {
             const out = setCredentials(secret);
@@ -35,6 +36,7 @@ function App() {
                 setSecret('');
             } else {
                 setErrorMsg('');
+                setSecretSuccess(true);
             }
         }
     }, [secret]);
@@ -79,9 +81,8 @@ function App() {
                     </SidebarFooter>
                 </ProSidebar>
                 <div className="workspace">
-                    {errorMsg}
                     {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-                    {!sheetConfig.secret && (
+                    {!secretSuccess && (
                         <SecretDialog errorMsg={errorMsg} handleSecret={setSecret} />
                     )}
                     <Router>
