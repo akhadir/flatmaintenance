@@ -9,21 +9,55 @@ export default {
             id: 'wizard',
             config: {
                 steps: ['Uploaded Bills', 'Upload Bills', 'Process Bills', 'Save Bills'],
-                isStepOptional: [true, false, false, false],
+                activeStep: 0,
             },
             children: [
                 {
-                    type: 'bill-config',
+                    type: 'component',
+                    compType: 'bill-config',
                     name: 'Bill Config',
                     id: 'bill-config',
-                    config: {
-                        getURL: '',
-                        updateURL: '',
-                        auth: {
-                            username: '',
-                            password: '',
+                    children: [
+                        {
+                            type: 'field',
+                            name: 'list-url',
+                            id: 'field-1',
+                            showAs: 'input',
+                            config: {
+                                name: 'listURL',
+                                label: 'List URL',
+                                mandatory: true,
+                                value: '',
+                                errors: [],
+                            },
                         },
-                    },
+                        {
+                            type: 'field',
+                            name: 'fetch-url',
+                            id: 'field-2',
+                            showAs: 'input',
+                            config: {
+                                name: 'fetchURL',
+                                label: 'Fetch URL',
+                                mandatory: true,
+                                value: '',
+                                errors: [],
+                            },
+                        },
+                        {
+                            type: 'field',
+                            name: 'update-url',
+                            id: 'field-3',
+                            showAs: 'input',
+                            config: {
+                                name: 'updateURL',
+                                label: 'Update URL',
+                                mandatory: true,
+                                value: '',
+                                errors: [],
+                            },
+                        },
+                    ],
                 },
                 {
                     type: 'file-upload',

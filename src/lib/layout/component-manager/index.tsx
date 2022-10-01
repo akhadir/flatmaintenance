@@ -5,6 +5,8 @@ import component from './operators/component';
 import { LayoutType } from '../layout-types';
 import page from './operators/page';
 import wizard from './operators/wizard';
+import field from './operators/field';
+import input from './operators/input';
 
 export type ComponentMap = {
     [key: string]: {
@@ -30,9 +32,11 @@ function componentManager(layout: LayoutType, callback: (componentMap: Component
         );
         subscriber.complete();
     }).pipe(
-        map((value: any) => component(value, compMap)),
         map((value: any) => page(value, compMap)),
+        map((value: any) => component(value, compMap)),
         map((value: any) => wizard(value, compMap)),
+        map((value: any) => field(value, compMap)),
+        map((value: any) => input(value, compMap)),
     );
     const observer = {
         next: (value: any) => {

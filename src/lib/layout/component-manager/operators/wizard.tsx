@@ -9,8 +9,14 @@ function page(layout: LayoutType, compMap: any) {
             compMap[key] = {
                 comp: Wizard,
                 props: {
+                    activeStep: layout.config.activeStep,
                     steps: layout.config.steps,
-                    isStepOptional: layout.config.isStepOptional,
+                    handleNext: () => {
+                        console.log('Handle Next');
+                    },
+                    handleBack: () => {
+                        console.log('Handle Back');
+                    },
                 },
             };
         }

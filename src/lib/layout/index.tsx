@@ -3,25 +3,28 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { LinearProgress } from '@mui/material';
 import { LayoutProps, LayoutType } from './layout-types';
 import componentManager from './component-manager';
+import layoutManager from './layout-manager';
 
 export const LayoutRenderer = (props: LayoutProps) => {
     const { layout } = props;
     const [componentMap, setComponentMap] = useState<any>(undefined);
     useEffect(() => {
-        componentManager(layout, (compMap) => {
-            setComponentMap(compMap);
+        layoutManager(layout, (uLayout) => {
+            componentManager(uLayout, (compMap) => {
+                setComponentMap(compMap);
+            });
         });
     }, [layout]);
     const renderLayout = useCallback(
         (comp: LayoutType) => {
             if (componentMap) {
                 let out;
-                const { key } = comp;
-                if (key) {
+                const { key, noShow } = comp;
+                if (key && !noShow) {
                     if (componentMap[key]) {
                         let children;
                         if (comp.children) {
-                            children = comp.children.map(renderLayout);
+                            children = comp.children.filter((child) => !child.noShow).map(renderLayout);
                         }
                         if (!children) {
                             children = <></>;
@@ -33,7 +36,7 @@ export const LayoutRenderer = (props: LayoutProps) => {
                             </Comp>
                         );
                     } else {
-                        out = <CircularProgress key={`loader-${key}`} />;
+                        out = <LinearProgress key={`loader-${key}`} />;
                     }
                 } else {
                     out = <></>;
@@ -44,7 +47,7 @@ export const LayoutRenderer = (props: LayoutProps) => {
         },
         [componentMap],
     );
-    return <div>{layout ? renderLayout(layout) : <LinearProgress />}</div>;
+    return <div>{layout ? renderLayout(layout) : <CircularProgress />}</div>;
 };
 
 export default LayoutRenderer;

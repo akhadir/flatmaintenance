@@ -1,0 +1,7 @@
+.bills-config {
+    display: flex;
+    margin-top: 20px;
+}
+.bills-config input {
+    min-width: 300px;
+}

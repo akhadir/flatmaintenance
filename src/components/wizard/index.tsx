@@ -8,8 +8,10 @@ import './index.css';
 
 export type WizardProps = {
     steps: string[];
-    isStepOptional: boolean[];
+    activeStep: number;
     children?: any;
+    handleBack: () => void;
+    handleNext: () => void;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,18 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-function Wizard({ steps, isStepOptional, children }: WizardProps) {
+function Wizard({
+    steps, activeStep, children, handleBack, handleNext,
+}: WizardProps) {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = useState<number>(0);
-    const handleBack = useCallback(() => {
-        setActiveStep((step) => step - 1);
-    }, []);
-    const handleNext = useCallback(() => {
-        setActiveStep((step) => step + 1);
-    }, []);
-    const handleSkip = useCallback(() => {
-        setActiveStep((step) => step + 1);
-    }, []);
     return (
         <div className="wizard">
             <div className="stepper-header">
@@ -57,16 +51,6 @@ function Wizard({ steps, isStepOptional, children }: WizardProps) {
                     >
                         Back
                     </Button>
-                    {isStepOptional[activeStep] && (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSkip}
-                            className={classes.button}
-                        >
-                            Skip
-                        </Button>
-                    )}
                     <Button
                         variant="contained"
                         color="primary"

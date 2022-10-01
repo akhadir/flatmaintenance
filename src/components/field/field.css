@@ -1,0 +1,8 @@
+.form-control {
+    border: 1px dotted lightgray;
+    padding: 20px;
+    flex: auto;
+}
+.mandatory {
+    color: red;
+}
