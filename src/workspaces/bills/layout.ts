@@ -46,8 +46,21 @@ export default {
                         },
                         {
                             type: 'field',
-                            name: 'update-url',
+                            name: 'download-url',
                             id: 'field-3',
+                            showAs: 'input',
+                            config: {
+                                name: 'downloadURL',
+                                label: 'Download URL',
+                                mandatory: true,
+                                value: '',
+                                errors: [],
+                            },
+                        },
+                        {
+                            type: 'field',
+                            name: 'update-url',
+                            id: 'field-4',
                             showAs: 'input',
                             config: {
                                 name: 'updateURL',

@@ -1,8 +1,18 @@
 .form-control {
     border: 1px dotted lightgray;
     padding: 20px;
-    flex: auto;
+    flex: 100%;
 }
-.mandatory {
+.form-control .mandatory {
     color: red;
+}
+.form-control .error {
+    color: red;
+}
+.form-control label {
+    width: 130px;
+    display: inline-block;
+}
+.form-control input {
+    min-width: 800px;
 }

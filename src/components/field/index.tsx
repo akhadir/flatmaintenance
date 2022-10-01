@@ -17,7 +17,7 @@ function Field(props: FieldProps) {
         <div className="form-control">
             <label htmlFor={name}>{label}:{!!mandatory && <span className="mandatory">*</span>}</label>
             {children}
-            <div className="field-helper" id={`help-${name}`}>
+            <div className="error" id={`help-${name}`}>
                 {!!errors && errors.map((err) => <p>{err}</p>)}
             </div>
         </div>

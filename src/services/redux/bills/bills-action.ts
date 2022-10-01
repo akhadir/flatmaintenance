@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { LayoutType } from '../../../lib/layout/layout-types';
-import { BillsActions, BillsConfig, BillsData } from './bills-types';
+import { BillEvent, BillsActions, BillsConfig, BillsData } from './bills-types';
 
 export const billsInit = (payload: LayoutType) => ({
     type: BillsActions.INIT,
@@ -19,6 +19,11 @@ export const billsFailure = (payload: any) => ({
 
 export const setConfig = (payload: BillsConfig) => ({
     type: BillsActions.SET_CONFIG,
+    payload,
+});
+
+export const addEvents = (payload: BillEvent) => ({
+    type: BillsActions.ADD_EVENTS,
     payload,
 });
 

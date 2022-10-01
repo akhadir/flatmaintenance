@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { BillsData, BillsActions } from './bills-types';
 
 const initValues: BillsData = {
@@ -5,10 +6,12 @@ const initValues: BillsData = {
     data: {},
     config: {
         listURL: 'https://state-tourniquet.000webhostapp.com/suraksha/telegram/get.php',
-        fetchURL: '',
-        updateURL: '',
+        fetchURL: 'https://api.telegram.org/bot5694585935:AAE61vfGetx1JE9RneKHTpzkorqtD5zBIq8/getFile?file_id={{fileId}}',
+        downloadURL: 'https://api.telegram.org/file/bot5694585935:AAE61vfGetx1JE9RneKHTpzkorqtD5zBIq8/photos/{{filePath}}',
+        updateURL: 'https://state-tourniquet.000webhostapp.com/suraksha/telegram/processed.php?id={{recordId}}',
     },
     layoutData: undefined,
+    events: [],
 };
 
 const billsReducer = (state = initValues, action: { type: BillsActions, payload: any}): BillsData => {
@@ -37,6 +40,11 @@ const billsReducer = (state = initValues, action: { type: BillsActions, payload:
         return {
             ...state,
             config: action.payload,
+        };
+    case BillsActions.ADD_EVENTS:
+        return {
+            ...state,
+            events: [...state.events, action.payload],
         };
     default:
         return state;

@@ -1,20 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { LinearProgress } from '@mui/material';
 import { LayoutProps, LayoutType } from './layout-types';
 import componentManager from './component-manager';
-import layoutManager from './layout-manager';
+import eventManager from './event-manager';
+import { runLayout } from './layout-manager';
 
 export const LayoutRenderer = (props: LayoutProps) => {
     const { layout } = props;
+    const events: any[] = useSelector((state: any) => state.bills.events);
     const [componentMap, setComponentMap] = useState<any>(undefined);
     useEffect(() => {
-        layoutManager(layout, (uLayout) => {
+        runLayout(layout, (uLayout) => {
             componentManager(uLayout, (compMap) => {
                 setComponentMap(compMap);
             });
         });
     }, [layout]);
+    useEffect(() => {
+        eventManager(events.pop(), () => {});
+    }, [events]);
     const renderLayout = useCallback(
         (comp: LayoutType) => {
             if (componentMap) {
