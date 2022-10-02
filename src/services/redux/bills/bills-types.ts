@@ -9,6 +9,7 @@ export enum BillsActions {
 }
 
 export type BillsConfig = {
+    encBotId: string;
     listURL: string;
     fetchURL: string;
     downloadURL: string;

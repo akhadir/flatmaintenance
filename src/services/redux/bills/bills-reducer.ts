@@ -5,9 +5,10 @@ const initValues: BillsData = {
     isLoading: false,
     data: {},
     config: {
+        encBotId: 'U2FsdGVkX1/0gDV/ibea6VfAgozs8tNyWPB0zt3iRLDsNORNjxOhmloQXZl7ywLjxeQl4Bmxe3iZ7RLdUxi+BA==',
         listURL: 'https://state-tourniquet.000webhostapp.com/suraksha/telegram/get.php',
-        fetchURL: 'https://api.telegram.org/bot5694585935:AAE61vfGetx1JE9RneKHTpzkorqtD5zBIq8/getFile?file_id={{fileId}}',
-        downloadURL: 'https://api.telegram.org/file/bot5694585935:AAE61vfGetx1JE9RneKHTpzkorqtD5zBIq8/photos/{{filePath}}',
+        fetchURL: 'https://api.telegram.org/bot{{botId}}/getFile?file_id={{fileId}}',
+        downloadURL: 'https://api.telegram.org/file/bot{{botId}}/photos/{{filePath}}',
         updateURL: 'https://state-tourniquet.000webhostapp.com/suraksha/telegram/processed.php?id={{recordId}}',
     },
     layoutData: undefined,
