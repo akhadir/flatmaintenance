@@ -44,7 +44,7 @@ export default {
     '009': [{
         Description: [{
             opr: 'having',
-            value: ['rutvijkanzaria'],
+            value: ['rutvijkanzaria', 'PRATIK'],
         }],
     }],
     '010': [{
@@ -92,7 +92,7 @@ export default {
     105: [{
         Description: [{
             opr: 'having',
-            value: ['VIKASVERMA', 'VIKAS VERMA', 'MB105'],
+            value: ['VIKASVERMA', 'VIKAS VERMA', 'MB105', '105MAINTENA'],
         }],
     }],
     106: [{
@@ -122,7 +122,7 @@ export default {
     110: [{
         Description: [{
             opr: 'having',
-            value: ['SONYKUMARI', 'SONY KUMARI', 'PAVAN DEVARU', 'PAVANDEVARU'],
+            value: ['SONYKUMARI', 'SONY KUMARI', 'PAVAN DEVARU', 'PAVANDEVARU', 'MOBLTA'],
         }],
     }],
     111: [{
@@ -140,7 +140,7 @@ export default {
     201: [{
         Description: [{
             opr: 'having',
-            value: ['ESWAR KRISHNAN', 'ESWAR'],
+            value: ['ESWAR KRISHNAN', 'ESWAR', 'KARTHIKEYAN', 'flat201'],
         }],
     }],
     202: [{
@@ -176,7 +176,7 @@ export default {
     207: [{
         Description: [{
             opr: 'having',
-            value: ['PRIYA MISHRA', 'PRIYAMISHRA', 'SRINIVAS'],
+            value: ['PRIYA MISHRA', 'PRIYAMISHRA', 'SRINIVAS', 'prashant.dombale'],
         }],
     }],
     208: [{
@@ -188,13 +188,13 @@ export default {
     209: [{
         Description: [{
             opr: 'having',
-            value: ['AJUJAMESASHOK', 'AJU JAMES ASHOK', 'AJUJAMES', 'T R RAJARAM', 'TRRAJARAM'],
+            value: ['AJUJAMESASHOK', 'AJU JAMES ASHOK', 'AJUJAMES', 'T R RAJARAM', 'TRRAJARAM', 'CHALAPATHI'],
         }],
     }],
     210: [{
         Description: [{
             opr: 'having',
-            value: ['TARANBIR'],
+            value: ['TARANBIR', 'IMPSMBRSur'],
         }],
     }],
     211: [{
@@ -260,7 +260,7 @@ export default {
     309: [{
         Description: [{
             opr: 'having',
-            value: ['7406849918', 'prasad.kiran'],
+            value: ['7406849918', 'prasad.kiran', 'kbv018@okhdfcbank'],
         }],
     }],
     310: [{
@@ -302,7 +302,7 @@ export default {
     404: [{
         Description: [{
             opr: 'having',
-            value: ['NOBROKER', '/404Main'],
+            value: ['NOBROKER', '/404Main', 'MOHAMMED SAIF'],
         }],
     }],
     405: [{

@@ -182,7 +182,18 @@ export default {
     'Festival/Holiday Celebration': [{
         Description: [{
             opr: 'regex',
-            value: ['diwali.+work', 'celebration', 'pooja', 'pongal', 'independence', 'republic', 'flag'],
+            value: [
+                'diwali.+work',
+                'diwali',
+                'festival',
+                'celebration',
+                'pooja',
+                'pongal',
+                'independence',
+                'republic',
+                'sweets',
+                'flag',
+            ],
         }],
     }],
     'Drinking Water for Employees': [{
