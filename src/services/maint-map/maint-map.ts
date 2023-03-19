@@ -2,7 +2,7 @@ export default {
     '001': [{
         Description: [{
             opr: 'having',
-            value: ['khadir'],
+            value: ['khadir', 'MOHAMEDABDULKHA'],
         }],
     }],
     '002': [{
@@ -14,7 +14,7 @@ export default {
     '003': [{
         Description: [{
             opr: 'having',
-            value: ['gulshan', 'padma', '6364883334'],
+            value: ['gulshan', 'padma', '6364883334', 'subhrojyoti', '6289470044'],
         }],
     }],
     '004': [{
@@ -338,7 +338,7 @@ export default {
     410: [{
         Description: [{
             opr: 'having',
-            value: ['rohinimh19', 'ROHINI'],
+            value: ['rohinimh19', 'ROHINI', 'MALLIKARJUN'],
         }],
     }],
     411: [{

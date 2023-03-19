@@ -1,3 +1,5 @@
+import { CatFieldMap } from './cat-map-types';
+
 export default {
     'Maintenance Collection': [{
         Credit: [{
@@ -11,7 +13,11 @@ export default {
                 '5,600.00', '5600',
                 '8,100.00', '8100',
                 '5,200.00', '5200',
+                '8,400.00', '8400',
                 '10,800.00', '10800',
+                '11,200.00', '11200',
+                '14,000.00', '14000',
+                '13,500.00', '13500',
             ],
         }],
         Description: [{
@@ -42,22 +48,26 @@ export default {
             value: ['corpus', 'neft', 'upi', 'imps'],
         }],
     }],
-    Fine: [{
+    'Income Tax Refund': [{
         Credit: [{
             opr: 'in',
-            value: ['100', '200', '300'],
+            value: ['ACH', 'AY20', 'ACH Credit', 'AAKAS1985M'],
+        }],
+    }],
+    BWSSB: [{
+        Debit: [{
+            opr: 'range',
+            value: [14000, 16500],
+        }],
+        Description: [{
+            opr: 'having',
+            value: ['BANGALORE WATER SUPPLY', 'BWSSB', 'BANGALORE ONE', 'EBANK:BBPS'],
         }],
     }],
     Bescom: [{
         Description: [{
             opr: 'having',
-            value: ['BESCOM', 'Electricity'],
-        }],
-    }],
-    BWSSB: [{
-        Description: [{
-            opr: 'having',
-            value: ['BANGALORE WATER SUPPLY', 'BWSSB', 'BANGALORE ONE'],
+            value: ['BESCOM', 'Electricity', 'EBANK:BBPS'],
         }],
     }],
     'CCTV / Intercomm': [{
@@ -176,7 +186,7 @@ export default {
     'Health Club Maintenance': [{
         Description: [{
             opr: 'having',
-            value: ['gym'],
+            value: ['gym', 'FITNESS', 'sports'],
         }],
     }],
     'Festival/Holiday Celebration': [{
@@ -297,7 +307,7 @@ export default {
             value: ['tea', 'coffee'],
         }],
     }],
-    'Extra Payment Received': [{
+    'Fine / Extra Payment Received': [{
         Description: [{
             opr: 'having',
             value: ['maintenance', 'neft', 'upi', 'imps'],
@@ -339,4 +349,4 @@ export default {
             value: ['3715125', 'SI:89630300010611'],
         }],
     }],
-};
+} as CatFieldMap;

@@ -10,7 +10,7 @@ export const xLSTransKeys = {
     CHQ_NO_KEY: '9',
     WITHDRAWAL_KEY: '11',
     DEPOSIT_KEY: '17',
-    BALANCE_KEY: ['22', '20'],
+    BALANCE_KEY: ['22', '20', '21'],
 };
 
 export const fileParserUtil = {
@@ -38,19 +38,17 @@ export const fileParserUtil = {
         return out;
     },
 
+    getWorkingColumnKeyFromArray:
+        (cols: string[], input: any) => cols.find((col) => !!input[`${XLS_TRANS_KEY_PREFIX}${col}`]),
+
     parseTransactions: (input: { [key: string]: string; }[]) => {
         let trans: Transaction[] = [];
         if (input.length) {
-            let balanceKey = xLSTransKeys.BALANCE_KEY[0];
-            const balanceVal = input[0][`${XLS_TRANS_KEY_PREFIX}${balanceKey}`];
-            if (!balanceVal) {
-                [, balanceKey] = xLSTransKeys.BALANCE_KEY;
-                // balanceVal = input[0][`${XLS_TRANS_KEY_PREFIX}${balanceKey}`];
-            }
             const dateKey = `${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DATE_KEY}`;
             const data = input.filter((row) =>
                 row[dateKey] && row[dateKey].length === 10 && row[dateKey].includes('/') &&
                 moment(row[dateKey], 'dd/MM/YYYY').toDate().toString() !== 'Invalid Date');
+            let balanceKey = fileParserUtil.getWorkingColumnKeyFromArray(xLSTransKeys.BALANCE_KEY, data[0]) || '';
             const descKey = `${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DESC_KEY}`;
             const chqNoKey = `${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.CHQ_NO_KEY}`;
             balanceKey = `${XLS_TRANS_KEY_PREFIX}${balanceKey}`;
@@ -59,17 +57,17 @@ export const fileParserUtil = {
                     Date: moment(row[dateKey], 'DD/MM/YYYY').toDate(),
                     Description: row[descKey],
                     'Cheque No': row[chqNoKey] || '',
-                    debit: 0,
-                    credit: 0,
-                    total: fileParserUtil.parseAmount(row[balanceKey]),
+                    Debit: 0,
+                    Credit: 0,
+                    Total: fileParserUtil.parseAmount(row[balanceKey]),
                     type: 'ONLINE',
                 };
                 if (row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.WITHDRAWAL_KEY}`]) {
-                    out.debit = fileParserUtil.parseAmount(
+                    out.Debit = fileParserUtil.parseAmount(
                         row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.WITHDRAWAL_KEY}`]);
                 }
                 if (row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DEPOSIT_KEY}`]) {
-                    out.credit = fileParserUtil.parseAmount(
+                    out.Credit = fileParserUtil.parseAmount(
                         row[`${XLS_TRANS_KEY_PREFIX}${xLSTransKeys.DEPOSIT_KEY}`]);
                 }
                 return out;

@@ -66,7 +66,18 @@ class QueryExecutor {
             }
             case 'in': {
                 if (Array.isArray(queryVal)) {
-                    res = queryVal.indexOf(fieldVal.toString()) > -1;
+                    if (typeof queryVal[0] === 'string') {
+                        res = queryVal.indexOf(fieldVal.toString() as never) > -1;
+                    } else {
+                        res = queryVal.indexOf(fieldVal as never) > -1;
+                    }
+                }
+                break;
+            }
+            case 'range': {
+                if (Array.isArray(queryVal)) {
+                    res = typeof queryVal[0] === 'undefined' || fieldVal >= queryVal[0];
+                    res = res && (typeof queryVal[1] === 'undefined' || fieldVal <= queryVal[1]);
                 }
                 break;
             }

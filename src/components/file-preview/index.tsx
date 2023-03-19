@@ -102,13 +102,13 @@ export const FilePreview = (props: FilePreviewProps) => {
                                     {index + 1}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {moment(row.Date).format('DD/MM/YYYY')}
+                                    {moment(row.Date).format('DD-MM-YYYY')}
                                 </TableCell>
                                 <TableCell>{row.Description}</TableCell>
                                 <TableCell align="right">{row['Cheque No']}</TableCell>
-                                <TableCell align="right">{row.debit}</TableCell>
-                                <TableCell align="right">{row.credit}</TableCell>
-                                <TableCell align="right">{row.total}</TableCell>
+                                <TableCell align="right">{row.Debit}</TableCell>
+                                <TableCell align="right">{row.Credit}</TableCell>
+                                <TableCell align="right">{row.Total}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

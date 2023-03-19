@@ -44,7 +44,7 @@ export const TransPreview = (props: TransPreviewProps) => {
                                     {moment(row.Date).format('DD/MM/YYYY')}
                                 </TableCell>
                                 <TableCell>{row.Description}</TableCell>
-                                <TableCell>{(-1 * row.debit) + row.credit}</TableCell>
+                                <TableCell>{(-1 * row.Debit) + row.Credit}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

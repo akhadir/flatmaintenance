@@ -70,8 +70,7 @@ export function fetchTransactions(sheetName = 'Cash Transactions') {
                     [
                         TransCategory['Maintenance Collection'],
                         TransCategory['Corpus Fund'],
-                        TransCategory['Extra Payment Received'],
-                    ]) as TransactionType[]);
+                    ]));
                 dispatch(loadCashTransactionSuccess(value as any));
                 gsheetUtil.saveSheetWithJSON(value);
             }).catch((e: any) => {
@@ -94,8 +93,7 @@ export function fetchOnlineTransactions(sheetName = 'Online Transactions') {
                     [
                         TransCategory['Maintenance Collection'],
                         TransCategory['Corpus Fund'],
-                        TransCategory['Extra Payment Received'],
-                    ]) as TransactionType[]);
+                    ]));
                 dispatch(loadOnlineTransactionSuccess(value as any));
                 gsheetUtil.saveSheetWithJSON(value);
             }).catch((e: any) => {

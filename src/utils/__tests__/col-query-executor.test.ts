@@ -124,4 +124,25 @@ describe('Testing Library:::ColQueryExecutor', () => {
         });
         expect(out3).toBeTruthy();
     });
+    it('Tests Scenario - Range Operator' , () => {
+        expect(ColQueryExecutor).toBeDefined();
+        const colQExec = new ColQueryExecutor({
+            Debit: [{
+                opr: 'range',
+                value: [14000, 15000],
+            }],
+            Description: [{
+                opr: 'having',
+                value: ['BANGALORE WATER SUPPLY', 'BWSSB', 'BANGALORE ONE', 'EBANK:BBPS'],
+            }],
+        });
+        const out = colQExec.run({
+            Date: '04/04/2021',
+            Description: 'EBANK:BBPS/2313232323232/232323/23232',
+            Credit: null,
+            Debit: 14100,
+            Total: 122323,
+        });
+        expect(out).toBeTruthy();
+    });
 });

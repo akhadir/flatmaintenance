@@ -3,7 +3,7 @@ const incomeCat = [
     'Fine',
     'Other Income',
     'Intrest on account',
-    'Extra Payment Received',
+    'Fine / Extra Payment Received',
     'Corpus Fund',
     'Tenant Deposit from the Owners',
     'FD Deposit',

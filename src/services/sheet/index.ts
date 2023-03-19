@@ -75,9 +75,9 @@ export class TransSheet implements Sheet {
             Date: moment(row.Date, 'DD/MM/YYYY').toDate(),
             Description: row.Desc,
             'Cheque No': row.ChqNo,
-            debit: parseFloat(row.Amount) < 0 ? parseFloat(row.Amount) : 0,
-            credit: parseFloat(row.Amount) >= 0 ? parseFloat(row.Amount) : 0,
-            total: parseFloat(row.Balance),
+            Debit: parseFloat(row.Amount) < 0 ? parseFloat(row.Amount) : 0,
+            Credit: parseFloat(row.Amount) >= 0 ? parseFloat(row.Amount) : 0,
+            Total: parseFloat(row.Balance),
             type: row.Type,
         }));
         return out;
@@ -104,10 +104,10 @@ export class TransSheet implements Sheet {
 
     private pushSheetData(trans: Transaction, rows: MonthlySheetDataType[]) {
         rows.push({
-            Date: moment(trans.Date).format('DD/MM/YYYY'),
+            Date: moment(trans.Date).format('DD-MM-YYYY'),
             Desc: trans.Description,
-            Balance: trans.total,
-            Amount: trans.credit - trans.debit,
+            Balance: trans.Total,
+            Amount: trans.Credit - trans.Debit,
             ChqNo: trans['Cheque No'],
             Type: trans.type,
         });
@@ -117,8 +117,8 @@ export class TransSheet implements Sheet {
         return (
             moment(sheetData.Date).format('DD/MM/YYY') === moment(fileData.Date).format('DD/MM/YYY') &&
             sheetData.Description === fileData.Description &&
-            sheetData.debit === fileData.debit &&
-            sheetData.credit === fileData.credit &&
+            sheetData.Debit === fileData.Debit &&
+            sheetData.Credit === fileData.Credit &&
             sheetData.type === fileData.type
         );
     }

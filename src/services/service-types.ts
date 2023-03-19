@@ -4,10 +4,11 @@ export type Transaction = {
     Date: Date;
     Description: string;
     'Cheque No': string;
-    debit: number;
-    credit: number;
-    total: number;
+    Debit: number;
+    Credit: number;
+    Total: number;
     mappedCatItem?: CatItem[];
+    Flat?: string;
     type: 'CASH' | 'ONLINE';
 };
 

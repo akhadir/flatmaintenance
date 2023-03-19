@@ -5,6 +5,7 @@ import {
     GoogleSpreadsheetWorksheet,
     WorksheetBasicProperties,
 } from 'google-spreadsheet';
+import { start } from 'repl';
 import { sheetConfig } from '..';
 import catIndex from '../cat-map/cat-index';
 import monthIndex from '../cat-map/month-index';
@@ -12,7 +13,7 @@ import maintIndex from '../maint-map/flat-index';
 import maintenenceMonthIndex from '../maint-map/month-index';
 
 // Config variables
-export type GSheetUtil = {
+export interface GSheetUtil {
     currentSheet?: string;
     init: () => Promise<GoogleSpreadsheet>;
     getSpreadSheet: () => GoogleSpreadsheet | undefined;
@@ -21,6 +22,7 @@ export type GSheetUtil = {
     getSheet: (sheetId: string) => Promise<GoogleSpreadsheetWorksheet>;
     appendSheet: (sheetId: string, row: { [key: string]: string | number }) => Promise<GoogleSpreadsheetRow>;
     append: (row: { [key: string]: string | number }) => Promise<GoogleSpreadsheetRow>;
+    appendRows: (rows: { [key: string]: string | number }[]) => Promise<void>;
     getSheetRow: (sheetId: string, row: number) => Promise<GoogleSpreadsheetRow[]>;
     getRow: (row: number) => Promise<GoogleSpreadsheetRow[]>;
     getColumn: (col: number) => GoogleSpreadsheetCell[];
@@ -34,29 +36,40 @@ export type GSheetUtil = {
     udpateMaintenanceSheet: (json: { [month: string]: { [flat: string]: any }}) => Promise<void>;
     saveCells: (cells: GoogleSpreadsheetCell[]) => Promise<void>;
     addSheet: (input: WorksheetBasicProperties) => Promise<GoogleSpreadsheetWorksheet>;
+    updateSheetWithJSON: (json: { [key: string]: any }[], sheetTitle?: string) => Promise<void>;
+    isEmptySheet: (sheet: GoogleSpreadsheetWorksheet) => boolean;
 }
-const gsheetUtil: GSheetUtil = {
-    currentSheet: '',
-    init: () => new Promise<GoogleSpreadsheet>((resolve, reject) => {
-        const { doc } = sheetConfig;
-        doc.useServiceAccountAuth({
-            client_email: sheetConfig.clientEmail || '',
-            private_key: sheetConfig.privateKey || '',
-        }).then(() => {
-            doc.loadInfo().then(() => {
-                resolve(doc);
+
+let gsheetInstance: GSheetUtil;
+class GsheetUtilImpl implements GSheetUtil {
+    public currentSheet: string = '';
+
+    public init() {
+        return new Promise<GoogleSpreadsheet>((resolve, reject) => {
+            const { doc } = sheetConfig;
+            doc.useServiceAccountAuth({
+                client_email: sheetConfig.clientEmail || '',
+                private_key: sheetConfig.privateKey || '',
+            }).then(() => {
+                doc.loadInfo().then(() => {
+                    resolve(doc);
+                }).catch((e: any) => {
+                    console.log(e);
+                });
             }).catch((e: any) => {
                 console.log(e);
+                reject(e);
             });
-        }).catch((e: any) => {
-            console.log(e);
-            reject(e);
         });
-    }),
-    getSpreadSheet: () => sheetConfig.doc,
-    getSheetByTitleAsJson: async (sheetTitle: string): Promise<{ [key: string]: any; }[]> => {
+    }
+
+    public getSpreadSheet () {
+        return sheetConfig.doc;
+    }
+
+    public async getSheetByTitleAsJson(sheetTitle: string): Promise<{ [key: string]: any; }[]> {
         const sheetInfo: any[] = [];
-        const sheetObj = await gsheetUtil.getSheetByTitle(sheetTitle);
+        const sheetObj = await this.getSheetByTitle(sheetTitle);
         let headers: string[] = sheetObj.headerValues;
         let colCount = sheetObj.columnCount;
         if (!headers || headers.length === 0) {
@@ -86,61 +99,75 @@ const gsheetUtil: GSheetUtil = {
             }
         }
         return sheetInfo;
-    },
-    getSheetByTitle: async (sheetTitle: string) => {
+    }
+
+    public async getSheetByTitle(sheetTitle: string) {
         const sheet = sheetConfig.doc?.sheetsByTitle[sheetTitle];
         if (sheet) {
-            gsheetUtil.currentSheet = sheet.sheetId;
+            this.currentSheet = sheet.sheetId;
             await sheet.loadCells();
         }
         return sheet;
-    },
-    getSheet: async (sheetId: string) => {
-        gsheetUtil.currentSheet = sheetId;
+    }
+
+    public async getSheet(sheetId: string) {
+        this.currentSheet = sheetId;
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         await sheet.loadCells();
         return sheet;
-    },
-    appendSheet: (sheetId: string, row: { [key: string]: string | number; }) => {
+    }
+
+    public appendSheet(sheetId: string, row: { [key: string]: string | number; }) {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         return sheet.addRow(row);
-    },
-    append: (row: { [key: string]: string | number; }) => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+    }
+
+    public append(row: { [key: string]: string | number; }) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.addRow(row);
-    },
-    getSheetRow: (sheetId: string, row: number) => {
+    }
+
+    public async appendRows(rows: { [key: string]: string | number; }[]) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
+        await sheet.addRows(rows);
+    }
+
+    public getSheetRow(sheetId: string, row: number) {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         return sheet.getRows({
             limit: 1,
             offset: row,
         });
-    },
-    getRow: (row: number) => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+    }
+
+    public getRow(row: number) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.getRows({
             limit: 1,
             offset: row,
         });
-    },
-    getColumn: (col: number) => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+    }
+
+    public getColumn(col: number) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
             result.push(sheet.getCell(i, col));
         }
         return result;
-    },
-    getColumnWithSheet: (sheet: GoogleSpreadsheetWorksheet, col: number) => {
+    }
+
+    public getColumnWithSheet(sheet: GoogleSpreadsheetWorksheet, col: number) {
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
             result.push(sheet.getCell(i, col));
         }
         return result;
-    },
-    getSheetColumn: (sheetId: string, col: number) => {
+    }
+
+    public getSheetColumn(sheetId: string, col: number) {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
@@ -148,45 +175,39 @@ const gsheetUtil: GSheetUtil = {
             result.push(sheet.getCell(i, col));
         }
         return result;
-    },
-    getSheetCell: (sheetId: string, row: number, column: number) => {
+    }
+
+    public getSheetCell(sheetId: string, row: number, column: number) {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         return sheet.getCell(row, column);
-    },
-    getCell: (row: number, column: number) => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+    }
+
+    public getCell(row: number, column: number) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.getCell(row, column);
-    },
-    saveSheetCells: (sheetId: string, cells: GoogleSpreadsheetCell[]) => {
+    }
+
+    public saveSheetCells(sheetId: string, cells: GoogleSpreadsheetCell[]) {
         const sheet = sheetConfig.doc.sheetsById[sheetId];
         return sheet.saveCells(cells);
-    },
-    saveCells: (cells: GoogleSpreadsheetCell[]) => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
+    }
+
+    public saveCells(cells: GoogleSpreadsheetCell[]) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.saveCells(cells);
-    },
-    addSheet: (input: WorksheetBasicProperties) => sheetConfig.doc.addSheet(input),
-    saveSheetWithJSON: (json: { [key: string]: any; }[]): Promise<void> => {
-        const sheet = sheetConfig.doc.sheetsById[gsheetUtil.currentSheet || ''];
-        if (json && json.length) {
-            const headers = Object.keys(json[0]);
-            const colCount = headers.length;
-            const rowCount = json.length;
-            for (let i = 0; i < rowCount; i += 1) {
-                const row = json[i];
-                for (let j = 0; j < colCount; j += 1) {
-                    const cell = sheet.getCell(i + 1, j);
-                    const newVal = row[headers[j]];
-                    if (cell.formattedValue !== newVal) {
-                        cell.value = newVal;
-                    }
-                }
-            }
-        }
-        return sheet.saveUpdatedCells();
-    },
-    updateCategorySheet: async (json: { [month: string]: { [cat: string]: any; }; }): Promise<void> => {
-        const sheet = await gsheetUtil.getSheetByTitle('Summary');
+    }
+
+    public addSheet (input: WorksheetBasicProperties) {
+        return sheetConfig.doc.addSheet(input);
+    }
+
+    public async saveSheetWithJSON (json: { [key: string]: any; }[]) {
+        const sheet = sheetConfig.doc.sheetsById[this.currentSheet || ''];
+        await this.updateSheet(sheet, json);
+    }
+
+    public async updateCategorySheet(json: { [month: string]: { [cat: string]: any; }; }): Promise<void> {
+        const sheet = await this.getSheetByTitle('Summary');
         await sheet.loadCells();
         const months = Object.keys(json);
         months.forEach((month) => {
@@ -203,9 +224,10 @@ const gsheetUtil: GSheetUtil = {
             });
         });
         return sheet.saveUpdatedCells();
-    },
-    udpateMaintenanceSheet: async (json: { [month: string]: { [flat: string]: any; }; }): Promise<void> => {
-        const sheet = await gsheetUtil.getSheetByTitle('Maintanence');
+    }
+
+    public async udpateMaintenanceSheet(json: { [month: string]: { [flat: string]: any; }; }): Promise<void> {
+        const sheet = await this.getSheetByTitle('Maintanence');
         await sheet.loadCells();
         const months = Object.keys(json);
         months.forEach((month) => {
@@ -222,7 +244,48 @@ const gsheetUtil: GSheetUtil = {
             });
         });
         return sheet.saveUpdatedCells();
-    },
-};
+    }
 
-export default gsheetUtil;
+    public isEmptySheet(sheet: GoogleSpreadsheetWorksheet): boolean {
+        return !sheet || sheet.rowCount === 0;
+    }
+
+    private async updateSheet(
+        sheet: GoogleSpreadsheetWorksheet,
+        json: { [key: string]: any; }[],
+        startingRow: number = 0,
+    ) {
+        if (json && json.length) {
+            const headers = Object.keys(json[0]);
+            const colCount = headers.length;
+            const rowCount = startingRow + json.length;
+            for (let i = startingRow; i < rowCount; i += 1) {
+                const row = json[i];
+                for (let j = 0; j < colCount; j += 1) {
+                    const cell = sheet.getCell(i + 1, j);
+                    const newVal = row[headers[j]];
+                    if (cell.formattedValue !== newVal) {
+                        cell.value = newVal;
+                    }
+                }
+            }
+        }
+        await sheet.saveUpdatedCells();
+    }
+
+    public async updateSheetWithJSON(json: { [key: string]: any; }[], sheetTitle?: string): Promise<void> {
+        if (sheetTitle) {
+            await this.getSheetByTitle(sheetTitle);
+        }
+        await this.appendRows(json);
+    }
+
+    static getInstance() {
+        if (!gsheetInstance) {
+            gsheetInstance = new GsheetUtilImpl();
+        }
+        return gsheetInstance;
+    }
+}
+
+export default GsheetUtilImpl.getInstance();

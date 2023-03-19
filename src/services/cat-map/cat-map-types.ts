@@ -1,8 +1,8 @@
-export type Operation = 'in' | 'having' | 'regex' | '==' | '>' | '>=' | '<' | '<=' | '!=';
+export type Operation = 'in' | 'having' | 'regex' | 'range' | '==' | '>' | '>=' | '<' | '<=' | '!=';
 export type TransType = 'debit' | 'credit';
 export type Query = {
     opr: Operation;
-    value: string[] | string | number | boolean;
+    value: string[] | string | number | number[] | boolean;
     type?: TransType;
 };
 export type ColQuery = {

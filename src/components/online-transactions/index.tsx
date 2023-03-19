@@ -14,6 +14,7 @@ import FileSave from '../file-save';
 import { Transaction } from '../../services/service-types';
 import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
 import './index.css';
+import dataUtils from './data-utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +46,7 @@ export const OnlineTransactionParser = () => {
         setFileName(file.name);
         fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
             sheetConfig.appData.transactions = resp;
+            resp.reverse();
             setBankTransactions(resp);
             setErrorMsg('');
             setActiveStep(1);
@@ -57,7 +59,7 @@ export const OnlineTransactionParser = () => {
         case 1:
             return (<FilePreview name={fileName} xlsData={bankTransactions} />);
         case 2:
-            return (<FileSave />);
+            return (<FileSave data={bankTransactions as any} />);
         default:
             return 'Unknown step';
         }
@@ -85,11 +87,7 @@ export const OnlineTransactionParser = () => {
             }
             break;
         }
-        case 1: {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            setErrorMsg('');
-            break;
-        }
+        case 1:
         default:
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             setErrorMsg('');

@@ -1,19 +1,33 @@
 import { Button } from '@material-ui/core';
-import React, { useCallback, useState } from 'react';
+import moment from 'moment';
+import React, { useCallback, useState, useEffect } from 'react';
 import gsheetUtil from '../../services/googleapi';
 
-function FileSave() {
+function FileSave(props: { data: { [key: string]: any }[] }) {
+    const { data } = props;
     const [msg, setMsg] = useState('');
-    const saveSheet = useCallback(() => {
-        gsheetUtil.addSheet({
-            headerValues: [
-                'Date', 'Description', 'Cheque No', 'Debit', 'Credit', 'Total', 'Category',
-            ],
-            title: 'Online Transactions',
-        }).then((sheet) => {
-            setMsg('Transactions Saved');
-        });
+    useEffect(() => {
+        gsheetUtil.init();
     }, []);
+
+    const saveSheet = useCallback(async () => {
+        const sheetTitle = 'Online Transactions';
+        const sheet = await gsheetUtil.getSheetByTitle(sheetTitle);
+        if (!sheet) {
+            await gsheetUtil.addSheet({
+                headerValues: [
+                    'Date', 'Description', 'Cheque No', 'Debit', 'Credit', 'Total', 'Category', 'Flat',
+                ],
+                title: sheetTitle,
+            });
+        }
+        const sheetData = (JSON.parse(JSON.stringify(data)) as any[]).map((row) => {
+            row.Date = moment(row.Date).format('DD-MM-YYYY');
+            return row;
+        });
+        await gsheetUtil.updateSheetWithJSON(sheetData, sheetTitle);
+        setMsg('Sheet Updated');
+    }, [data]);
     return (
         <>
             <p>{msg}</p>
