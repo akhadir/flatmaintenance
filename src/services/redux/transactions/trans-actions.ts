@@ -110,7 +110,8 @@ export function doMonthlyCatSplit(data: TransactionType[], monthlySplit: Monthly
             const cat = datum.Category;
             const date = datum.Date;
             if (cat && date) {
-                const month = moment(date, 'DD/MM/YYYY').format('MMM-YY');
+                const replacedDate = date.replace(/\//g, '-');
+                const month = moment(replacedDate, 'DD-MM-YYYY').format('MMM-YY');
                 if (!monthlySplit) {
                     monthlySplit = {};
                 }
@@ -119,8 +120,8 @@ export function doMonthlyCatSplit(data: TransactionType[], monthlySplit: Monthly
                 }
                 const isDebit = datum.Debit && datum.Debit?.toString() !== '0';
                 let amount = isDebit ?
-                    parseInt(datum.Debit!.toString(), 10) :
-                    parseInt(datum.Credit!.toString(), 10);
+                    parseFloat(datum.Debit!.toString().replace(/,/g, '')) :
+                    parseFloat(datum.Credit!.toString().replace(/,/g, ''));
                 if (isDebit) {
                     amount = -amount;
                 }
@@ -153,7 +154,7 @@ export function doMonthlyMaintSplit(data: TransactionType[], monthlySplit: Month
                 if (!monthlySplit[month]) {
                     monthlySplit[month] = {};
                 }
-                const amount = parseInt(datum.Credit!.toString(), 10);
+                const amount = parseFloat(datum.Credit!.toString().replace(/,/g, ''));
                 if (amount && typeof amount === 'number') {
                     if (!monthlySplit[month][flat]) {
                         monthlySplit[month][flat] = amount;

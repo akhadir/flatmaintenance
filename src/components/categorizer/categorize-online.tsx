@@ -43,7 +43,7 @@ function CategorizeOnline() {
                                     {headers.map((header: string) => (
                                         <TableCell key={`${header}-${row[header]}`}>
                                             {header !== 'Date' ? row[header] :
-                                                moment(row[header], 'DD/MM/YYYY').format('DD/MM/YYYY')}
+                                                moment(row[header], 'DD-MM-YYYY').format('DD/MM/YYYY')}
                                         </TableCell>
                                     ))}
                                 </TableRow>

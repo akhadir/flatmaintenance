@@ -54,6 +54,12 @@ export default {
             value: ['ACH', 'AY20', 'ACH Credit', 'AAKAS1985M'],
         }],
     }],
+    Bescom: [{
+        Description: [{
+            opr: 'having',
+            value: ['BESCOM', 'Electricity', 'EBANK:BBPS'],
+        }],
+    }],
     BWSSB: [{
         Debit: [{
             opr: 'range',
@@ -62,12 +68,6 @@ export default {
         Description: [{
             opr: 'having',
             value: ['BANGALORE WATER SUPPLY', 'BWSSB', 'BANGALORE ONE', 'EBANK:BBPS'],
-        }],
-    }],
-    Bescom: [{
-        Description: [{
-            opr: 'having',
-            value: ['BESCOM', 'Electricity', 'EBANK:BBPS'],
         }],
     }],
     'CCTV / Intercomm': [{
@@ -174,7 +174,7 @@ export default {
     'Generator Maintenance and Repair': [{
         Description: [{
             opr: 'regex',
-            value: ['venus.+energy', 'kirloskar'],
+            value: ['venus.+energy', 'kirloskar', 'generator'],
         }],
     }],
     'SMS Charges/Cheque book (Vijaya Bank)': [{
@@ -221,7 +221,7 @@ export default {
     'BAF Subscription Charges': [{
         Description: [{
             opr: 'regex',
-            value: ['BAF .+charges'],
+            value: ['BAF', 'BAF Subscription'],
         }],
     }],
     'Annual Bonus': [{

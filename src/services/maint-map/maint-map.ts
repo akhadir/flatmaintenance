@@ -314,7 +314,7 @@ export default {
     406: [{
         Description: [{
             opr: 'having',
-            value: ['PRAVEENVIJAY', 'PRAVEEN VIJAY', 'SocietyPay'],
+            value: ['PRAVEENVIJAY', 'PRAVEEN VIJAY'],
         }],
     }],
     407: [{
