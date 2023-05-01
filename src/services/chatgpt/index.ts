@@ -11,7 +11,7 @@ export class ChatGPTService {
             const chatGPTConfig = new Configuration({
                 organization: 'org-wfOq673LgvxydlfXwY3Fmcvm',
                 apiKey: this.chatGPTPrivateKey,
-            }); 
+            });
             this.openAI = new OpenAIApi(chatGPTConfig);
         }
     }
