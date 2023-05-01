@@ -1,12 +1,12 @@
-import { sheetConfig, setCredentials } from '../..';
-import { GoogleSheetConfig } from '../../service-types';
+import { appConfig, setCredentials } from '../..';
+import { ApplicationConfig } from '../../service-types';
 import SHEET_ACTION_TYPES, { SheetInfo } from './sheet-types';
 
 export const initSheet = () => ({
     type: SHEET_ACTION_TYPES.INIT,
 });
 
-export const initSuccess = (payload: GoogleSheetConfig) => ({
+export const initSuccess = (payload: ApplicationConfig) => ({
     type: SHEET_ACTION_TYPES.INIT_SUCCESS,
     payload,
 });
@@ -26,7 +26,7 @@ export function initializeGoogleSheet(secret: string) {
         dispatch(initSheet());
         const out = setCredentials(secret);
         if (out.res) {
-            dispatch(initSuccess({ ...sheetConfig }));
+            dispatch(initSuccess({ ...appConfig }));
         } else {
             dispatch(initFailure(out.error));
         }

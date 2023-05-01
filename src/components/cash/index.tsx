@@ -5,6 +5,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 import './cash-trans.css';
 import { getDatafromDataURI } from '../../services/ocr';
+import ChatGPTService from '../../services/chatgpt';
 
 function dataURItoBlob(dataURI: string) {
     const binary = atob(dataURI.split(',')[1]);
@@ -35,8 +36,12 @@ function CashTransactions() {
     const [imageData, setImageData] = useState();
     useEffect(() => {
         if (image) {
-            getDatafromDataURI(image).then((response: any) => {
-                setImageData(response.data);
+            getDatafromDataURI(image).then(async (response: any) => {
+                const { ParsedText } = response.data.ParsedResults[0] || {};
+                if (ParsedText) {
+                    const parsedData = await ChatGPTService.getInstance().getCompleted(ParsedText);
+                    setImageData(parsedData as any);
+                }
             });
         }
     }, [image]);

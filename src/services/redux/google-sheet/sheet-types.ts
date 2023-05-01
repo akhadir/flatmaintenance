@@ -1,4 +1,4 @@
-import { GoogleSheetConfig } from '../../service-types';
+import { ApplicationConfig } from '../../service-types';
 
 enum SHEET_ACTION_TYPES {
     INIT = 'INIT',
@@ -12,7 +12,7 @@ export type SheetInfo = Map<string, { [key: string]: any }[]>;
 export type GoogleSheet = {
     initializing?: boolean;
     initError: string;
-    sheetConfig: GoogleSheetConfig;
+    sheetConfig: ApplicationConfig;
     sheetInfo: SheetInfo;
 };
 

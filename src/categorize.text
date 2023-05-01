@@ -1,0 +1,29 @@
+Write a Javascript code to categorize the input text using the following information.
+1. If the text has the vague address, 'Suraksha Sunflower Apartment, Kodhichikkahanahalli Main Road, Bilekahalli', the text falls under the following categories.
+    a. Housekeeping Salary
+    b. Garden Work
+    c. Sewage Tank Cleaning
+    d. Apartment Work
+    e. Festival Celebrations
+    e. Apartment Maintenance
+    e. Electrical Work
+    f. Miscellaneous Expenses
+2. If the text further has the amount 8500, it should be categorized as 'Housekeeping Salary' or
+3. If the text further has the amount 800 or is having the text 'Adinarayana', it should be categorized as 'Sewage Tank Cleaning' or
+4. If the text further has the text 'Garden Work', it should be categorized as 'Garden Work' or
+5. If the text further has the text 'Apartment Work', it should be categorized as 'Apartment Work' or
+6. If the text further has the text 'Mason', it should be categorized as 'Apartment Maintenance' or
+7. If the text further has the text 'Electrical', it should be categorized as 'Electrical Work' or
+8. If the text further has the text 'Diwali', 'Flag', 'Sweets', 'Chocalates', etc, it should be categorized as 'Festival Celebrations' or
+9. If the text further doesn't fall under above categories mentioned in above except for 1, it should be categorized as 'Miscellaneous Expenses'.
+10. If the text has 'RR Cleaning Service' or 'Cleaning Service', it should be categorized as 'Garbage Cleaning Service'.
+11. If the text has 'Diesel', it should be categorized as 'Diesel Purchase'
+12. If the text has 'BESCOM', it should be categorized as 'Bescom'
+13. If the text has 'BWSSB', it should be categorized as 'BWSSB'
+14. If the text has 'Telecom', it should be categorized as 'Telecom Maintenance'
+15. If the text has 'Johnson', it should be categorized as 'Lift Maintenance'
+16. If the text has 'Borewell', it should be categorized as 'Borewell Maintenance'
+17. If the text has 'Water', it should be categorized as 'Drinking Water For Security'
+18. If the text has 'Security' or '41000', it should be categorized as 'Security Service'
+19. If the text has 'broom' or 'phenoyl' or 'mop' or 'pencil' or 'file' or 'folder' or 'tape' or 'powder', it should be categorized as 'HK Items'
+20. If the text has 'bulbs' or 'switch' or 'light', it should be categorized as 'Electrical Items'

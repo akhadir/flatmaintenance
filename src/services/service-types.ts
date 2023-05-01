@@ -41,11 +41,13 @@ export type AppData = {
     transSheetMonth: string;
 };
 
-export type GoogleSheetConfig = {
+export type ApplicationConfig = {
     secret: string;
     SPREADSHEET_ID: string;
     ENC_CLIENT_EMAIL: string;
     ENC_PRIVATE_KEY: string;
+    ENC_CHAT_GPT_KEY: string;
+    chatGPTPrivateKey?: string;
     clientEmail?: string;
     privateKey?: string;
     doc: GoogleSpreadsheet;

@@ -15,7 +15,7 @@ import Categorizer from './workspaces/categorizer';
 import BillParser from './workspaces/bills';
 import CashTransactions from './workspaces/cash';
 import SecretDialog from './components/mapping/secret-dialog';
-import { sheetConfig, setCredentials } from './services';
+import { appConfig, setCredentials } from './services';
 import './app.css';
 import 'react-pro-sidebar/dist/css/styles.css';
 
@@ -27,7 +27,7 @@ const Cash = (props: any) => <CashTransactions />;
 function App() {
     const [errorMsg, setErrorMsg] = useState<string>('');
     const [secret, setSecret] = useState('');
-    const [secretSuccess, setSecretSuccess] = useState<boolean>(!!sheetConfig.secret);
+    const [secretSuccess, setSecretSuccess] = useState<boolean>(!!appConfig.secret);
     useEffect(() => {
         if (secret) {
             const out = setCredentials(secret);

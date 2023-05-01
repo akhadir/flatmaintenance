@@ -1,9 +1,9 @@
-import { sheetConfig } from '../..';
+import { appConfig } from '../..';
 import SHEET_ACTION_TYPES, { GoogleSheet } from './sheet-types';
 
 const initialValue: GoogleSheet = {
     initError: '',
-    sheetConfig,
+    sheetConfig: appConfig,
     sheetInfo: new Map(),
 };
 const sheetReducer = (state: GoogleSheet = initialValue, action: { type: SHEET_ACTION_TYPES, payload: any}) => {
