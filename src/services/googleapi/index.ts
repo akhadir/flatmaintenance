@@ -5,7 +5,6 @@ import {
     GoogleSpreadsheetWorksheet,
     WorksheetBasicProperties,
 } from 'google-spreadsheet';
-import { start } from 'repl';
 import { appConfig } from '..';
 import catIndex from '../cat-map/cat-index';
 import monthIndex from '../cat-map/month-index';
