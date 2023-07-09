@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import moment from 'moment';
 import { appConfig } from '..';
-import gsheetUtil from '../googleapi';
+import gsheetUtil from '../googleapis';
 import { CatItem, MonthlySheetDataType, Transaction } from '../service-types';
 
 export interface Sheet {

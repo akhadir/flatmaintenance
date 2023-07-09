@@ -1,6 +1,6 @@
 import moment from 'moment';
 import TransMapExecutor from '../../../utils/trans-map-executor';
-import gsheetUtil from '../../googleapi';
+import gsheetUtil from '../../googleapis';
 import catMapJson from '../../cat-map/cat-map';
 import maintMapJson from '../../maint-map/maint-map';
 import { TransactionType, TransActions, MonthlyCatSplit, MonthlyMaintSplit } from './trans-types';
