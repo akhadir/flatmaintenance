@@ -1,13 +1,13 @@
 import { google } from 'googleapis';
 
-const drive = google.drive({
+const drive: any = google.drive({
     version: 'v3',
     credentials: {
         client_email: 'YOUR_CLIENT_EMAIL_ADDRESS',
         client_secret: 'YOUR_CLIENT_SECRET',
         refresh_token: 'YOUR_REFRESH_TOKEN',
     },
-});
+} as any);
 
 const folderId = 'YOUR_FOLDER_ID';
 
