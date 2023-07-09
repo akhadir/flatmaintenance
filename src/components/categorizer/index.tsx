@@ -6,7 +6,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import ReactJson from 'react-json-view';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import gsheetUtil from '../../services/googleapis';
+import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
 import { initializeGoogleSheet } from '../../services/redux/google-sheet/sheet-actions';
 import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
 import {

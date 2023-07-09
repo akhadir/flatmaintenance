@@ -7,12 +7,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
-import gsheetUtil from '../../services/googleapis';
+import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
 import { CatItem } from '../../services/service-types';
 import AppContext from '../../services';
 import transSheet from '../../services/sheet';
 import './cat-view.css';
-import { TransCategory } from '../../utils/trans-category';
 
 const useStyles = makeStyles({
     root: {
