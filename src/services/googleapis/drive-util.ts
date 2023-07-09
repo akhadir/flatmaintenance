@@ -1,24 +1,23 @@
-import { google } from 'googleapis';
+import axios from 'axios';
+import { appConfig } from '..';
 
-const drive: any = google.drive({
-    version: 'v3',
-    credentials: {
-        client_email: 'YOUR_CLIENT_EMAIL_ADDRESS',
-        client_secret: 'YOUR_CLIENT_SECRET',
-        refresh_token: 'YOUR_REFRESH_TOKEN',
-    },
-} as any);
+const folderId = '1zVRwXWZjfAS3Hk1rXq-XtqurPcQ-yAW-'; // bills directory
 
-const folderId = 'YOUR_FOLDER_ID';
+const apiKey = appConfig.googleAPIKey;
 
-async function fetchFiles() {
-    const files = await drive.files.list({
-        q: `"folderId": "${folderId}"`,
-    });
+export default async function fetchFilesFromFolder() {
+    try {
+        const response = await axios.get(
+            `https://www.googleapis.com/drive/v3/files?q='${folderId}'%20in%20parents&key=${apiKey}`,
+        );
 
-    files.items.forEach((file: any) => {
-        console.log(file.name);
-    });
+        const { files } = response.data;
+        console.log('Fetched files:', files);
+        // Do something with the fetched files
+    } catch (error: any) {
+        console.error('Error fetching files:', error?.message || error);
+    }
 }
 
-fetchFiles();
+// Call the function with the folder ID
+// fetchFilesFromFolder();

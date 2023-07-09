@@ -46,11 +46,12 @@ export type ApplicationConfig = {
     SPREADSHEET_ID: string;
     ENC_CLIENT_EMAIL: string;
     ENC_PRIVATE_KEY: string;
-    ENC_GOOGLE_API_REPLACE_TOKEN: string;
+    ENC_GOOGLE_API_KEY: string;
     ENC_CHAT_GPT_KEY: string;
     chatGPTPrivateKey?: string;
     clientEmail?: string;
     privateKey?: string;
+    googleAPIKey?: string;
     doc: GoogleSpreadsheet;
     appData: AppData;
 };
