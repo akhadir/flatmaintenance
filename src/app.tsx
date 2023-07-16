@@ -12,7 +12,7 @@ import { ProSidebar, Menu, MenuItem, SidebarFooter } from 'react-pro-sidebar';
 import store from './services/redux/store';
 import OnlineTransactionParser from './workspaces/online';
 import Categorizer from './workspaces/categorizer';
-import BillParser from './workspaces/bills';
+import BillParser from './workspaces/new-bills';
 import CashTransactions from './workspaces/cash';
 import SecretDialog from './components/mapping/secret-dialog';
 import { appConfig, setCredentials } from './services';

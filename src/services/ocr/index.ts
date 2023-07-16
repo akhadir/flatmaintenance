@@ -17,7 +17,22 @@ const getData = (file: File) => {
             console.error(error);
         });
 };
-
+export const getVision = (imageURL: string) => {
+    const formData = new FormData();
+    formData.append('url', imageURL);
+    formData.append('language', 'eng');
+    formData.append('isOverlayRequired', 'true');
+    // formData.append('fileType', 'JPG');
+    return axios
+        .post('https://api.ocr.space/parse/image', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                apikey: 'K84187439488957',
+            },
+        }).catch((error) => {
+            console.error(error);
+        });
+};
 function dataURItoBlob(dataURI: string) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     let byteString;
