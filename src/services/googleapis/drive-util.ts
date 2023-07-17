@@ -2,12 +2,15 @@ import axios from 'axios';
 import { appConfig } from '..';
 import { generateAuthToken } from './google-token';
 
-const folderId = '1zVRwXWZjfAS3Hk1rXq-XtqurPcQ-yAW-'; // bills directory
-const { googleAPIKey: apiKey } = appConfig;
-// eslint-disable-next-line max-len
-const query = encodeURI(`'${folderId}' in parents and (mimeType = 'image/jpeg' or mimeType = 'image/png' or mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`);
+export const VERIFIED_FILE_PREFIX = 'VERIFIED_';
 
-export async function fetchFilesFromFolder(): Promise<any[]> {
+const BILLS_FOLDER_ID = '1zVRwXWZjfAS3Hk1rXq-XtqurPcQ-yAW-'; // bills directory
+const { googleAPIKey: apiKey } = appConfig;
+
+export async function fetchFilesFromFolder(folderId: string): Promise<any[]> {
+    const folderIdFinal = folderId || BILLS_FOLDER_ID;
+    // eslint-disable-next-line max-len
+    const query = encodeURI(`'${folderIdFinal}' in parents and (mimeType = 'image/jpeg' or mimeType = 'image/png' or mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`);
     try {
         const response = await axios.get(
             `https://www.googleapis.com/drive/v3/files?q=${query}&key=${apiKey}`,
@@ -29,9 +32,33 @@ export const moveFile = async (fileId: string, toDirectoryId: string) => {
         const response = await axios.patch(
             `https://www.googleapis.com/drive/v3/files/${fileId}`,
             {
-                addParents: toDirectoryId,
-                removeParents: folderId,
-                fields: 'id, parents',
+                parents: toDirectoryId,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+
+        console.log('File moved successfully:', response.data);
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        console.error('Error occurred while moving the file:', error);
+    }
+    return null;
+};
+
+export const renameFile = async (fileId: string, name: string) => {
+    try {
+        const authToken = await generateAuthToken();
+        const response = await axios.patch(
+            `https://www.googleapis.com/drive/v3/files/${fileId}`,
+            {
+                name: `${VERIFIED_FILE_PREFIX}${name}`,
             },
             {
                 headers: {

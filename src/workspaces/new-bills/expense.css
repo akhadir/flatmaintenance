@@ -4,3 +4,10 @@
     max-width: 540px;
     overflow: auto;
 }
+.bill-grid-item {
+    overflow: hidden;
+}
+.no-bills-msg {
+    margin: 0 auto;
+    padding: 20px 0;
+}

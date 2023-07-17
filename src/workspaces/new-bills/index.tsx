@@ -1,25 +1,32 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import moment from 'moment';
-import { fetchFilesFromFolder, moveFile } from '../../services/googleapis/drive-util';
+import { Button } from '@material-ui/core';
+import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
 import ImageGrid from './image-grid';
 import ExpenseForm from './expense';
 import { getVision } from '../../services/ocr';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
+import { fetchFiles } from './bill-utils';
+import FolderGrid from './folder-grid';
+import './new-bills.css';
 
 export default function NewBills() {
     const [fileList, setFilesList] = useState<GoogleDriveFile[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedBill, setSelectedBill] = useState('');
+    const [selectedFolder, setSelectedFolder] = useState('');
     const [formData, setFormData] = useState<ExpenseState>({
         date: '',
         amount: 0,
         description: '',
         category: '',
     });
-    const handleClick = useCallback((image: string) => {
-        setSelectedImage(image);
-        const fileInfo = fileList.find((file) => file.id === image);
+    const handleFolderClick = useCallback((folderId: string) => {
+        setSelectedFolder(folderId);
+    }, []);
+    const handleClick = useCallback((image: GoogleDriveFile) => {
+        setSelectedBill(image.id);
+        const fileInfo = fileList.find((file) => file.id === image.id);
         const fileName = fileInfo?.name;
         let data: ExpenseState = {};
         if (fileName && fileName.indexOf('_') > -1) {
@@ -30,7 +37,7 @@ export default function NewBills() {
             });
         }
         if (!data.amount || !data.date || !data.description) {
-            getVision(`https://drive.google.com/uc?id=${image}`).then((response: any) => {
+            getVision(`https://drive.google.com/uc?id=${image.id}`).then((response: any) => {
                 const parsedText = response.data?.ParsedResults[0]?.ParsedText || '';
                 const parsedData = parseExpenseInfo(parsedText);
                 parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
@@ -46,40 +53,49 @@ export default function NewBills() {
     }, [fileList, formData]);
 
     const handleClose = useCallback((data?: ExpenseState) => {
-        if (data) {
-            const month = moment(data.date, 'DD-MM-YYYY').format('MMM');
-            const monthFolder = fileList.find((file) => file.name === month);
-            if (selectedImage && monthFolder) {
-                moveFile(selectedImage, monthFolder.id).then(() => {
-                    fetchFilesFromFolder().then((files) => {
-                        setFilesList(files);
-                    });
+        if (data?.date) {
+            // const month = moment(data.date, 'DD-MM-YYYY').format('MMM');
+            const fileInfo = fileList.find((file) => file.id === selectedBill);
+            if (selectedBill && fileInfo) {
+                renameFile(selectedBill, fileInfo.name).then(() => {
+                    fetchFiles(setFilesList, selectedFolder);
                     // TODO: Add or Update Transaction
                 });
             }
         }
-        setSelectedImage('');
+        setSelectedBill('');
         setOpenDialog(false);
-    }, [fileList, selectedImage]);
+    }, [fileList, selectedBill, selectedFolder]);
 
     useEffect(() => {
-        fetchFilesFromFolder().then((files) => {
-            setFilesList(files);
-        });
-    }, []);
+        fetchFiles(setFilesList, selectedFolder);
+    }, [selectedFolder]);
 
     const images = useMemo(() => fileList.filter(
-        (file) => file.mimeType.startsWith('image/'))
-        .map((file: any) => file.id), [fileList]);
+        (file) => file.mimeType.startsWith('image/') && !file.name.startsWith(VERIFIED_FILE_PREFIX)), [fileList]);
+
+    const folders = useMemo(() => fileList.filter(
+        (file) => file.mimeType === 'application/vnd.google-apps.folder'), [fileList]);
 
     return (
         <>
             <h3>Unprocessed Bills</h3>
-            <ImageGrid images={images} handleClick={handleClick} />
+            {!!selectedFolder && (
+                <Button
+                    className="go-to-months-btn"
+                    size="small"
+                    variant="outlined"
+                    onClick={() => setSelectedFolder('')}
+                >
+                    Go Back
+                </Button>
+            )}
+            {!selectedFolder && <FolderGrid folders={folders} handleClick={handleFolderClick} />}
+            {!!selectedFolder && <ImageGrid images={images} handleClick={handleClick} />}
             {openDialog && (
                 <ExpenseForm
                     {...formData}
-                    image={selectedImage}
+                    image={selectedBill}
                     callback={handleClose}
                     handleClose={handleClose}
                 />
@@ -87,6 +103,3 @@ export default function NewBills() {
         </>
     );
 }
-// Move the bill to corresponding month folder after processing
-// Add or update Cash or online transaction with bills
-// Handle PDF, if possible

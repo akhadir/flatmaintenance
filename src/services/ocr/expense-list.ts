@@ -12,7 +12,7 @@ export default [
     'Lift Maintenance (Johnson)',
     'HK items (bleaching powder,garbage bin etc)',
     'Health Club Maintenance',
-    'Electrical / Plumbing Repairs',
+    'EB / Electrical / Plumbing Repairs',
     'Apartment repairs related - Concrete floor - Sivaji',
     'Apartment Safety - Fire Extiguisher',
     'CCTV / Intercomm',
