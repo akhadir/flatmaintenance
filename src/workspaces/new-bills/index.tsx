@@ -6,7 +6,7 @@ import ExpenseForm from './expense';
 import { getVision } from '../../services/ocr';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
-import { fetchFiles } from './bill-utils';
+import { fetchFiles, getDriveFileURL, saveCashTransSheet } from './bill-utils';
 import FolderGrid from './folder-grid';
 import './new-bills.css';
 
@@ -54,12 +54,18 @@ export default function NewBills() {
 
     const handleClose = useCallback((data?: ExpenseState) => {
         if (data?.date) {
-            // const month = moment(data.date, 'DD-MM-YYYY').format('MMM');
             const fileInfo = fileList.find((file) => file.id === selectedBill);
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    // TODO: Add or Update Transaction
+                    const finalData = [{
+                        Date: data.date,
+                        Description: data.description,
+                        Debit: data.amount,
+                        Category: data.category,
+                        Bill: getDriveFileURL(selectedBill),
+                    }];
+                    saveCashTransSheet(finalData);
                 });
             }
         }
@@ -103,3 +109,7 @@ export default function NewBills() {
         </>
     );
 }
+// TODOS:
+// Categorization
+// Testing OCR Space
+// Online Transactions

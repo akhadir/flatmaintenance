@@ -42,8 +42,12 @@ export interface GSheetUtil {
 let gsheetInstance: GSheetUtil;
 class GsheetUtilImpl implements GSheetUtil {
     public currentSheet: string = '';
+    public initialized = false;
 
     public init() {
+        if (this.initialized) {
+            return Promise.resolve(appConfig.doc);
+        }
         return new Promise<GoogleSpreadsheet>((resolve, reject) => {
             const { doc } = appConfig;
             doc.useServiceAccountAuth({
@@ -51,6 +55,7 @@ class GsheetUtilImpl implements GSheetUtil {
                 private_key: appConfig.privateKey || '',
             }).then(() => {
                 doc.loadInfo().then(() => {
+                    this.initialized = true;
                     resolve(doc);
                 }).catch((e: any) => {
                     console.log(e);
@@ -282,6 +287,7 @@ class GsheetUtilImpl implements GSheetUtil {
     static getInstance() {
         if (!gsheetInstance) {
             gsheetInstance = new GsheetUtilImpl();
+            gsheetInstance.init();
         }
         return gsheetInstance;
     }

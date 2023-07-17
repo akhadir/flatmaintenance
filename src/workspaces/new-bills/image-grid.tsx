@@ -4,6 +4,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { GoogleDriveFile } from './expense-types';
+import { getDriveFileURL } from './bill-utils';
 import './expense.css';
 
 type ImageGridType = {
@@ -17,7 +18,7 @@ const ImageGrid = ({ images, handleClick }: ImageGridType) => (
             {images.map((image, index) => (
                 <Grid item key={`Image ${index + 1}`} xs={2} className="bill-grid-item">
                     <img
-                        src={`https://drive.google.com/uc?id=${image.id}`}
+                        src={getDriveFileURL(image.id)}
                         alt={`Image ${index + 1}`}
                         style={{ width: 300, height: 300, cursor: 'pointer', padding: '5px' }}
                         onClick={() => handleClick(image)}
