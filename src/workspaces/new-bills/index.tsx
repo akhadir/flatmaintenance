@@ -109,6 +109,6 @@ export default function NewBills() {
 }
 
 // TODOS:
-// PDF Support
-// Testing OCR Space
+// Testing our logic
+// Validation
 // Online Transactions Update
