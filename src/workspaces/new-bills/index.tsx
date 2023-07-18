@@ -6,11 +6,11 @@ import ExpenseForm from './expense';
 import { getVision } from '../../services/ocr';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
-import { fetchFiles, getDriveFileURL, saveCashTransSheet } from './bill-utils';
+import { fetchFiles, getDataInSheetFormat, saveCashTransSheet, setCategory } from './bill-utils';
 import FolderGrid from './folder-grid';
-import './new-bills.css';
 import { TransSheet } from '../../services/sheet';
 import { CatItem } from '../../services/service-types';
+import './new-bills.css';
 
 export default function NewBills() {
     const [fileList, setFilesList] = useState<GoogleDriveFile[]>([]);
@@ -33,6 +33,7 @@ export default function NewBills() {
         let data: ExpenseState = {};
         if (fileName && fileName.indexOf('_') > -1) {
             data = parseExpenseInfo(fileName);
+            setCategory(data);
             setFormData({
                 ...formData,
                 ...data,
@@ -45,6 +46,7 @@ export default function NewBills() {
                 parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
                 parsedData.description = data.description || parsedData.description;
                 parsedData.date = data.date ? data.date : parsedData.date;
+                setCategory(data);
                 setFormData({
                     ...formData,
                     ...parsedData,
@@ -60,13 +62,7 @@ export default function NewBills() {
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    const finalData = [{
-                        Date: data.date,
-                        Description: data.description,
-                        Debit: data.amount,
-                        Category: data.category,
-                        Bill: getDriveFileURL(selectedBill),
-                    }];
+                    const finalData = [getDataInSheetFormat(data)];
                     saveCashTransSheet(finalData);
                 });
             }
@@ -121,6 +117,5 @@ export default function NewBills() {
     );
 }
 // TODOS:
-// Categorization
 // Testing OCR Space
-// Online Transactions
+// Online Transactions Update

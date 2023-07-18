@@ -11,3 +11,8 @@ export const updateMapping = (json: CatFieldMap) => {
 updateMapping(catFieldMap as any as CatFieldMap);
 
 export default db;
+
+// Usage:
+// const transMapExec = new TransMapExecutor(catMapJson as any);
+// transMapExec.run(value as TransactionType[]);
+//

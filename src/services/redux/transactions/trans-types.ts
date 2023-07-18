@@ -42,4 +42,5 @@ export type TransactionType = {
     Total: number;
     Category?: TransCategory;
     Flat?: FlatCategory;
+    Bill?: string;
 };

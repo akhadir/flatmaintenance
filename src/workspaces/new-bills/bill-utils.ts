@@ -2,7 +2,11 @@ import React from 'react';
 import moment from 'moment';
 import { fetchFilesFromFolder } from '../../services/googleapis/drive-util';
 import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
-import { GoogleDriveFile } from './expense-types';
+import { ExpenseState, GoogleDriveFile } from './expense-types';
+import TransMapExecutor from '../../utils/trans-map-executor';
+import { TransactionType } from '../../services/redux/transactions/trans-types';
+import { TransCategory } from '../../utils/trans-category';
+import catMapJson from '../../services/cat-map/cat-map';
 
 export function fetchFiles(
     setFilesList: React.Dispatch<React.SetStateAction<GoogleDriveFile[]>>,
@@ -57,5 +61,27 @@ export const saveCashTransSheet = async (data: any, sheetTitle = 'Cash Transacti
 };
 
 export const getDriveFileURL = (fileId: string) => `https://drive.google.com/uc?id=${fileId}`;
+
+export const getDataInSheetFormat = (data: ExpenseState, selectedBill?: string) => {
+    const out: TransactionType = {
+        Date: data.date ?? '',
+        Description: data.description ?? '',
+        Debit: data.amount ?? 0,
+        Credit: 0,
+        Category: data.category as TransCategory,
+        Total: 0,
+    };
+    if (selectedBill) {
+        out.Bill = getDriveFileURL(selectedBill);
+    }
+    return out;
+};
+
+export const setCategory = (data: ExpenseState) => {
+    const value: TransactionType = getDataInSheetFormat(data);
+    const transMapExec = new TransMapExecutor(catMapJson as any);
+    transMapExec.run([value] as TransactionType[]);
+    data.category = value.Category;
+};
 
 export default { fetchFiles, saveCashTransSheet, saveOnlineTransSheet };
