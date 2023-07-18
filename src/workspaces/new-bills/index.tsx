@@ -9,6 +9,8 @@ import { parseExpenseInfo } from '../../services/ocr/parser-utils';
 import { fetchFiles, getDriveFileURL, saveCashTransSheet } from './bill-utils';
 import FolderGrid from './folder-grid';
 import './new-bills.css';
+import { TransSheet } from '../../services/sheet';
+import { CatItem } from '../../services/service-types';
 
 export default function NewBills() {
     const [fileList, setFilesList] = useState<GoogleDriveFile[]>([]);
@@ -77,6 +79,14 @@ export default function NewBills() {
         fetchFiles(setFilesList, selectedFolder);
     }, [selectedFolder]);
 
+    const [expenseCategories, setExpenseCategories] = useState<CatItem[]>([]);
+    useEffect(() => {
+        (async () => {
+            const transSheet = new TransSheet();
+            const expCat = await transSheet.getExpenseCategories();
+            setExpenseCategories(expCat);
+        })();
+    }, []);
     const images = useMemo(() => fileList.filter(
         (file) => file.mimeType.startsWith('image/') && !file.name.startsWith(VERIFIED_FILE_PREFIX)), [fileList]);
 
@@ -104,6 +114,7 @@ export default function NewBills() {
                     image={selectedBill}
                     callback={handleClose}
                     handleClose={handleClose}
+                    expenseCategories={expenseCategories}
                 />
             )}
         </>

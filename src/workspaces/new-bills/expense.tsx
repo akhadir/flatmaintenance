@@ -17,7 +17,7 @@ import { ExpenseFormProps, ExpenseState } from './expense-types';
 import './expense.css';
 
 const ExpenseForm = ({
-    callback, date, amount, description, category, image, handleClose,
+    callback, date, amount, description, category, image, handleClose, expenseCategories,
 }: ExpenseFormProps) => {
     const [formData, setData] = useState<ExpenseState>({
         date: moment(date ?? '01-04-2023', 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -90,9 +90,9 @@ const ExpenseForm = ({
                                 onChange={handleChange}
                                 label="Category"
                             >
-                                <MenuItem value="food">Food</MenuItem>
-                                <MenuItem value="travel">Travel</MenuItem>
-                                <MenuItem value="shopping">Shopping</MenuItem>
+                                {expenseCategories.map((cat) => (
+                                    <MenuItem key={cat.key} value={cat.key}>{cat.label}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </form>

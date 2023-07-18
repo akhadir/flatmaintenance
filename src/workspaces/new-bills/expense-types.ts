@@ -1,7 +1,10 @@
+import { CatItem } from '../../services/service-types';
+
 export type ExpenseFormProps = ExpenseState & {
     callback: (state: ExpenseState) => void;
     handleClose: () => void;
     image: string;
+    expenseCategories: CatItem[];
 };
 
 export type ExpenseState = {
