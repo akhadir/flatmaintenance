@@ -4,6 +4,7 @@ export type ExpenseFormProps = ExpenseState & {
     callback: (state: ExpenseState) => void;
     handleClose: () => void;
     image: string;
+    mimeType: string;
     expenseCategories: CatItem[];
 };
 

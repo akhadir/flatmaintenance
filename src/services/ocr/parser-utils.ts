@@ -7,7 +7,7 @@ export function parseExpenseInfo(text: string, expenseTypes: string[] = expenseL
     let description = '';
 
     // Split the text based on space, newline, or underscore delimiter
-    const words = text.split(/[\s_]+/);
+    const words = text.split(/[\s_]/m).filter((word) => word && word !== '/');
 
     // Iterate through the words to find the relevant information
     words.forEach((word) => {
@@ -52,7 +52,7 @@ export function findTopMatchingText(texts: string[], words: string[]) {
     const sortedTexts = [...valueArray].sort((a, b) => b[1] - a[1]);
 
     // Return the top matching text
-    if (sortedTexts.length > 0) {
+    if (sortedTexts.length > 0 && sortedTexts[0][1] !== 0) {
         return sortedTexts[0][0];
     }
 

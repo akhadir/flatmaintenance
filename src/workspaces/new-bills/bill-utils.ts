@@ -7,6 +7,8 @@ import TransMapExecutor from '../../utils/trans-map-executor';
 import { TransactionType } from '../../services/redux/transactions/trans-types';
 import { TransCategory } from '../../utils/trans-category';
 import catMapJson from '../../services/cat-map/cat-map';
+import { parseExpenseInfo } from '../../services/ocr/parser-utils';
+import { getVision } from '../../services/ocr';
 
 export function fetchFiles(
     setFilesList: React.Dispatch<React.SetStateAction<GoogleDriveFile[]>>,
@@ -83,5 +85,41 @@ export const setCategory = (data: ExpenseState) => {
     transMapExec.run([value] as TransactionType[]);
     data.category = value.Category;
 };
+
+export function extractBillData(
+    fileName: string | undefined,
+    formData: ExpenseState,
+    bill: GoogleDriveFile,
+): Promise<ExpenseState> {
+    let data: ExpenseState = {};
+    const promise = new Promise<ExpenseState>((resolve) => {
+        if (fileName && fileName.indexOf('_') > -1) {
+            data = parseExpenseInfo(fileName);
+        }
+        if (!data.amount || !data.date || !data.description) {
+            getVision(`https://drive.google.com/uc?id=${bill.id}`).then((response: any) => {
+                const parsedText = response.data?.ParsedResults[0]?.ParsedText || '';
+                const parsedData = parseExpenseInfo(parsedText);
+                parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
+                parsedData.description = data.description || parsedData.description;
+                parsedData.date = data.date ? data.date : parsedData.date;
+                const parsedFormData = {
+                    ...formData,
+                    ...parsedData,
+                };
+                setCategory(parsedFormData);
+                resolve(parsedFormData);
+            });
+        } else {
+            const parsedFormData = ({
+                ...formData,
+                ...data,
+            });
+            setCategory(parsedFormData);
+            resolve(parsedFormData);
+        }
+    });
+    return promise;
+}
 
 export default { fetchFiles, saveCashTransSheet, saveOnlineTransSheet };

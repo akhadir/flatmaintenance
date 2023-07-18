@@ -17,7 +17,7 @@ import { ExpenseFormProps, ExpenseState } from './expense-types';
 import './expense.css';
 
 const ExpenseForm = ({
-    callback, date, amount, description, category, image, handleClose, expenseCategories,
+    callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType,
 }: ExpenseFormProps) => {
     const [formData, setData] = useState<ExpenseState>({
         date: moment(date ?? '01-04-2023', 'DD-MM-YYYY').format('YYYY-MM-DD'),
@@ -45,11 +45,20 @@ const ExpenseForm = ({
             <Dialog open onClose={handleClose}>
                 <DialogTitle>Form</DialogTitle>
                 <DialogContent>
-                    <img
-                        className="expense-bill-img"
-                        src={`https://drive.google.com/uc?id=${image}`}
-                        alt="Expense Bill"
-                    />
+                    {mimeType.startsWith('image/') && (
+                        <img
+                            className="expense-bill-img"
+                            src={`https://drive.google.com/uc?id=${image}`}
+                            alt="Expense Bill"
+                        />
+                    )}
+                    {mimeType === 'application/pdf' && (
+                        <embed
+                            className="expense-bill-img"
+                            src={`https://drive.google.com/uc?id=${image}`}
+                            title="Expense Bill"
+                        />
+                    )}
                     <form>
                         <TextField
                             type="date"

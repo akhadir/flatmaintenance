@@ -6,6 +6,8 @@
 }
 .bill-grid-item {
     overflow: hidden;
+    cursor: pointer;
+    color: blue;
 }
 .no-bills-msg {
     margin: 0 auto;

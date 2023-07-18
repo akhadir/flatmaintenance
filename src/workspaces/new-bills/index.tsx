@@ -1,21 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
-import ImageGrid from './image-grid';
+import BillGrid from './bill-grid';
 import ExpenseForm from './expense';
-import { getVision } from '../../services/ocr';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
-import { parseExpenseInfo } from '../../services/ocr/parser-utils';
-import { fetchFiles, getDataInSheetFormat, saveCashTransSheet, setCategory } from './bill-utils';
+import { extractBillData, fetchFiles, getDataInSheetFormat, saveCashTransSheet } from './bill-utils';
 import FolderGrid from './folder-grid';
 import { TransSheet } from '../../services/sheet';
 import { CatItem } from '../../services/service-types';
 import './new-bills.css';
 
 export default function NewBills() {
+    const [showLoader, setShowLoader] = useState(false);
     const [fileList, setFilesList] = useState<GoogleDriveFile[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedBill, setSelectedBill] = useState('');
+    const [selectedBill, setSelectedBill] = useState<GoogleDriveFile>();
     const [selectedFolder, setSelectedFolder] = useState('');
     const [formData, setFormData] = useState<ExpenseState>({
         date: '',
@@ -26,48 +25,29 @@ export default function NewBills() {
     const handleFolderClick = useCallback((folderId: string) => {
         setSelectedFolder(folderId);
     }, []);
-    const handleClick = useCallback((image: GoogleDriveFile) => {
-        setSelectedBill(image.id);
+    const handleClick = useCallback(async (image: GoogleDriveFile) => {
+        setSelectedBill(image);
+        setShowLoader(true);
         const fileInfo = fileList.find((file) => file.id === image.id);
         const fileName = fileInfo?.name;
-        let data: ExpenseState = {};
-        if (fileName && fileName.indexOf('_') > -1) {
-            data = parseExpenseInfo(fileName);
-            setCategory(data);
-            setFormData({
-                ...formData,
-                ...data,
-            });
-        }
-        if (!data.amount || !data.date || !data.description) {
-            getVision(`https://drive.google.com/uc?id=${image.id}`).then((response: any) => {
-                const parsedText = response.data?.ParsedResults[0]?.ParsedText || '';
-                const parsedData = parseExpenseInfo(parsedText);
-                parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
-                parsedData.description = data.description || parsedData.description;
-                parsedData.date = data.date ? data.date : parsedData.date;
-                setCategory(data);
-                setFormData({
-                    ...formData,
-                    ...parsedData,
-                });
-            });
-        }
+        const parsedFormData = await extractBillData(fileName, formData, image);
+        setShowLoader(false);
+        setFormData(parsedFormData);
         setOpenDialog(true);
     }, [fileList, formData]);
 
     const handleClose = useCallback((data?: ExpenseState) => {
-        if (data?.date) {
-            const fileInfo = fileList.find((file) => file.id === selectedBill);
+        if (selectedBill && data?.date) {
+            const fileInfo = fileList.find((file) => file.id === selectedBill.id);
             if (selectedBill && fileInfo) {
-                renameFile(selectedBill, fileInfo.name).then(() => {
+                renameFile(selectedBill.id, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    const finalData = [getDataInSheetFormat(data)];
+                    const finalData = [getDataInSheetFormat(data, selectedBill.id)];
                     saveCashTransSheet(finalData);
                 });
             }
         }
-        setSelectedBill('');
+        setSelectedBill(undefined);
         setOpenDialog(false);
     }, [fileList, selectedBill, selectedFolder]);
 
@@ -83,14 +63,19 @@ export default function NewBills() {
             setExpenseCategories(expCat);
         })();
     }, []);
-    const images = useMemo(() => fileList.filter(
-        (file) => file.mimeType.startsWith('image/') && !file.name.startsWith(VERIFIED_FILE_PREFIX)), [fileList]);
+    const bills = useMemo(() => fileList.filter(
+        (file) => (
+            (file.mimeType.startsWith('image/') ||
+            file.mimeType === 'application/pdf') &&
+            !file.name.startsWith(VERIFIED_FILE_PREFIX)
+        ),
+    ), [fileList]);
 
     const folders = useMemo(() => fileList.filter(
         (file) => file.mimeType === 'application/vnd.google-apps.folder'), [fileList]);
 
     return (
-        <>
+        <div className="bill-workspace">
             <h3>Unprocessed Bills</h3>
             {!!selectedFolder && (
                 <Button
@@ -103,19 +88,27 @@ export default function NewBills() {
                 </Button>
             )}
             {!selectedFolder && <FolderGrid folders={folders} handleClick={handleFolderClick} />}
-            {!!selectedFolder && <ImageGrid images={images} handleClick={handleClick} />}
-            {openDialog && (
+            {!!selectedFolder && <BillGrid bills={bills} handleClick={handleClick} />}
+            {!!selectedBill && openDialog && (
                 <ExpenseForm
                     {...formData}
-                    image={selectedBill}
+                    image={selectedBill.id}
+                    mimeType={selectedBill.mimeType}
                     callback={handleClose}
                     handleClose={handleClose}
                     expenseCategories={expenseCategories}
                 />
             )}
-        </>
+            {showLoader && (
+                <div className="overlay">
+                    <CircularProgress />
+                </div>
+            )}
+        </div>
     );
 }
+
 // TODOS:
+// PDF Support
 // Testing OCR Space
 // Online Transactions Update

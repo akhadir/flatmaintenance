@@ -6,7 +6,7 @@ export default [
     'Housekeeping Salary (Hyrunnisa / Sunanda)',
     'Security Salary',
     'Garden Maintenance / Work',
-    'Garbage Collection Vendor (Hasirudala)/BBMP',
+    'Garbage Collection Vendor BBMP/RR Cleaning Services',
     'Borewell And Motor Maintenance/Repair',
     'Annual Bonus',
     'Lift Maintenance (Johnson)',
