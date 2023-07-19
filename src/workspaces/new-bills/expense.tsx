@@ -12,6 +12,7 @@ import {
     FormControl,
     DialogActions,
     TextField,
+    FormHelperText,
 } from '@material-ui/core';
 import { ExpenseFormProps, ExpenseState } from './expense-types';
 import './expense.css';
@@ -26,6 +27,13 @@ const ExpenseForm = ({
         category: category ?? '',
     });
 
+    const [errorData, setErrorData] = useState({
+        date: '',
+        amount: '',
+        description: '',
+        category: '',
+    });
+
     const handleChange = useCallback((event: any) => {
         const { name, value } = event.target;
         setData((prev) => ({
@@ -35,10 +43,31 @@ const ExpenseForm = ({
     }, []);
 
     const handleSubmit = useCallback(() => {
-        const formDataClone = JSON.parse(JSON.stringify(formData));
-        formDataClone.date = moment(formDataClone.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-        callback(formDataClone);
-    }, [callback, formData]);
+        let error = false;
+        if (!formData.amount) {
+            errorData.amount = 'Enter a valid amount';
+            error = true;
+        }
+        if (!formData.date || formData.date.toLowerCase() === 'invalid date') {
+            errorData.date = 'Enter a valid date';
+            error = true;
+        }
+        if (!formData.description) {
+            errorData.description = 'Enter a valid description';
+            error = true;
+        }
+        if (!formData.category) {
+            errorData.category = 'Select a category';
+            error = true;
+        }
+        if (error) {
+            setErrorData({ ...errorData });
+        } else {
+            const formDataClone = JSON.parse(JSON.stringify(formData));
+            formDataClone.date = moment(formDataClone.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
+            callback(formDataClone);
+        }
+    }, [callback, errorData, formData]);
 
     return (
         <div className="expense-dialog">
@@ -69,7 +98,9 @@ const ExpenseForm = ({
                             fullWidth
                             margin="normal"
                             variant="outlined"
-                            placeholder=""
+                            placeholder="DD-MM-YYYY"
+                            error={!!errorData.date}
+                            helperText={errorData.date}
                         />
                         <TextField
                             type="number"
@@ -80,6 +111,8 @@ const ExpenseForm = ({
                             fullWidth
                             margin="normal"
                             variant="outlined"
+                            error={!!errorData.amount}
+                            helperText={errorData.amount}
                         />
                         <TextField
                             type="text"
@@ -90,8 +123,10 @@ const ExpenseForm = ({
                             fullWidth
                             margin="normal"
                             variant="outlined"
+                            error={!!errorData.description}
+                            helperText={errorData.description}
                         />
-                        <FormControl variant="outlined" fullWidth margin="normal">
+                        <FormControl variant="outlined" fullWidth margin="normal" error={!!errorData.category}>
                             <InputLabel>Category</InputLabel>
                             <Select
                                 name="category"
@@ -103,6 +138,7 @@ const ExpenseForm = ({
                                     <MenuItem key={cat.key} value={cat.key}>{cat.label}</MenuItem>
                                 ))}
                             </Select>
+                            {!!errorData.category && <FormHelperText>{errorData.category}</FormHelperText>}
                         </FormControl>
                     </form>
                 </DialogContent>

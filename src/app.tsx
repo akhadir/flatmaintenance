@@ -85,12 +85,14 @@ function App() {
                     {!secretSuccess && (
                         <SecretDialog errorMsg={errorMsg} handleSecret={setSecret} />
                     )}
-                    <Router>
-                        <Home path="/" />
-                        <Cat path="cat" />
-                        <Bills path="bills" />
-                        <Cash path="cash" />
-                    </Router>
+                    {secretSuccess && (
+                        <Router>
+                            <Home path="/" />
+                            <Cat path="cat" />
+                            <Bills path="bills" />
+                            <Cash path="cash" />
+                        </Router>
+                    )}
                 </div>
             </div>
         </Provider>
