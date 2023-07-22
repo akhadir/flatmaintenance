@@ -1,4 +1,4 @@
-import { appConfig, setCredentials } from '../..';
+import { getConfig, setCredentials } from '../..';
 import { ApplicationConfig } from '../../service-types';
 import SHEET_ACTION_TYPES, { SheetInfo } from './sheet-types';
 
@@ -26,7 +26,7 @@ export function initializeGoogleSheet(secret: string) {
         dispatch(initSheet());
         const out = setCredentials(secret);
         if (out.res) {
-            dispatch(initSuccess({ ...appConfig }));
+            dispatch(initSuccess({ ...getConfig() }));
         } else {
             dispatch(initFailure(out.error));
         }

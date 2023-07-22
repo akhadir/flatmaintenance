@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import moment from 'moment';
-import { appConfig } from '..';
+import { getConfig } from '..';
 import gsheetUtil from '../googleapis/gsheet-util-impl';
 import { CatItem, MonthlySheetDataType, Transaction } from '../service-types';
 
@@ -124,7 +124,7 @@ export class TransSheet implements Sheet {
     }
 
     private async mergeSheetData(sheet: GoogleSpreadsheetWorksheet, sheetData: Transaction[]) {
-        const { transactions } = appConfig.appData;
+        const { transactions } = getConfig().appData;
         const rows: MonthlySheetDataType[] = [];
         if (sheetData.length > 0) {
             transactions.forEach((trans) => {

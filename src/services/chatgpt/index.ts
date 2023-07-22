@@ -1,13 +1,16 @@
 import { Configuration, OpenAIApi } from 'openai';
-import { appConfig } from '..';
+import { getConfig } from '..';
+import { ApplicationConfig } from '../service-types';
 
 export class ChatGPTService {
     public chatGPTPrivateKey: string = '';
     public openAI: OpenAIApi | undefined;
+    private appConfig: ApplicationConfig;
 
     public constructor() {
-        if (appConfig.chatGPTPrivateKey) {
-            this.chatGPTPrivateKey = appConfig.chatGPTPrivateKey;
+        this.appConfig = getConfig();
+        if (this.appConfig.chatGPTPrivateKey) {
+            this.chatGPTPrivateKey = this.appConfig.chatGPTPrivateKey;
             const chatGPTConfig = new Configuration({
                 organization: 'org-wfOq673LgvxydlfXwY3Fmcvm',
                 apiKey: this.chatGPTPrivateKey,

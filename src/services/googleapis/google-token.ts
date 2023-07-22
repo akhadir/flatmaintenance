@@ -1,12 +1,11 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { uuid } from 'uuidv4';
-import { appConfig } from '..';
-
-const { clientEmail: clientId, privateKey, googleAPIKey: apiKey } = appConfig;
-const email = '';
+import { getConfig } from '..';
 
 export const generateTokenAssertion = async (expiresIn = Math.floor(Date.now() / 1000 + 3600)) => {
+    const email = '';
+    const { clientEmail: clientId, privateKey } = getConfig();
     const claims = {
         iss: clientId,
         sub: email,
@@ -24,6 +23,7 @@ export const generateTokenAssertion = async (expiresIn = Math.floor(Date.now() /
     return token;
 };
 export const generateAuthToken = async () => {
+    const { clientEmail: clientId } = getConfig();
     const tokenAssertion = await generateTokenAssertion();
     const url = 'https://www.googleapis.com/oauth2/v4/token';
     const body = {

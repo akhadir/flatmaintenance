@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { appConfig } from '..';
+import { getConfig } from '..';
 import { generateAuthToken } from './google-token';
 
 export const VERIFIED_FILE_PREFIX = 'VERIFIED_';
 
 const BILLS_FOLDER_ID = '1zVRwXWZjfAS3Hk1rXq-XtqurPcQ-yAW-'; // bills directory
-const { googleAPIKey: apiKey } = appConfig;
 
 export async function fetchFilesFromFolder(folderId: string): Promise<any[]> {
+    const { googleAPIKey: apiKey } = getConfig();
     const folderIdFinal = folderId || BILLS_FOLDER_ID;
     // eslint-disable-next-line max-len
     const query = encodeURI(`'${folderIdFinal}' in parents and (mimeType = 'image/jpeg' or mimeType = 'image/png' or mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`);

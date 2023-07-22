@@ -104,7 +104,7 @@ export const setSheetMonth = (sheetTitle: string) => {
     appData.transSheetMonth = sheetTitle;
 };
 
-export const appConfig: ApplicationConfig = {
+const appConfig: ApplicationConfig = {
     secret: sessionStorage.getItem('session-id') || '',
     SPREADSHEET_ID: '16Q4fGH3MHV4yFZn-Ws0tDpz57hXLjOE_wDSXilJCDZ0',
     ENC_CLIENT_EMAIL: 'U2FsdGVkX19lrOkAqkI1YRZkdHSjXZc+dtJNUzOhSlqaydB6Gxi4lm9MpS7+2/W7OtInfOCmh739buu1z1jzT/jJrAeRX2+hKkxc+3qsduw=',
@@ -114,6 +114,8 @@ export const appConfig: ApplicationConfig = {
     doc: new GoogleSpreadsheet('16Q4fGH3MHV4yFZn-Ws0tDpz57hXLjOE_wDSXilJCDZ0'),
     appData,
 };
+
+export const getConfig = () => appConfig;
 
 if (appConfig.secret) {
     setCredentials(appConfig.secret);

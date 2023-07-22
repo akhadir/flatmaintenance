@@ -5,11 +5,12 @@ import {
     GoogleSpreadsheetWorksheet,
     WorksheetBasicProperties,
 } from 'google-spreadsheet';
-import { appConfig } from '..';
+import { getConfig } from '..';
 import catIndex from '../cat-map/cat-index';
 import monthIndex from '../cat-map/month-index';
 import maintIndex from '../maint-map/flat-index';
 import maintenenceMonthIndex from '../maint-map/month-index';
+import { ApplicationConfig } from '../service-types';
 
 // Config variables
 export interface GSheetUtil {
@@ -43,16 +44,21 @@ let gsheetInstance: GSheetUtil;
 class GsheetUtilImpl implements GSheetUtil {
     public currentSheet: string = '';
     public initialized = false;
+    private appConfig: ApplicationConfig;
+
+    public constructor() {
+        this.appConfig = getConfig();
+    }
 
     public init() {
         if (this.initialized) {
-            return Promise.resolve(appConfig.doc);
+            return Promise.resolve(this.appConfig.doc);
         }
         return new Promise<GoogleSpreadsheet>((resolve, reject) => {
-            const { doc } = appConfig;
+            const { doc } = this.appConfig;
             doc.useServiceAccountAuth({
-                client_email: appConfig.clientEmail || '',
-                private_key: appConfig.privateKey || '',
+                client_email: this.appConfig.clientEmail || '',
+                private_key: this.appConfig.privateKey || '',
             }).then(() => {
                 doc.loadInfo().then(() => {
                     this.initialized = true;
@@ -68,7 +74,7 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public getSpreadSheet () {
-        return appConfig.doc;
+        return this.appConfig.doc;
     }
 
     public async getSheetByTitleAsJson(sheetTitle: string): Promise<{ [key: string]: any; }[]> {
@@ -106,7 +112,7 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public async getSheetByTitle(sheetTitle: string) {
-        const sheet = appConfig.doc?.sheetsByTitle[sheetTitle];
+        const sheet = this.appConfig.doc?.sheetsByTitle[sheetTitle];
         if (sheet) {
             this.currentSheet = sheet.sheetId;
             await sheet.loadCells();
@@ -116,28 +122,28 @@ class GsheetUtilImpl implements GSheetUtil {
 
     public async getSheet(sheetId: string) {
         this.currentSheet = sheetId;
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         await sheet.loadCells();
         return sheet;
     }
 
     public appendSheet(sheetId: string, row: { [key: string]: string | number; }) {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         return sheet.addRow(row);
     }
 
     public append(row: { [key: string]: string | number; }) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.addRow(row);
     }
 
     public async appendRows(rows: { [key: string]: string | number; }[]) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         await sheet.addRows(rows);
     }
 
     public getSheetRow(sheetId: string, row: number) {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         return sheet.getRows({
             limit: 1,
             offset: row,
@@ -145,7 +151,7 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public getRow(row: number) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.getRows({
             limit: 1,
             offset: row,
@@ -153,7 +159,7 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public getColumn(col: number) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
@@ -172,7 +178,7 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public getSheetColumn(sheetId: string, col: number) {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         const result = [];
         const len = sheet.rowCount < 100 ? sheet.rowCount : 100;
         for (let i = 0; i < len - 1; i += 1) {
@@ -182,31 +188,31 @@ class GsheetUtilImpl implements GSheetUtil {
     }
 
     public getSheetCell(sheetId: string, row: number, column: number) {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         return sheet.getCell(row, column);
     }
 
     public getCell(row: number, column: number) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.getCell(row, column);
     }
 
     public saveSheetCells(sheetId: string, cells: GoogleSpreadsheetCell[]) {
-        const sheet = appConfig.doc.sheetsById[sheetId];
+        const sheet = this.appConfig.doc.sheetsById[sheetId];
         return sheet.saveCells(cells);
     }
 
     public saveCells(cells: GoogleSpreadsheetCell[]) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         return sheet.saveCells(cells);
     }
 
     public addSheet (input: WorksheetBasicProperties) {
-        return appConfig.doc.addSheet(input);
+        return this.appConfig.doc.addSheet(input);
     }
 
     public async saveSheetWithJSON (json: { [key: string]: any; }[]) {
-        const sheet = appConfig.doc.sheetsById[this.currentSheet || ''];
+        const sheet = this.appConfig.doc.sheetsById[this.currentSheet || ''];
         await this.updateSheet(sheet, json);
     }
 

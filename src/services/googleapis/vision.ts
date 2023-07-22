@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { appConfig } from '..';
-
-const API_KEY = appConfig.googleAPIKey;
+import { getConfig } from '..';
 
 export function getVision(imageId: string) {
+    const API_KEY = getConfig().googleAPIKey;
     const url = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
     const data = {
         requests: [

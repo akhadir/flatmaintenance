@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import { Button } from '@material-ui/core';
 import './index.css';
 import AppContext from '../../services';
 import { Transaction } from '../../services/service-types';
