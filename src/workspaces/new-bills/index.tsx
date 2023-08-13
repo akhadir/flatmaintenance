@@ -3,8 +3,10 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
 import BillGrid from './bill-grid';
 import ExpenseForm from './expense';
-import { ExpenseState, GoogleDriveFile } from './expense-types';
-import { extractBillData, fetchFiles, getDataInSheetFormat, saveCashTransSheet } from './bill-utils';
+import { ExpenseState, GoogleDriveFile, TransactionType } from './expense-types';
+import {
+    extractBillData, fetchFiles, getDataInSheetFormat, saveCashTransSheet, saveOnlineTransactionWithBill,
+} from './bill-utils';
 import FolderGrid from './folder-grid';
 import { TransSheet } from '../../services/sheet';
 import { CatItem } from '../../services/service-types';
@@ -42,8 +44,12 @@ export default function NewBills() {
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill.id, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    const finalData = [getDataInSheetFormat(data, selectedBill.id)];
-                    saveCashTransSheet(finalData);
+                    if (data.transactionType === TransactionType.Cash) {
+                        const finalData = [getDataInSheetFormat(data, selectedBill.id)];
+                        saveCashTransSheet(finalData);
+                    } else {
+                        saveOnlineTransactionWithBill(data, selectedBill.id);
+                    }
                 });
             }
         }

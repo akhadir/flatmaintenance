@@ -37,6 +37,32 @@ export const saveOnlineTransSheet = async (data: any, sheetTitle = 'Online Trans
     return true;
 };
 
+export const saveOnlineTransactionWithBill = async (data: ExpenseState, fileId: string) => {
+    await searchUpdateOnlineTransWithBills(data.date, data.amount, data.category || '', getDriveFileURL(fileId));
+};
+
+export async function searchUpdateOnlineTransWithBills(
+    date: any,
+    debit: any,
+    category: string,
+    billURL: string,
+) {
+    let searchColumns: Record<string, any> = {
+        Date: date,
+        Debit: debit,
+        Category: category,
+    };
+    try {
+        await gsheetUtil.searchUpdateRecord('Online Transactions', searchColumns, 'Bill', billURL);
+    } catch (e) {
+        searchColumns = {
+            Debit: debit,
+            Category: category,
+        };
+        await gsheetUtil.searchUpdateRecord('Online Transactions', searchColumns, 'Bill', billURL);
+    }
+}
+
 export const saveCashTransSheet = async (data: any, sheetTitle = 'Cash Transactions') => {
     const sheet = await gsheetUtil.getSheetByTitle(sheetTitle);
     if (!sheet) {

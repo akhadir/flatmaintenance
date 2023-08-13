@@ -1,15 +1,20 @@
 .expense-bill-img {
     display: block;
     margin: 0 auto;
-    max-width: 540px;
+    min-width: 100%;
     overflow: auto;
+    min-height: 300px;
 }
 .bill-grid-item {
     overflow: hidden;
     cursor: pointer;
     color: blue;
+    min-width: 250px;
 }
 .no-bills-msg {
     margin: 0 auto;
     padding: 20px 0;
+}
+.transaction-toggle {
+    margin-top: 50px;
 }

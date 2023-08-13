@@ -38,6 +38,11 @@ export interface GSheetUtil {
     addSheet: (input: WorksheetBasicProperties) => Promise<GoogleSpreadsheetWorksheet>;
     updateSheetWithJSON: (json: { [key: string]: any }[], sheetTitle?: string) => Promise<void>;
     isEmptySheet: (sheet: GoogleSpreadsheetWorksheet) => boolean;
+    searchUpdateRecord: (
+        sheetName: string,
+        searchColumns: Record<string, any>,
+        updateColumnName: string,
+        updateValue: any) => Promise<void>;
 }
 
 let gsheetInstance: GSheetUtil;
@@ -254,6 +259,38 @@ class GsheetUtilImpl implements GSheetUtil {
             });
         });
         return sheet.saveUpdatedCells();
+    }
+
+    public async searchUpdateRecord(
+        sheetName: string,
+        searchColumns: Record<string, any>,
+        updateColumnName: string,
+        updateValue: any,
+    ) {
+        const sheet = await this.getSheetByTitle(sheetName);
+
+        // Get all rows from the sheet
+        const rows = await sheet.getRows();
+
+        // Search for the record
+        const recordIndex = rows.findIndex(
+            (row: { [x: string]: any; }) =>
+                Object.entries(searchColumns).every(([columnName, value]) => row[columnName] === value));
+
+        if (recordIndex !== -1) {
+            // If a record is found, update its input column if it's empty
+            const recordToUpdate = rows[recordIndex];
+            if (!recordToUpdate[updateColumnName]) {
+                recordToUpdate[updateColumnName] = updateValue;
+                await recordToUpdate.save();
+                console.log('Record updated successfully.');
+            } else {
+                console.log('Record found but input column is not empty.');
+            }
+        } else {
+            console.log('Record not found.');
+            throw new Error('RECORD_NOT_FOUND');
+        }
     }
 
     public isEmptySheet(sheet: GoogleSpreadsheetWorksheet): boolean {

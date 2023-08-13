@@ -8,11 +8,17 @@ export type ExpenseFormProps = ExpenseState & {
     expenseCategories: CatItem[];
 };
 
+export enum TransactionType {
+    Online = 'Online',
+    Cash = 'Cash',
+}
+
 export type ExpenseState = {
     date?: string,
     amount?: number,
     description?: string,
     category?: string,
+    transactionType?: TransactionType;
 };
 
 export type GoogleDriveFile = {

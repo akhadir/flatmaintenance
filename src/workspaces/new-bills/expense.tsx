@@ -13,18 +13,22 @@ import {
     DialogActions,
     TextField,
     FormHelperText,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from '@material-ui/core';
 import { ExpenseFormProps, ExpenseState } from './expense-types';
 import './expense.css';
 
 const ExpenseForm = ({
-    callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType,
+    callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType, transactionType,
 }: ExpenseFormProps) => {
     const [formData, setData] = useState<ExpenseState>({
         date: moment(date ?? '01-04-2023', 'DD-MM-YYYY').format('YYYY-MM-DD'),
         amount: amount ?? 0,
         description: description ?? 'text',
         category: category ?? '',
+        transactionType,
     });
 
     const [errorData, setErrorData] = useState({
@@ -32,6 +36,7 @@ const ExpenseForm = ({
         amount: '',
         description: '',
         category: '',
+        transactionType: '',
     });
 
     const handleChange = useCallback((event: any) => {
@@ -44,6 +49,10 @@ const ExpenseForm = ({
 
     const handleSubmit = useCallback(() => {
         let error = false;
+        if (!formData.transactionType) {
+            errorData.transactionType = 'Select a transaction type';
+            error = true;
+        }
         if (!formData.amount) {
             errorData.amount = 'Enter a valid amount';
             error = true;
@@ -71,7 +80,7 @@ const ExpenseForm = ({
 
     return (
         <div className="expense-dialog">
-            <Dialog open onClose={handleClose}>
+            <Dialog open onClose={handleClose} className="bill-grid-dialog" fullWidth scroll="paper">
                 <DialogTitle>Form</DialogTitle>
                 <DialogContent>
                     {mimeType.startsWith('image/') && (
@@ -89,6 +98,29 @@ const ExpenseForm = ({
                         />
                     )}
                     <form>
+                        <FormControl variant="outlined" fullWidth margin="normal" error={!!errorData.transactionType}>
+                            <RadioGroup
+                                aria-label="Transaction Type"
+                                name="transactionType"
+                                value={formData.transactionType}
+                                onChange={handleChange}
+                                row
+                            >
+                                <FormControlLabel
+                                    value="Cash"
+                                    control={<Radio color="primary" />}
+                                    label="Cash"
+                                />
+                                <FormControlLabel
+                                    value="Online"
+                                    control={<Radio color="primary" />}
+                                    label="Online"
+                                />
+                            </RadioGroup>
+                            {!!errorData.transactionType &&
+                            <FormHelperText>{errorData.transactionType}</FormHelperText>
+                            }
+                        </FormControl>
                         <TextField
                             type="date"
                             name="date"
