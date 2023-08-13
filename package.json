@@ -1,6 +1,6 @@
 {
   "name": "flat-maintenance",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "scripts": {
     "start": "cross-env HTTPS=true react-scripts start",
