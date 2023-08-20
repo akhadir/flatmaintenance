@@ -105,16 +105,21 @@ export const getDataInSheetFormat = (data: ExpenseState, selectedBill?: string) 
     return out;
 };
 
-export const setCategory = (data: ExpenseState) => {
+export const setCategory = (data: ExpenseState, longDescription?: string) => {
     const value: TransactionType = getDataInSheetFormat(data);
+    if (longDescription) {
+        value.Description = longDescription;
+    }
     const transMapExec = new TransMapExecutor(catMapJson as any);
     transMapExec.run([value] as TransactionType[]);
     data.category = value.Category;
+    if (data.category) {
+        data.description = data.category;
+    }
 };
 
 export function extractBillData(
     fileName: string | undefined,
-    formData: ExpenseState,
     bill: GoogleDriveFile,
 ): Promise<ExpenseState> {
     let data: ExpenseState = {};
@@ -127,18 +132,16 @@ export function extractBillData(
                 const parsedText = response.data?.ParsedResults[0]?.ParsedText || '';
                 const parsedData = parseExpenseInfo(parsedText);
                 parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
-                parsedData.description = data.description || parsedData.description;
+                parsedData.description = data.description ?? parsedData.description;
                 parsedData.date = data.date ? data.date : parsedData.date;
                 const parsedFormData = {
-                    ...formData,
                     ...parsedData,
                 };
-                setCategory(parsedFormData);
+                setCategory(parsedFormData, parsedText!.toLowerCase());
                 resolve(parsedFormData);
             });
         } else {
             const parsedFormData = ({
-                ...formData,
                 ...data,
             });
             setCategory(parsedFormData);

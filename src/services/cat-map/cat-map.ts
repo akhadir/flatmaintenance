@@ -28,7 +28,7 @@ export default {
     'Audit Fees': [{
         Description: [{
             opr: 'having',
-            value: ['N YASWANTH', 'YASWANTH'],
+            value: ['N YASWANTH', 'YASWANTH', 'audit', 'audit fees'],
         }],
     }],
     'Corpus Fund': [{
@@ -91,6 +91,8 @@ export default {
                 'house-keeping.+salary',
                 'housekeeping.+ladies',
                 'hk.+salary',
+                'hyrunni',
+                'sunanda',
             ],
         }],
     }],
@@ -103,7 +105,7 @@ export default {
     'Garbage Collection Vendor (Hasirudala)/BBMP': [{
         Description: [{
             opr: 'having',
-            value: ['SYED ALI BASHA'],
+            value: ['SYED ALI BASHA', 'RR CLEANING', 'RR CLEAN'],
         }],
     }],
     'Borewell And Motor Maintenance': [{
@@ -162,13 +164,13 @@ export default {
     'Septic Tank Repairs / Cleaning': [{
         Description: [{
             opr: 'having',
-            value: ['septik', 'septic', 'septic tank', 'sewage tank', 'sewage work', 'sewage pipe'],
+            value: ['septik', 'septic', 'septic tank', 'sewage', 'sewage tank', 'sewage work', 'sewage pipe'],
         }],
     }],
     'Water Tanks Cleaning': [{
         Description: [{
             opr: 'regex',
-            value: ['water.+tank'],
+            value: ['water.+tank', 'cauvery', 'kaveri'],
         }],
     }],
     'Generator Maintenance and Repair': [{

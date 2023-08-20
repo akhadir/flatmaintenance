@@ -32,11 +32,11 @@ export default function NewBills() {
         setShowLoader(true);
         const fileInfo = fileList.find((file) => file.id === image.id);
         const fileName = fileInfo?.name;
-        const parsedFormData = await extractBillData(fileName, formData, image);
+        const parsedFormData = await extractBillData(fileName, image);
         setShowLoader(false);
         setFormData(parsedFormData);
         setOpenDialog(true);
-    }, [fileList, formData]);
+    }, [fileList]);
 
     const handleClose = useCallback((data?: ExpenseState) => {
         if (selectedBill && data?.date) {

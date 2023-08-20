@@ -1,6 +1,9 @@
-import expenseList from './expense-list';
+import { TransCategory } from '../../utils/trans-category';
 
-export function parseExpenseInfo(text: string, expenseTypes: string[] = expenseList) {
+export function parseExpenseInfo(text: string, expenseTypes: string[] = []) {
+    if (!expenseTypes || expenseTypes.length === 0) {
+        expenseTypes = Object.values(TransCategory);
+    }
     // Initialize the outputs
     let date = '';
     let amount = '';

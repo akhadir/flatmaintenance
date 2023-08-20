@@ -8,7 +8,7 @@ export default {
     '002': [{
         Description: [{
             opr: 'having',
-            value: ['shainv', 'potti', 'MAHESH'],
+            value: ['shainv', 'potti', 'MAHESH', 'NAGARAJ MUTHUSAMY', 'NAGARAJ'],
         }],
     }],
     '003': [{
@@ -200,7 +200,7 @@ export default {
     211: [{
         Description: [{
             opr: 'having',
-            value: ['9972528008'],
+            value: ['9972528008', 'pranjan'],
         }],
     }],
     212: [{
