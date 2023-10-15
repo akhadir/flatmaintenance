@@ -117,12 +117,14 @@ h4 {
 }
 .sb-footer svg {
     cursor: pointer;
-    cursor: pointer;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     color: #1d1d1d;
     background: #adadad;
+}
+.app .ps-sidebar-root {
+    box-shadow: 2px 3px 4px grey;
 }
 @media only screen and (max-width: 800px) {
     .app .pro-sidebar {
