@@ -1,22 +1,12 @@
 import React, { useCallback, useState, useContext, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import './index.css';
+import {
+    TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody,
+} from '@mui/material';
 import AppContext from '../../services';
 import { Transaction } from '../../services/service-types';
+import './index.css';
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
 export type FilePreviewProps = {
     name: string;
     xlsData: Transaction[];
@@ -33,10 +23,9 @@ export const FilePreview = (props: FilePreviewProps) => {
     }, [rows]);
     const monthsArray = Object.values(months);
     const [selMonth, setSelMonth] = useState(monthsArray.length === 1 ? monthsArray[0] : '');
-    const classes = useStyles();
     const { appData } = useContext(AppContext);
     appData.transSheetMonth = selMonth;
-    const handleMonthChange = useCallback((e) => {
+    const handleMonthChange = useCallback((e: any) => {
         if (e.target.value) {
             appData.transSheetMonth = e.target.value;
             setSelMonth(e.target.value);
@@ -82,7 +71,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                 </div> */}
             </div>
             <TableContainer className="xls-file-preview" component={Paper}>
-                <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
+                <Table size="small" stickyHeader aria-label="Parsed Bank Transactions">
                     <TableHead>
                         <TableRow>
                             <TableCell>#</TableCell>

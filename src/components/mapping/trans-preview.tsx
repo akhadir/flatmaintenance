@@ -1,31 +1,20 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+    TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody,
+} from '@mui/material';
 import moment from 'moment';
 import { Transaction } from '../../services/service-types';
 import './trans-preview.css';
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
 export type TransPreviewProps = {
     xlsData: Transaction[];
 }
 export const TransPreview = (props: TransPreviewProps) => {
     const { xlsData: rows } = props;
-    const classes = useStyles();
     return (
         <>
             <TableContainer className="trans-preview" component={Paper}>
-                <Table className={classes.table} size="small" stickyHeader aria-label="Parsed Bank Transactions">
+                <Table size="small" stickyHeader aria-label="Parsed Bank Transactions">
                     <TableHead>
                         <TableRow>
                             <TableCell>#</TableCell>

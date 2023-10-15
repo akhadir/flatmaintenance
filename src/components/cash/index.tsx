@@ -2,7 +2,6 @@ import { IconButton } from '@mui/material';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { Camera } from 'react-camera-pro';
 import './cash-trans.css';
 import { getDatafromDataURI } from '../../services/ocr';
 import ChatGPTService from '../../services/chatgpt';
@@ -58,7 +57,7 @@ function CashTransactions() {
                     {fullscreen ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
                 </IconButton>
             )}
-            {!image && <Camera ref={camera} facingMode="environment" errorMessages={errorMessages} />}
+            {/* {!image && <Camera ref={camera} facingMode="environment" errorMessages={errorMessages} />} */}
             <IconButton
                 className="camera-click"
                 aria-label="Take Photo"

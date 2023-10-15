@@ -1,10 +1,8 @@
-import {
-    Button, Step, StepLabel, Stepper, Typography,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import ReactJson from 'react-json-view';
+import { JsonView, defaultStyles } from 'react-json-view-lite';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    Alert, Stepper, Typography, Step, StepLabel, Button,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
 import { initializeGoogleSheet } from '../../services/redux/google-sheet/sheet-actions';
@@ -19,21 +17,6 @@ import CategorizeCash from './categorize-cash';
 import CategorizeOnline from './categorize-online';
 import { TransCategory } from '../../utils/trans-category';
 import './categorizer.css';
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        button: {
-            marginRight: theme.spacing(1),
-        },
-        instructions: {
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1),
-        },
-    }),
-);
 
 function Categorizer() {
     const [message, setMessage] = useState<string>();
@@ -84,7 +67,6 @@ function Categorizer() {
         ['Cash Transactions', 'Online Transactions', 'Map Transactions', 'Categorize Maintenance']), []);
     const isStepOptional = useCallback((index: number) => false, []);
     const isCompletedStep = useCallback((index: number) => false, []);
-    const classes = useStyles();
     const handleBack = useCallback(() => {
         switch (activeStep) {
         case 3: {
@@ -156,7 +138,6 @@ function Categorizer() {
                     <Button
                         disabled={activeStep === 0}
                         onClick={handleBack}
-                        className={classes.button}
                     >
                         Back
                     </Button>
@@ -165,7 +146,6 @@ function Categorizer() {
                             variant="contained"
                             color="primary"
                             onClick={handleSkip}
-                            className={classes.button}
                         >
                             Skip
                         </Button>
@@ -174,7 +154,6 @@ function Categorizer() {
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
-                        className={classes.button}
                     >
                         {(activeStep === steps.length - 1 && 'Save') || 'Next'}
                     </Button>
@@ -204,8 +183,10 @@ function Categorizer() {
                 <>
                     {activeStep === 0 && <CategorizeCash />}
                     {activeStep === 1 && <CategorizeOnline />}
-                    {activeStep === 2 && !!monthlyCatSplit && <ReactJson src={monthlyCatSplit} />}
-                    {activeStep === 3 && !!monthlyMaintSplit && <ReactJson src={monthlyMaintSplit} />}
+                    {activeStep === 2 && !!monthlyCatSplit && <JsonView style={defaultStyles} data={monthlyCatSplit} />}
+                    {activeStep === 3 && !!monthlyMaintSplit &&
+                        <JsonView style={defaultStyles} data={monthlyMaintSplit} />
+                    }
                 </>
             )}
         </div>

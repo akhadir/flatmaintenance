@@ -1,17 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { FilePicker } from 'react-file-picker';
-import Alert from '@material-ui/lab/Alert';
 import './index.css';
+import { Alert } from '@mui/material';
 
 export type FileUploadProps = {
     onUpload: (file: File) => void;
 }
 export const FileUpload = (props: FileUploadProps) => {
     const [errorMsg, setErrorMsg] = useState<string>();
-    const onUpload = useCallback((fileObject) => {
+    const onUpload = useCallback((fileObject: File) => {
         props.onUpload(fileObject);
     }, [props]);
-    const onError = useCallback((errMsg) => {
+    const onError = useCallback((errMsg: React.SetStateAction<string | undefined>) => {
         setErrorMsg(errMsg);
     }, []);
     return (

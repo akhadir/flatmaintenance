@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { LinearProgress } from '@mui/material';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import { LayoutProps, LayoutType } from './layout-types';
 import componentManager from './component-manager';
 import eventManager from './event-manager';

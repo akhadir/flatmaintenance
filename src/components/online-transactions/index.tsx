@@ -1,12 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Alert from '@material-ui/lab/Alert';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+    Alert, Stepper, Typography, Step, StepLabel, Button,
+} from '@mui/material';
 import FileUpload from '../file-upload';
 import fileParserUtil from '../../services/xlsjs';
 import FilePreview from '../file-preview';
@@ -16,27 +12,11 @@ import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
 import './index.css';
 import dataUtils from './data-utils';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        button: {
-            marginRight: theme.spacing(1),
-        },
-        instructions: {
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(1),
-        },
-    }),
-);
-
 function getSteps() {
     return ['File Upload', 'File Preview', 'Save'];
 }
 
 export const OnlineTransactionParser = () => {
-    const classes = useStyles();
     const { sheetConfig } : GoogleSheet = useSelector((state: any) => state.sheet);
     const [errorMsg, setErrorMsg] = useState<string>('');
     const [activeStep, setActiveStep] = useState(0);
@@ -119,7 +99,7 @@ export const OnlineTransactionParser = () => {
     return (
         <div className="wizard">
             {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-            <div className={classes.root}>
+            <div>
                 <Stepper activeStep={activeStep}>
                     {steps.map((label, index) => {
                         const stepProps: { completed?: boolean } = {};
@@ -140,24 +120,23 @@ export const OnlineTransactionParser = () => {
                 <div>
                     {activeStep === steps.length && (
                         <div>
-                            <Typography className={classes.instructions}>
+                            <Typography>
                                 All steps completed - you&apos;re finished
                             </Typography>
-                            <Button onClick={handleReset} className={classes.button}>
+                            <Button onClick={handleReset}>
                                 Reset
                             </Button>
                         </div>
                     )}
                     {activeStep !== steps.length && (
                         <div>
-                            <Typography className={classes.instructions}>
+                            <Typography>
                                 {getStepContent(activeStep)}
                             </Typography>
                             <div>
                                 <Button
                                     disabled={activeStep === 0}
                                     onClick={handleBack}
-                                    className={classes.button}
                                 >
                                     Back
                                 </Button>
@@ -166,7 +145,6 @@ export const OnlineTransactionParser = () => {
                                         variant="contained"
                                         color="primary"
                                         onClick={handleSkip}
-                                        className={classes.button}
                                     >
                                         Skip
                                     </Button>
@@ -175,7 +153,6 @@ export const OnlineTransactionParser = () => {
                                     variant="contained"
                                     color="primary"
                                     onClick={handleNext}
-                                    className={classes.button}
                                 >
                                     {(activeStep === steps.length - 1 && 'Save') || 'Next'}
                                 </Button>

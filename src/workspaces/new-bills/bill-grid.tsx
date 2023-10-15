@@ -1,8 +1,5 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { GoogleDriveFile } from './expense-types';
 import { getDriveFileURL } from './bill-utils';
 import './expense.css';

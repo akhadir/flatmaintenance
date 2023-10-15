@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import getData from '../../services/ocr';
 
 function ImageParser() {
-    const handleChangeFile = useCallback((event) => {
+    const handleChangeFile = useCallback((event: any) => {
         console.log(event);
         getData(event.target.files.item(0));
     }, []);

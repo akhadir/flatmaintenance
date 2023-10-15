@@ -1,27 +1,17 @@
 import React, {
     memo, useCallback, useEffect, useState, useContext,
 } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
+import { TreeItem, TreeView } from '@mui/x-tree-view';
+import { CircularProgress } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
 import { CatItem } from '../../services/service-types';
 import AppContext from '../../services';
 import transSheet from '../../services/sheet';
 import './cat-view.css';
 
-const useStyles = makeStyles({
-    root: {
-        height: 240,
-        flexGrow: 1,
-        maxWidth: 400,
-    },
-});
 export const CatView = () => {
-    const classes = useStyles();
     const { appData } = useContext(AppContext);
     const { transCategories } = appData;
     const [categories, setCategories] = useState<CatItem[]>([]);
@@ -55,7 +45,6 @@ export const CatView = () => {
             {categories.length ? (
                 <div className="cat-tree">
                     <TreeView
-                        className={classes.root}
                         defaultCollapseIcon={<ExpandMoreIcon />}
                         defaultExpandIcon={<ChevronRightIcon />}
                     >

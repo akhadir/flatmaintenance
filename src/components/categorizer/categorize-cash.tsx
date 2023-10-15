@@ -1,10 +1,12 @@
-import {
-    CircularProgress, TableBody, TableCell, TableHead, TableRow,
-} from '@material-ui/core';
 import moment from 'moment';
-import Table from '@material-ui/core/Table';
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
 import { fetchTransactions } from '../../services/redux/transactions/trans-actions';
 import { TransData } from '../../services/redux/transactions/trans-types';
 
