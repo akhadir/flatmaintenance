@@ -21,6 +21,9 @@ body * {
 body {
     margin: 2px;
 }
+a {
+    text-decoration: none;
+}
 .app .pro-sidebar {
     width: 210px;
     min-width: 210px;
@@ -41,12 +44,14 @@ body {
 .app-header {
     background: #BBB186;
     background: -webkit-linear-gradient(#BBB186, #3f3505);
-    background:    -moz-linear-gradient(#BBB186, #3f3505);
+    background: -moz-linear-gradient(#BBB186, #3f3505);
     background: linear-gradient(#BBB186, #3f3505);
     display: flex;
     color: #FFFDF1;
     min-height: 60px;
-    box-shadow: 2px 3px 3px grey;
+    box-shadow: 0px 3px 3px grey;
+    z-index: 5;
+    position: relative;
 }
 a[aria-current="page"] {
     color: #BBB186 !important;
