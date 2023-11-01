@@ -3,7 +3,7 @@
 const HfInference = require('@huggingface/inference');
 
 const getImageRes1 = async () => {
-    const hf = new HfInference.HfInference('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');
+    const hf = new HfInference.HfInference('');
     const resp = await hf.documentQuestionAnswering({
         model: 'impira/layoutlm-document-qa',
         inputs: {
