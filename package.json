@@ -35,8 +35,8 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "npm": "^10.2.0",
     "openai": "^3.2.1",
+    "pdf-to-img": "^2.1.2",
     "pdfjs-dist": "^3.9.179",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -96,7 +96,6 @@
     "jest-watch-typeahead": "^2.0.0",
     "prettier": "^3.0.0",
     "redux-setup": "gist:67b8ee044813e93221e22409c7c6f534",
-    "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   }
 }
