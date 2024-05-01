@@ -62,7 +62,7 @@ export default {
     '012': [{
         Description: [{
             opr: 'having',
-            value: ['K B GANESH', 'GANESH'],
+            value: ['K B GANESH', 'GANESH', 'VIVEKNAYAK', 'VIVEK NAYAK'],
         }],
     }],
     101: [{
@@ -92,19 +92,19 @@ export default {
     105: [{
         Description: [{
             opr: 'having',
-            value: ['VIKASVERMA', 'VIKAS VERMA', 'MB105', '105MAINTENA'],
+            value: ['VIKASVERMA', 'VIKAS VERMA', 'MB105', '105MAINTENA', '8892757591'],
         }],
     }],
     106: [{
         Description: [{
             opr: 'having',
-            value: ['mr.uttammohanty'],
+            value: ['mr.uttammohanty', 'uttam'],
         }],
     }],
     107: [{
         Description: [{
             opr: 'having',
-            value: ['POLAKALA'],
+            value: ['POLAKALA', 'NARAYANA PRASAD'],
         }],
     }],
     108: [{
@@ -344,7 +344,7 @@ export default {
     411: [{
         Description: [{
             opr: 'having',
-            value: ['NATESAN', 'ADITYA KOLLURI', 'ADITYAKOLLURI'],
+            value: ['NATESAN', 'ADITYA KOLLURI', 'ADITYAKOLLURI', 'santumahapatra', 'santu mahapatra'],
         }],
     }],
     412: [{

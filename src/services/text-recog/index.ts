@@ -2,8 +2,8 @@
 // import { HfInference } from '@huggingface/inference';
 const HfInference = require('@huggingface/inference');
 
-const getImageRes1 = async () => {
-    const hf = new HfInference.HfInference('');
+export const getImageRes1 = async () => {
+    const hf = new HfInference.HfInference('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');
     const resp = await hf.documentQuestionAnswering({
         model: 'impira/layoutlm-document-qa',
         inputs: {
@@ -17,7 +17,7 @@ const getImageRes1 = async () => {
     console.log('Resp: ', resp);
 };
 
-const getImageRes = async () => {
+export const getImageRes = async () => {
     const input = {
         image: await (
             await fetch(
@@ -26,7 +26,7 @@ const getImageRes = async () => {
     };
     const resp = await HfInference.request({
         model: 'microsoft/trocr-base-handwritten',
-        accessToken: '',
+        accessToken: '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',
     }, input);
 
     console.log(resp);

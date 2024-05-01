@@ -129,16 +129,24 @@ export function extractBillData(
         }
         if (!data.amount || !data.date || !data.description) {
             getVision(`https://drive.google.com/uc?id=${bill.id}`).then((response: any) => {
-                const parsedText = response.data?.ParsedResults[0]?.ParsedText || '';
-                const parsedData = parseExpenseInfo(parsedText);
-                parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
-                parsedData.description = data.description ?? parsedData.description;
-                parsedData.date = data.date ? data.date : parsedData.date;
-                const parsedFormData = {
-                    ...parsedData,
-                };
-                setCategory(parsedFormData, parsedText!.toLowerCase());
-                resolve(parsedFormData);
+                if (response && response.data && response.data.ParsedResults) {
+                    const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
+                    const parsedData = parseExpenseInfo(parsedText);
+                    parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
+                    parsedData.description = data.description ?? parsedData.description;
+                    parsedData.date = data.date ? data.date : parsedData.date;
+                    const parsedFormData = {
+                        ...parsedData,
+                    };
+                    setCategory(parsedFormData, parsedText!.toLowerCase());
+                    resolve(parsedFormData);
+                } else {
+                    const parsedFormData = ({
+                        ...data,
+                    });
+                    setCategory(parsedFormData);
+                    resolve(parsedFormData);
+                }
             });
         } else {
             const parsedFormData = ({

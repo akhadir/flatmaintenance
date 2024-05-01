@@ -25,7 +25,9 @@ export function parseExpenseInfo(text: string, expenseTypes: string[] = []) {
     });
     // Parse description
     if (!description) {
-        description = findTopMatchingText(expenseTypes, words);
+        description = text.replace(date, '');
+        description = description.replace(amount, '').replace(/_/g, '');
+        description = findTopMatchingText(expenseTypes, [description]) || description;
     }
     return {
         date,

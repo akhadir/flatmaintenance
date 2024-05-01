@@ -5,12 +5,12 @@ import { Transaction } from '../service-types';
 // eslint-disable-next-line no-shadow
 export const XLS_TRANS_KEY_PREFIX = '__EMPTY_';
 export const xLSTransKeys = {
-    DATE_KEY: '1',
-    DESC_KEY: '3',
+    DATE_KEY: '2',
+    DESC_KEY: '5',
     CHQ_NO_KEY: '9',
-    WITHDRAWAL_KEY: '11',
+    WITHDRAWAL_KEY: '12',
     DEPOSIT_KEY: '17',
-    BALANCE_KEY: ['22', '20', '21'],
+    BALANCE_KEY: ['21', '19', '20', '22'],
 };
 
 export const fileParserUtil = {

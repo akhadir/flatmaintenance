@@ -80,7 +80,7 @@ const ExpenseForm = ({
 
     return (
         <div className="expense-dialog">
-            <Dialog open onClose={handleClose} className="bill-grid-dialog" fullWidth scroll="paper">
+            <Dialog open onClose={handleClose} className="bill-grid-dialog" fullWidth scroll="paper" maxWidth="xl">
                 <DialogTitle>Form</DialogTitle>
                 <DialogContent>
                     {mimeType.startsWith('image/') && (

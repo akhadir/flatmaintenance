@@ -29,6 +29,7 @@ export const getVision = (imageURL: string) => {
                 'Content-Type': 'multipart/form-data',
                 apikey: 'K84187439488957',
             },
+            timeout: 7500,
         }).catch((error) => {
             console.error(error);
         });
