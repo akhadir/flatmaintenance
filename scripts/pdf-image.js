@@ -88,3 +88,19 @@ const standardMapping = {
     '350x1000': 'bescom',
     '1000x700': 'voucher'
 };
+
+// voucher -
+    // - housekeeping salary - 8500
+    // - gardener salary - 1500
+    // - Extra work - 500
+    // - Septic tank cleaning - 800
+    // - Water tank cleaning - 1500
+    // - Coffee bill - 150
+    // - Drinking water 300
+    // - RR cleaining
+
+// A4
+    // - Security Bill - 41000
+    // - Generator
+    // - Lift Repair
+    // - 

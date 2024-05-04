@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { ExpenseFormProps, ExpenseState } from './expense-types';
 import './expense.css';
+import { getDriveFileURL } from './bill-utils';
 
 const ExpenseForm = ({
     callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType, transactionType,
@@ -86,14 +87,14 @@ const ExpenseForm = ({
                     {mimeType.startsWith('image/') && (
                         <img
                             className="expense-bill-img"
-                            src={`https://drive.google.com/uc?id=${image}`}
+                            src={getDriveFileURL(image)}
                             alt="Expense Bill"
                         />
                     )}
                     {mimeType === 'application/pdf' && (
                         <embed
                             className="expense-bill-img"
-                            src={`https://drive.google.com/uc?id=${image}`}
+                            src={getDriveFileURL(image)}
                             title="Expense Bill"
                         />
                     )}

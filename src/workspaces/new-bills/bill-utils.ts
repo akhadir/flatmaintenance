@@ -88,7 +88,7 @@ export const saveCashTransSheet = async (data: any, sheetTitle = 'Cash Transacti
     return true;
 };
 
-export const getDriveFileURL = (fileId: string) => `https://drive.google.com/uc?id=${fileId}`;
+export const getDriveFileURL = (fileId: string) => `https://drive.google.com/file/d/${fileId}/preview`;
 
 export const getDataInSheetFormat = (data: ExpenseState, selectedBill?: string) => {
     const out: TransactionType = {
