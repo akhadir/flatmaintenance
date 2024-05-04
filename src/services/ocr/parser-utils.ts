@@ -15,7 +15,7 @@ export function parseExpenseInfo(text: string, expenseTypes: string[] = []) {
     // Iterate through the words to find the relevant information
     words.forEach((word) => {
         // Parse date
-        if (!date && /^\d{2}-\d{2}-\d{4}$/.test(word)) {
+        if (!date && /^\d{1,2}-\d{1,2}-\d{2,4}$/.test(word)) {
             date = word;
         }
         // Parse amount
