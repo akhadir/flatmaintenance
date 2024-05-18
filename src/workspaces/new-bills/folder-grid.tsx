@@ -9,13 +9,12 @@ const FolderGrid = ({ folders, handleClick }: FolderGridProp) => (
     <div>
         <Grid container spacing={2}>
             {folders.map((folder, index) => (
-                <Grid item key={`Image ${index + 1}`} xs={2}>
+                <Grid item key={`Image ${index + 1}`} xs={2} onClick={() => handleClick(folder.id)}>
                     <img
                         src="/images/folder.jpg"
                         id={`folder-${folder.name}`}
                         alt={`Folder ${index + 1}`}
                         style={{ width: 200, height: 200, cursor: 'pointer', padding: '5px' }}
-                        onClick={() => handleClick(folder.id)}
                     />
                     <h3 style={{ textAlign: 'center' }}>{folder.name}</h3>
                 </Grid>

@@ -19,11 +19,28 @@ export async function fetchFilesFromFolder(folderId: string): Promise<any[]> {
         const { files } = response.data;
         console.log('Fetched files:', files);
         return files;
-        // Do something with the fetched files
     } catch (error: any) {
         console.error('Error fetching files:', error?.message || error);
     }
     return [];
+}
+
+export async function copyFileAsDoc(fileId: string): Promise<any> {
+    const { googleAPIKey: apiKey } = getConfig();
+    try {
+        const response = await axios.post(
+            `https://www.googleapis.com/drive/v3/files/${fileId}/copy?key=${apiKey}`,
+            {
+                convert: true,
+                ocr: true,
+            },
+        );
+        console.log('Copied File:', response);
+        return response;
+    } catch (error: any) {
+        console.error('Error fetching files:', error?.message || error);
+    }
+    return {};
 }
 
 export const moveFile = async (fileId: string, toDirectoryId: string) => {

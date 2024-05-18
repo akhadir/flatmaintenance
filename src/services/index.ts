@@ -35,6 +35,12 @@ export const setCredentials = (secret: string = '') => {
     }
     return out;
 };
+
+export const encrypt = (key: string, secret?: string) => {
+    const encrypted = CryptoJS.AES.encrypt(key, secret ?? appConfig.secret).toString();
+    return encrypted;
+};
+
 const flatNumbers = [
     '001', '002', '003', '004', '005', '007', '008', '009', '010', '011', '012',
     '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112',

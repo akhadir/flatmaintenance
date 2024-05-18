@@ -129,7 +129,7 @@ export function extractBillData(
         }
         if (!data.amount || !data.date || !data.description) {
             getVision(`https://drive.google.com/uc?id=${bill.id}`).then((response: any) => {
-                if (response && response.data && response.data.ParsedResults) {
+                if (response?.data?.ParsedResults) {
                     const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
                     const parsedData = parseExpenseInfo(parsedText);
                     parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;

@@ -1,9 +1,12 @@
 /* eslint-disable max-len */
 import axios from 'axios';
+import { copyFileAsDoc } from '../googleapis/drive-util';
 
 const getData = (file: File) => {
     const formData = new FormData();
     formData.append('base64Image', file);
+    formData.append('isTable', 'true');
+    formData.append('OCREngine', '2');
     axios
         .post('https://api.ocr.space/parse/image', formData, {
             headers: {
@@ -17,12 +20,20 @@ const getData = (file: File) => {
             console.error(error);
         });
 };
+export const getDriveVision = (fileId: string) => {
+    copyFileAsDoc(fileId);
+};
+
 export const getVision = (imageURL: string) => {
     const formData = new FormData();
     formData.append('url', imageURL);
     formData.append('language', 'eng');
-    formData.append('isOverlayRequired', 'true');
+    // formData.append('isOverlayRequired', 'true');
     // formData.append('fileType', 'JPG');
+    formData.append('isTable', 'true');
+    formData.append('OCREngine', '2');
+    formData.append('filetype', 'PDF');
+
     return axios
         .post('https://api.ocr.space/parse/image', formData, {
             headers: {

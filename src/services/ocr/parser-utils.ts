@@ -5,33 +5,32 @@ export function parseExpenseInfo(text: string, expenseTypes: string[] = []) {
         expenseTypes = Object.values(TransCategory);
     }
     // Initialize the outputs
-    let date = '';
-    let amount = '';
     let description = '';
-
+    const dates: any[] = [];
+    const amounts: any[] = [];
     // Split the text based on space, newline, or underscore delimiter
     const words = text.split(/[\s_]/m).filter((word) => word && word !== '/');
 
     // Iterate through the words to find the relevant information
     words.forEach((word) => {
         // Parse date
-        if (!date && /^\d{1,2}-\d{1,2}-\d{2,4}$/.test(word)) {
-            date = word;
+        if (/^\d{1,2}-\d{1,2}-\d{2,4}$/.test(word)) {
+            dates.push(word);
         }
         // Parse amount
-        if (!amount && /^\d+(\.\d{1,2})?$/.test(word)) {
-            amount = word;
+        if (/^\d+(\.\d{1,2})?-?$/.test(word)) {
+            amounts.push(word);
         }
     });
     // Parse description
     if (!description) {
-        description = text.replace(date, '');
-        description = description.replace(amount, '').replace(/_/g, '');
+        description = text.replace(dates[0], '');
+        description = description.replace(amounts[0], '').replace(/_/g, '');
         description = findTopMatchingText(expenseTypes, [description]) || description;
     }
     return {
-        date,
-        amount: parseFloat(amount) || 0,
+        date: dates[0],
+        amount: parseFloat(amounts[0]) || 0,
         description,
     };
 }

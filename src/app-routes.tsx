@@ -13,6 +13,7 @@ function AppRoutes() {
                 <Route path="/cat" element={<Categorizer />} />
                 <Route path="/bills" element={<BillParser />} />
                 <Route path="/cash" element={<CashTransactions />} />
+                <Route path="/gen-key" element={<CashTransactions />} />
             </Route>
         </Routes>
     );
