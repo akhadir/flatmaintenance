@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { copyFileAsDoc } from '../googleapis/drive-util';
 
 const getData = (file: File) => {
@@ -33,7 +34,7 @@ export const getVision = (imageURL: string) => {
     formData.append('isTable', 'true');
     formData.append('OCREngine', '2');
     formData.append('filetype', 'PDF');
-
+    axiosRetry(axios, { retries: 3 });
     return axios
         .post('https://api.ocr.space/parse/image', formData, {
             headers: {

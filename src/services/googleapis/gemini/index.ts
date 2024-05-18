@@ -5,7 +5,13 @@ import {
 } from '@google/generative-ai';
 import { getConfig } from '../../index';
 
-export default async function extractData(text: string) {
+export type ProcessedData = {
+    amount: number;
+    date: string;
+    description: string;
+    'cash or cheque': 'cheque' | 'cash' | null;
+}
+export default async function extractData(text: string) : Promise<ProcessedData> {
     const MODEL_NAME = 'gemini-1.0-pro';
     const API_KEY = getConfig().geminiKey || '';
     const genAI = new GoogleGenerativeAI(API_KEY);
@@ -41,9 +47,15 @@ export default async function extractData(text: string) {
         generationConfig,
         safetySettings,
     });
-    // eslint-disable-next-line max-len
-    const result = await chat.sendMessage(`What is the date (dd-mm-YYYY), amount (in number format), description (in short) and 'cash or cheque', extracted from the following text in JSON format?\n${text}`);
-    const { response } = result;
-    console.log(response.text());
-    return response.text();
+    try {
+        // eslint-disable-next-line max-len
+        const result = await chat.sendMessage(`What is the date (dd-mm-YYYY), amount (in number format), description (in short) and 'cash or cheque', extracted from the following text in JSON format?\n${text}`);
+        const { response } = result;
+        const parsedString = response.text().replace(/```/g, '').replace(/JSON/gi, '');
+        const parsedData = JSON.parse(parsedString);
+        return Array.isArray(parsedData) ? parsedData[0] : parsedData;
+    } catch (e) {
+        console.log(e);
+    }
+    return { amount: 0, date: '', description: '', 'cash or cheque': null };
 }

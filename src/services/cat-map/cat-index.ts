@@ -10,7 +10,7 @@ const CAT_INDEX: { [month: string]: number } = {
     'Borewell And Motor Maintenance': 9,
     'Annual Bonus': 10,
     'Lift Maintenance (Johnson)': 11,
-    'HK items (bleaching powder,garbage bin etc)': 12,
+    'HK Items Purchased': 12,
     'Health Club Maintenance': 13,
     'Electrical / Plumbing Repairs': 14,
     'Apartment repairs related': 15,

@@ -79,13 +79,16 @@ export default {
     Security: [{
         Debit: [{
             opr: 'in',
-            value: ['35,000.00', '35000', '41000', '41,000.00'],
+            value: [35000, 35000.00, 41000, 41000.00],
         }],
     }],
     'House Keeping Salary': [{
         Description: [{
             opr: 'regex',
             value: [
+                'keeping',
+                'housekeeping',
+                'house keeping',
                 'Housekeeping.+Salary',
                 'House keeping.+Salary',
                 'house-keeping.+salary',
@@ -99,7 +102,7 @@ export default {
     'Garden Maintenance': [{
         Description: [{
             opr: 'regex',
-            value: ['garden', 'Gardner.+Salary', 'garden.+work', 'Manure'],
+            value: ['garden', 'gardner', 'Gardner.+Salary', 'garden.+work', 'Manure'],
         }],
     }],
     'Garbage Collection Vendor (Hasirudala)/BBMP': [{
@@ -120,7 +123,7 @@ export default {
             value: ['JOHNSON.+LIFTS', 'Lift'],
         }],
     }],
-    'HK items (bleaching powder,garbage bin etc)': [{
+    'HK Items Purchased': [{
         Description: [{
             opr: 'regex',
             value: [

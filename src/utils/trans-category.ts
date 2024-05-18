@@ -10,7 +10,7 @@ export enum TransCategory {
     'Borewell And Motor Maintenance' = 'Borewell And Motor Maintenance',
     'Annual Bonus' = 'Annual Bonus',
     'Lift Maintenance (Johnson)' = 'Lift Maintenance (Johnson)',
-    'HK items (bleaching powder,garbage bin etc)' = 'HK items (bleaching powder,garbage bin etc)',
+    'HK Items Purchased' = 'HK Items Purchased',
     'Health Club Maintenance' = 'Health Club Maintenance',
     'Electrical / Plumbing Repairs' = 'Electrical / Plumbing Repairs',
     'Apartment repairs related' = 'Apartment repairs related',

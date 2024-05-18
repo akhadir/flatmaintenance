@@ -1,4 +1,5 @@
-import { Query, TransType } from '../services/cat-map/cat-map-types';
+import { soundex } from 'soundex-code';
+import { Query } from '../services/cat-map/cat-map-types';
 
 class QueryExecutor {
     public query: Query;
@@ -13,7 +14,8 @@ class QueryExecutor {
         if (fieldVal && queryVal) {
             switch (opr) {
             case '==': {
-                res = fieldVal.toString() === queryVal.toString();
+                res = fieldVal.toString() === queryVal.toString() ||
+                        checkSoundexInText(queryVal.toString(), fieldVal.toString());
                 break;
             }
             case '!=': {
@@ -41,11 +43,15 @@ class QueryExecutor {
                     if (Array.isArray(queryVal)) {
                         res = queryVal.some((item) => {
                             const qval = item.toString();
-                            return fieldVal.toLowerCase().indexOf(qval.toLowerCase()) > -1;
+                            const text = fieldVal.toLowerCase();
+                            const keyword = qval.toLowerCase();
+                            return text.indexOf(keyword) > -1 || checkSoundexInText(keyword, text);
                         });
                     } else {
                         const qval = queryVal.toString();
-                        res = fieldVal.toLowerCase().indexOf(qval.toLowerCase()) > -1;
+                        const text = fieldVal.toLowerCase();
+                        const keyword = qval.toLowerCase();
+                        res = text.indexOf(keyword) > -1 || checkSoundexInText(keyword, text);
                     }
                 }
                 break;
@@ -67,7 +73,8 @@ class QueryExecutor {
             case 'in': {
                 if (Array.isArray(queryVal)) {
                     if (typeof queryVal[0] === 'string') {
-                        res = queryVal.indexOf(fieldVal.toString() as never) > -1;
+                        res = queryVal.indexOf(fieldVal.toString() as never) > -1 ||
+                                checkSoundexInArray(fieldVal.toString(), queryVal as string[]);
                     } else {
                         res = queryVal.indexOf(fieldVal as never) > -1;
                     }
@@ -89,5 +96,13 @@ class QueryExecutor {
         return res;
     }
 }
+
+const checkSoundexInText = (keyword: string, text: string) => {
+    const words = text.split(/\s+/);
+    return words.some((word) => soundex(word.toString()) === soundex(keyword));
+};
+
+const checkSoundexInArray = (keyword: string, words: string[]) =>
+    words.some((word) => soundex(word.toString()) === soundex(keyword));
 
 export default QueryExecutor;

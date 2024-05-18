@@ -2,13 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { fetchFilesFromFolder } from '../../services/googleapis/drive-util';
 import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
-import { ExpenseState, GoogleDriveFile } from './expense-types';
+import { ExpenseState, GoogleDriveFile, TransType } from './expense-types';
 import TransMapExecutor from '../../utils/trans-map-executor';
-import { TransactionType } from '../../services/redux/transactions/trans-types';
 import { TransCategory } from '../../utils/trans-category';
 import catMapJson from '../../services/cat-map/cat-map';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
 import { getVision } from '../../services/ocr';
+import extractData, { ProcessedData } from '../../services/googleapis/gemini';
+import { TransactionType } from '../../services/redux/transactions/trans-types';
 
 export function fetchFiles(
     setFilesList: React.Dispatch<React.SetStateAction<GoogleDriveFile[]>>,
@@ -107,13 +108,13 @@ export const getDataInSheetFormat = (data: ExpenseState, selectedBill?: string) 
 
 export const setCategory = (data: ExpenseState, longDescription?: string) => {
     const value: TransactionType = getDataInSheetFormat(data);
-    if (longDescription) {
+    if (!value.Description && longDescription) {
         value.Description = longDescription;
     }
     const transMapExec = new TransMapExecutor(catMapJson as any);
     transMapExec.run([value] as TransactionType[]);
     data.category = value.Category;
-    if (data.category) {
+    if (!data.description && data.category) {
         data.description = data.category;
     }
 };
@@ -128,15 +129,14 @@ export function extractBillData(
             data = parseExpenseInfo(fileName);
         }
         if (!data.amount || !data.date || !data.description) {
-            getVision(`https://drive.google.com/uc?id=${bill.id}`).then((response: any) => {
+            getVisionRetry(`https://drive.google.com/uc?id=${bill.id}`).then(async (response: any) => {
                 if (response?.data?.ParsedResults) {
                     const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
-                    const parsedData = parseExpenseInfo(parsedText);
-                    parsedData.amount = data.amount && data.amount > 0 ? data.amount : parsedData.amount;
-                    parsedData.description = data.description ?? parsedData.description;
-                    parsedData.date = data.date ? data.date : parsedData.date;
-                    const parsedFormData = {
+                    const parsedData: ProcessedData = await extractData(parsedText);
+                    const parsedFormData: ExpenseState = {
                         ...parsedData,
+                        transactionType: parsedData['cash or cheque']?.toLowerCase() === 'cheque'
+                            ? TransType.Online : TransType.Cash,
                     };
                     setCategory(parsedFormData, parsedText!.toLowerCase());
                     resolve(parsedFormData);
@@ -158,5 +158,20 @@ export function extractBillData(
     });
     return promise;
 }
+
+const getVisionRetry = (url: string, RETRY_COUNT = 3) => {
+    const promise = new Promise((resolve, reject) => {
+        getVision(url).then(async (response: any) => {
+            RETRY_COUNT -= 1;
+            if (response || RETRY_COUNT === 0) {
+                resolve(response);
+            } else if (!response) {
+                const resp = await getVisionRetry(url, RETRY_COUNT);
+                resolve(resp);
+            }
+        });
+    });
+    return promise;
+};
 
 export default { fetchFiles, saveCashTransSheet, saveOnlineTransSheet };

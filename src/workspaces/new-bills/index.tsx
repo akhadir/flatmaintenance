@@ -3,7 +3,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
 import BillGrid from './bill-grid';
 import ExpenseForm from './expense';
-import { ExpenseState, GoogleDriveFile, TransactionType } from './expense-types';
+import { ExpenseState, GoogleDriveFile, TransType } from './expense-types';
 import {
     extractBillData, fetchFiles, getDataInSheetFormat, saveCashTransSheet, saveOnlineTransactionWithBill,
 } from './bill-utils';
@@ -44,7 +44,7 @@ export default function NewBills() {
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill.id, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    if (data.transactionType === TransactionType.Cash) {
+                    if (data.transactionType === TransType.Cash) {
                         const finalData = [getDataInSheetFormat(data, selectedBill.id)];
                         saveCashTransSheet(finalData);
                     } else {

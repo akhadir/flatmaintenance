@@ -26,7 +26,7 @@ export const billDimCatMap: { [category: string]: number } = {
 export const dimCategoryMap : { [category: string]: TransCategory[] } = {
     OTHERS: [
         TransCategory['Drinking Water for Employees'],
-        TransCategory['HK items (bleaching powder,garbage bin etc)'],
+        TransCategory['HK Items Purchased'],
         TransCategory['Apartment developments'],
         TransCategory['Borewell And Motor Maintenance'],
         TransCategory['CCTV / Intercomm'],
@@ -52,7 +52,7 @@ export const dimCategoryMap : { [category: string]: TransCategory[] } = {
         TransCategory['BAF Subscription Charges'],
         TransCategory['Apartment Painting'],
         TransCategory['Lift Maintenance (Johnson)'],
-        TransCategory['HK items (bleaching powder,garbage bin etc)'],
+        TransCategory['HK Items Purchased'],
         TransCategory['Health Club Maintenance'],
         TransCategory['Generator Maintenance and Repair'],
     ],
