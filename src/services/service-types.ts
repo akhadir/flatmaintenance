@@ -48,10 +48,12 @@ export type ApplicationConfig = {
     ENC_PRIVATE_KEY: string;
     ENC_GOOGLE_API_KEY: string;
     ENC_CHAT_GPT_KEY: string;
+    ENC_GEMINI_KEY: string;
     chatGPTPrivateKey?: string;
     clientEmail?: string;
     privateKey?: string;
     googleAPIKey?: string;
+    geminiKey?: string;
     doc: GoogleSpreadsheet;
     appData: AppData;
 };

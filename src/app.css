@@ -135,3 +135,6 @@ h4 {
         display: none;
     }
 }
+body > iframe[style*='2147483647']{
+    display: none;
+}

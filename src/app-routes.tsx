@@ -4,6 +4,7 @@ import CashTransactions from './workspaces/cash';
 import Categorizer from './workspaces/categorizer';
 import BillParser from './workspaces/new-bills';
 import OnlineTransactionParser from './workspaces/online';
+import KeyGen from './workspaces/key';
 
 function AppRoutes() {
     return (
@@ -13,7 +14,7 @@ function AppRoutes() {
                 <Route path="/cat" element={<Categorizer />} />
                 <Route path="/bills" element={<BillParser />} />
                 <Route path="/cash" element={<CashTransactions />} />
-                <Route path="/gen-key" element={<CashTransactions />} />
+                <Route path="/gen-key" element={<KeyGen />} />
             </Route>
         </Routes>
     );

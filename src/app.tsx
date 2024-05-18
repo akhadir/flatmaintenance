@@ -7,6 +7,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import HandymanIcon from '@mui/icons-material/Handyman';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import store from './services/redux/store';
@@ -38,12 +39,6 @@ function App() {
                 <header className="app-header">
                     <img src="/images/ssfa.png" alt="Suraksha Sunflower Apartment" width="80px" height="60px" />
                     <span>Suraksha Sunflower </span>
-                    {/* <nav className="nav-bar">
-                    <Link to="/">Parse Online</Link> |{' '}
-                    <Link to="cat">Categorize Transactions</Link> |{' '}
-                    <Link to="bills">Upload Bills</Link> |{' '}
-                    <Link to="cash">Cash Transactions</Link>
-                </nav> */}
                 </header>
                 <div className="app">
                     <Sidebar collapsed={collapsed}>
@@ -59,6 +54,9 @@ function App() {
                             </MenuItem>
                             <MenuItem icon={<CurrencyRupeeIcon />} title="Cash Transactions">
                                 <Link to="/cash">Cash Transactions</Link>
+                            </MenuItem>
+                            <MenuItem icon={<HandymanIcon />} title="Generate Encrypted Keys">
+                                <Link to="/gen-key">Encrypt Keys</Link>
                             </MenuItem>
                             {/* <SubMenu title="Components">
                             <MenuItem>Component 1</MenuItem>
