@@ -107,37 +107,57 @@ export function doMonthlyCatSplit(data: TransactionType[], monthlySplit: Monthly
     return (dispatch: any) => {
         dispatch(loadTransactions());
         data.forEach((datum: TransactionType) => {
-            const cat = datum.Category;
+            const category = datum.Category;
             const date = datum.Date;
-            if (cat && date) {
-                const replacedDate = date.replace(/\//g, '-');
-                const month = moment(replacedDate, 'DD-MM-YYYY').format('MMM-YY');
-                if (!monthlySplit) {
-                    monthlySplit = {};
-                }
-                if (!monthlySplit[month]) {
-                    monthlySplit[month] = {};
-                }
+            if (category && date) {
+                const categories = category.split(',');
                 const isDebit = datum.Debit && datum.Debit?.toString() !== '0';
                 let amount = isDebit ?
                     parseFloat(datum.Debit!.toString().replace(/,/g, '')) :
                     parseFloat(datum.Credit!.toString().replace(/,/g, ''));
-                if (isDebit) {
-                    amount = -amount;
-                }
-                if (amount && typeof amount === 'number') {
-                    if (!monthlySplit[month][cat]) {
-                        monthlySplit[month][cat] = amount;
-                    } else {
-                        monthlySplit[month][cat] += amount;
+                categories.forEach((catWithAmount: string) => {
+                    let cat = catWithAmount;
+                    if (catWithAmount.indexOf('(') > -1) {
+                        const splitCat = catWithAmount.split('(');
+                        [cat] = splitCat;
+                        amount = parseFloat(splitCat[1].replace(/(\(|\))/g, '').replace(/,/g, ''));
                     }
-                } else {
-                    console.log('cat', cat, month, datum);
-                }
+                    updateMonthlyCat(monthlySplit, datum, date, cat.trim(), !!isDebit, amount);
+                });
             }
         });
         dispatch(updateMonthlySplit({ ...monthlySplit }));
     };
+}
+
+function updateMonthlyCat(
+    monthlySplit: MonthlyCatSplit,
+    datum: TransactionType,
+    date: string,
+    cat: string,
+    isDebit: boolean,
+    amount: number,
+) {
+    const replacedDate = date.replace(/\//g, '-');
+    const month = moment(replacedDate, 'DD-MM-YYYY').format('MMM-YY');
+    if (!monthlySplit) {
+        monthlySplit = {};
+    }
+    if (!monthlySplit[month]) {
+        monthlySplit[month] = {};
+    }
+    if (isDebit) {
+        amount = -amount;
+    }
+    if (amount && typeof amount === 'number') {
+        if (!monthlySplit[month][cat]) {
+            monthlySplit[month][cat] = amount;
+        } else {
+            monthlySplit[month][cat] += amount;
+        }
+    } else {
+        console.log('cat', cat, month, datum);
+    }
 }
 
 export function doMonthlyMaintSplit(data: TransactionType[], monthlySplit: MonthlyMaintSplit) {

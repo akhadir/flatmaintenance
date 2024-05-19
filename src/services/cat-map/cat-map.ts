@@ -105,7 +105,7 @@ export default {
             value: ['garden', 'gardner', 'Gardner.+Salary', 'garden.+work', 'Manure'],
         }],
     }],
-    'Garbage Collection Vendor (Hasirudala)/BBMP': [{
+    'Garbage Collection Vendor / BBMP': [{
         Description: [{
             opr: 'having',
             value: ['SYED ALI BASHA', 'RR CLEANING', 'RR CLEAN'],
@@ -117,7 +117,7 @@ export default {
             value: ['borewell', 'motor', 'coil', 'winding'],
         }],
     }],
-    'Lift Maintenance (Johnson)': [{
+    'Lift Maintenance': [{
         Description: [{
             opr: 'regex',
             value: ['JOHNSON.+LIFTS', 'Lift'],
@@ -182,7 +182,7 @@ export default {
             value: ['venus.+energy', 'kirloskar', 'generator'],
         }],
     }],
-    'SMS Charges/Cheque book (Vijaya Bank)': [{
+    'Savings Bank SMS Charges/Cheque book': [{
         Description: [{
             opr: 'regex',
             value: ['SMS .+Alert', 'cheque.+book', 'charges', 'chq.+book'],
