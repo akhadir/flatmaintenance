@@ -54,7 +54,16 @@ export const resetTransaction = () => ({
 });
 
 export function filterTransactions(transactions: TransactionType[], filter: TransCategory[]) {
-    return transactions.filter((trans) => trans.Category && filter.indexOf(trans.Category) > -1);
+    return transactions.filter((trans) => {
+        if (trans.Category) {
+            const categories = trans.Category.split(',');
+            return categories.some((category) => {
+                const [cat] = category.split('(');
+                return filter.indexOf(cat.trim() as any) > -1;
+            });
+        }
+        return false;
+    });
 }
 
 export function fetchTransactions(sheetName = 'Cash Transactions') {
@@ -166,7 +175,8 @@ export function doMonthlyMaintSplit(data: TransactionType[], monthlySplit: Month
         data.forEach((datum: TransactionType) => {
             const flat = datum.Flat;
             const date = datum.Date;
-            if (flat && date) {
+            const category = datum.Category;
+            if (flat && date && category) {
                 const month = moment(date, 'DD/MM/YYYY').format('MMM-YY');
                 if (!monthlySplit) {
                     monthlySplit = {};
@@ -174,7 +184,13 @@ export function doMonthlyMaintSplit(data: TransactionType[], monthlySplit: Month
                 if (!monthlySplit[month]) {
                     monthlySplit[month] = {};
                 }
-                const amount = parseFloat(datum.Credit!.toString().replace(/,/g, ''));
+                let amount = parseFloat(datum.Credit!.toString().replace(/,/g, ''));
+                if (category.indexOf('(') > -1) {
+                    const splitCat = category.match(/Maintenance Collection\s+\((\d+(\.\d+)?)\)/);
+                    if (splitCat) {
+                        amount = parseFloat(splitCat[1]);
+                    }
+                }
                 if (amount && typeof amount === 'number') {
                     if (!monthlySplit[month][flat]) {
                         monthlySplit[month][flat] = amount;
