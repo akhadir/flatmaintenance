@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider HTTPS=true react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:watch": "jest --watchAll --colors --verbose",

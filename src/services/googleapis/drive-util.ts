@@ -3,8 +3,7 @@ import { getConfig } from '..';
 import { generateAuthToken } from './google-token';
 
 export const VERIFIED_FILE_PREFIX = 'VERIFIED_';
-
-const BILLS_FOLDER_ID = '1zVRwXWZjfAS3Hk1rXq-XtqurPcQ-yAW-'; // bills directory
+const BILLS_FOLDER_ID = '1-6owJyxGQSwRKxcJyMI3NXY4v-APeBui'; // bills directory
 
 export async function fetchFilesFromFolder(folderId: string): Promise<any[]> {
     const { googleAPIKey: apiKey } = getConfig();
