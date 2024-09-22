@@ -15,6 +15,7 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import dayjs from 'dayjs';
 import { BillTransactionType } from './bill-table';
 import { GoogleDriveFile } from './expense-types';
 import { extractBillData } from './bill-utils';
@@ -54,7 +55,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                         <DatePicker
                             disabled={showLoader}
                             format="DD-MM-YYYY"
-                            // value={moment(formData.date ?? '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD')}
+                            value={dayjs(moment(formData.date || '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD'))}
                             onChange={(date) => console.log(date)} // Handle change accordingly
                         />
                     </LocalizationProvider>
