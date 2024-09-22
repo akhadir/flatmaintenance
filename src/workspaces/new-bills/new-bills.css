@@ -3,6 +3,11 @@
     right: 10px;
     top: -2px;
 }
+.inline-h3 {
+    display: inline-flex;
+    line-height: 1.2rem;
+    margin-left: 10px;
+}
 
 .bill-workspace {
     position: relative;

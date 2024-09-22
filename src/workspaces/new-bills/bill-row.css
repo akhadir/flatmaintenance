@@ -1,0 +1,17 @@
+.loader-row {
+    position: relative;
+}
+.loader-row .MuiLinearProgress-indeterminate  {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+.bill-row .bill-category {
+    width: 200px;
+    padding-top: 0;
+    padding-bottom: 3px;
+    height: 2.4rem !important
+}
+.bill-row input {
+    height: 0.4rem !important
+}

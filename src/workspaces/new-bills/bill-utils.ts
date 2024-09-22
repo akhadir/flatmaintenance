@@ -129,7 +129,8 @@ export function extractBillData(
             data = parseExpenseInfo(fileName);
         }
         if (!data.amount || !data.date || !data.description) {
-            getVisionRetry(`https://drive.google.com/uc?id=${bill.id}`).then(async (response: any) => {
+            const fileUrl = `https://drive.usercontent.google.com/download?id=${bill.id}`;
+            getVisionRetry(fileUrl).then(async (response: any) => {
                 if (response?.data?.ParsedResults) {
                     const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
                     const parsedData: ProcessedData = await extractData(parsedText);

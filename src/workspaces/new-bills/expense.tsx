@@ -25,7 +25,7 @@ const ExpenseForm = ({
     callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType, transactionType,
 }: ExpenseFormProps) => {
     const [formData, setData] = useState<ExpenseState>({
-        date: moment(date ?? '01-04-2023', 'DD-MM-YYYY').format('YYYY-MM-DD'),
+        date: moment(date ?? '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD'),
         amount: amount ?? 0,
         description: description ?? 'text',
         category: category ?? '',
@@ -85,10 +85,10 @@ const ExpenseForm = ({
                 <DialogTitle>Form</DialogTitle>
                 <DialogContent>
                     {mimeType.startsWith('image/') && (
-                        <img
+                        <iframe
                             className="expense-bill-img"
                             src={getDriveFileURL(image)}
-                            alt="Expense Bill"
+                            title="Expense Bill"
                         />
                     )}
                     {mimeType === 'application/pdf' && (

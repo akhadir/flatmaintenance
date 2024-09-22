@@ -49,11 +49,13 @@ export type ApplicationConfig = {
     ENC_GOOGLE_API_KEY: string;
     ENC_CHAT_GPT_KEY: string;
     ENC_GEMINI_KEY: string;
+    OCR_SPACE_KEY: string;
     chatGPTPrivateKey?: string;
     clientEmail?: string;
     privateKey?: string;
     googleAPIKey?: string;
     geminiKey?: string;
+    ocrSpaceKey?: string;
     doc: GoogleSpreadsheet;
     appData: AppData;
 };

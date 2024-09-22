@@ -16,10 +16,10 @@ function CategorizeCash() {
     useEffect(() => {
         dispatch(fetchTransactions() as any);
     }, [dispatch]);
-    const sheetData = sheetInfo.cashTransData;
+    const sheetData = useMemo(() => sheetInfo.cashTransData, [sheetInfo]);
     const headers = useMemo(() => {
         let out: string[] = [];
-        if (sheetData && sheetData.length > 1) {
+        if (sheetData && sheetData.length >= 1) {
             out = Object.keys(sheetData[0]);
         }
         return out;

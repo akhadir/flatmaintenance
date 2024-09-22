@@ -21,9 +21,9 @@ const BillGrid = ({ bills, handleClick }: BillGridType) => (
                     onClick={() => handleClick(bill)}
                 >
                     {bill.mimeType.startsWith('image/') && (
-                        <img
+                        <iframe
                             src={getDriveFileURL(bill.id)}
-                            alt={`Bill ${index + 1}`}
+                            title={`Bill ${index + 1}`}
                             style={{ width: 300, height: 300, cursor: 'pointer', padding: '5px' }}
                         />
                     )}

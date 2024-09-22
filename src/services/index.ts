@@ -16,6 +16,7 @@ export const setCredentials = (secret: string = '') => {
         const chatGPTPK = CryptoJS.AES.decrypt(appConfig.ENC_CHAT_GPT_KEY, secret);
         const googleAPIKey = CryptoJS.AES.decrypt(appConfig.ENC_GOOGLE_API_KEY, secret);
         const geminiKey = CryptoJS.AES.decrypt(appConfig.ENC_GEMINI_KEY, secret);
+        const ocrSpaceKey = CryptoJS.AES.decrypt(appConfig.OCR_SPACE_KEY, secret);
         try {
             appConfig.clientEmail = emailB.toString(CryptoJS.enc.Utf8);
             appConfig.privateKey = pkB.toString(CryptoJS.enc.Utf8);
@@ -23,6 +24,7 @@ export const setCredentials = (secret: string = '') => {
             appConfig.secret = secret;
             appConfig.chatGPTPrivateKey = chatGPTPK.toString(CryptoJS.enc.Utf8);
             appConfig.geminiKey = geminiKey.toString(CryptoJS.enc.Utf8);
+            appConfig.ocrSpaceKey = ocrSpaceKey.toString(CryptoJS.enc.Utf8);
             sessionStorage.setItem('session-id', secret);
             out.res = true;
         } catch (e) {
@@ -125,6 +127,7 @@ const appConfig: ApplicationConfig = {
     ENC_GOOGLE_API_KEY: 'U2FsdGVkX1+z10t9/VGkdh+xgB9JO7TwDIGpiW5ivAoQrmKV9c77947cJH49fTgzZcc5DSaLNH1jlCpIiLbSuw==',
     ENC_CHAT_GPT_KEY: 'U2FsdGVkX19CE/c8Tng+qxPTykma92uBwnVA8hVNUPhl5desREv8awMfLxjN2ZnKC23rEB6XcYTSzVfgEwgEqQPZuhXq3Ef0cng56m8DqyI=',
     ENC_GEMINI_KEY: 'U2FsdGVkX1+ja6BvyIZ4xRS/wHKtCFsD22qQ0wfw/U30gL6c2FfqhrQyqt25ch1C77vdq1A7rlLZ0RKBXXjmaQ==',
+    OCR_SPACE_KEY: 'U2FsdGVkX1/Je2pGMUWIY8Mnid+Xulw55FuCkiYcNvU=',
     doc: new GoogleSpreadsheet(SPREADSHEET_ID),
     appData,
 };

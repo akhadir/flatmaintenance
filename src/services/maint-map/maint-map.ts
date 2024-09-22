@@ -44,13 +44,13 @@ export default {
     '009': [{
         Description: [{
             opr: 'having',
-            value: ['rutvijkanzaria', 'PRATIK'],
+            value: ['rutvijkanzaria', 'PRATIK', '9120182537'],
         }],
     }],
     '010': [{
         Description: [{
             opr: 'having',
-            value: ['ANANTH'],
+            value: ['ANANTH', 'BHASKAR', 'PAKALAPATI'],
         }],
     }],
     '011': [{
@@ -140,7 +140,7 @@ export default {
     201: [{
         Description: [{
             opr: 'having',
-            value: ['ESWAR KRISHNAN', 'ESWAR', 'KARTHIKEYAN', 'flat201'],
+            value: ['ESWAR KRISHNAN', 'ESWAR', 'KARTHIKEYAN', 'flat201', 'ARIJIT'],
         }],
     }],
     202: [{
@@ -170,13 +170,13 @@ export default {
     206: [{
         Description: [{
             opr: 'having',
-            value: ['PINAKI'],
+            value: ['PINAKI', 'vishnupb619'],
         }],
     }],
     207: [{
         Description: [{
             opr: 'having',
-            value: ['PRIYA MISHRA', 'PRIYAMISHRA', 'SRINIVAS', 'prashant.dombale'],
+            value: ['tr.1993@axisb', 'SRINIVAS', 'prashant.dombale'],
         }],
     }],
     208: [{
@@ -188,7 +188,7 @@ export default {
     209: [{
         Description: [{
             opr: 'having',
-            value: ['AJUJAMESASHOK', 'AJU JAMES ASHOK', 'AJUJAMES', 'T R RAJARAM', 'TRRAJARAM', 'CHALAPATHI'],
+            value: ['MULUKUTLA', 'AJU JAMES', 'AJUJAMES', 'T R RAJARAM', 'TRRAJARAM', 'CHALAPATHI'],
         }],
     }],
     210: [{
@@ -242,13 +242,13 @@ export default {
     306: [{
         Description: [{
             opr: 'having',
-            value: ['ASHIM', 'DEBAJYOTI'],
+            value: ['ASHIM', 'DEBAJYOTI', 'MUTHIAH'],
         }],
     }],
     307: [{
         Description: [{
             opr: 'having',
-            value: ['SAMPREETH'],
+            value: ['SAMPREETH', 'maddyrocks'],
         }],
     }],
     308: [{

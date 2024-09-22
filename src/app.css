@@ -11,9 +11,6 @@ body * {
     height: calc(100% - 60px);
     width: 100%;
 }
-.app h3 {
-    margin: 0.5rem 0;
-}
 .app-logo {
     height: 40vmin;
     pointer-events: none;

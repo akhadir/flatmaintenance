@@ -1,18 +1,23 @@
 /* eslint-disable max-len */
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import { getConfig } from '..';
 import { copyFileAsDoc } from '../googleapis/drive-util';
+
+const getOCRSpaceKey = () => getConfig().ocrSpaceKey || '';
+const OCR_SPACE_API_URL = 'https://api.ocr.space/parse/image';
+const OCR_SPACE_ENGINE = '5';
 
 const getData = (file: File) => {
     const formData = new FormData();
     formData.append('base64Image', file);
     formData.append('isTable', 'true');
-    formData.append('OCREngine', '2');
+    formData.append('OCREngine', OCR_SPACE_ENGINE);
     axios
-        .post('https://api.ocr.space/parse/image', formData, {
+        .post(OCR_SPACE_API_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                apikey: 'K84187439488957',
+                apikey: getOCRSpaceKey(),
             },
         })
         .then((response) => {
@@ -32,16 +37,15 @@ export const getVision = (imageURL: string) => {
     // formData.append('isOverlayRequired', 'true');
     // formData.append('fileType', 'JPG');
     formData.append('isTable', 'true');
-    formData.append('OCREngine', '2');
-    formData.append('filetype', 'PDF');
+    formData.append('OCREngine', OCR_SPACE_ENGINE);
+    formData.append('filetype', '.Auto');
     axiosRetry(axios, { retries: 3 });
     return axios
-        .post('https://api.ocr.space/parse/image', formData, {
+        .post(OCR_SPACE_API_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                apikey: 'K84187439488957',
+                apikey: getOCRSpaceKey(),
             },
-            timeout: 7500,
         }).catch((error) => {
             console.error(error);
         });
@@ -71,10 +75,10 @@ export const getDatafromDataURI = async (dataURI: string) => {
     const formData = new FormData();
     formData.append('base64Image', file);
     const response = await axios
-        .post('https://api.ocr.space/parse/image', formData, {
+        .post(OCR_SPACE_API_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                apikey: 'K84187439488957',
+                apikey: getOCRSpaceKey(),
             },
         });
     return response;

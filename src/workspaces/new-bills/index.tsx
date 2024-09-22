@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
-import BillGrid from './bill-grid';
+// import BillGrid from './bill-grid';
+import BillTable, { BillTransactionType } from './bill-table';
 import ExpenseForm from './expense';
 import { ExpenseState, GoogleDriveFile, TransType } from './expense-types';
 import {
@@ -77,24 +79,27 @@ export default function NewBills() {
         ),
     ), [fileList]);
 
+    const billsObj: BillTransactionType[] = useMemo(() => bills.map((bill) => ({
+        date: '',
+        description: '',
+        amount: 0,
+        category: '',
+        isCash: true,
+        bill,
+    })), [bills]);
     const folders = useMemo(() => fileList.filter(
         (file) => file.mimeType === 'application/vnd.google-apps.folder'), [fileList]);
 
     return (
         <div className="bill-workspace">
-            <h3>Unprocessed Bills</h3>
             {!!selectedFolder && (
-                <Button
-                    className="go-to-months-btn"
-                    size="small"
-                    variant="outlined"
-                    onClick={() => setSelectedFolder('')}
-                >
-                    Go Back
-                </Button>
+                <IconButton onClick={() => setSelectedFolder('')} aria-label="Back">
+                    <ArrowBackIcon />
+                </IconButton>
             )}
+            <h3 className="inline-h3">Unprocessed Bills</h3>
             {!selectedFolder && <FolderGrid folders={folders} handleClick={handleFolderClick} />}
-            {!!selectedFolder && <BillGrid bills={bills} handleClick={handleClick} />}
+            {!!selectedFolder && <BillTable transactions={billsObj} expenseCategories={expenseCategories} />}
             {!!selectedBill && openDialog && (
                 <ExpenseForm
                     {...formData}
