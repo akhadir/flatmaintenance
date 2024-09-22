@@ -22,14 +22,14 @@ import './expense.css';
 import { getDriveFileURL } from './bill-utils';
 
 const ExpenseForm = ({
-    callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType, transactionType,
+    callback, date, amount, description, category, image, handleClose, expenseCategories, mimeType, isCheckIssued,
 }: ExpenseFormProps) => {
     const [formData, setData] = useState<ExpenseState>({
         date: moment(date ?? '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD'),
         amount: amount ?? 0,
         description: description ?? 'text',
         category: category ?? '',
-        transactionType,
+        isCheckIssued,
     });
 
     const [errorData, setErrorData] = useState({
@@ -50,10 +50,6 @@ const ExpenseForm = ({
 
     const handleSubmit = useCallback(() => {
         let error = false;
-        if (!formData.transactionType) {
-            errorData.transactionType = 'Select a transaction type';
-            error = true;
-        }
         if (!formData.amount) {
             errorData.amount = 'Enter a valid amount';
             error = true;
@@ -103,7 +99,7 @@ const ExpenseForm = ({
                             <RadioGroup
                                 aria-label="Transaction Type"
                                 name="transactionType"
-                                value={formData.transactionType}
+                                value={formData.isCheckIssued ? 'Online' : 'Cash'}
                                 onChange={handleChange}
                                 row
                             >

@@ -9,7 +9,7 @@ export type ProcessedData = {
     amount: number;
     date: string;
     description: string;
-    'cash or cheque': 'cheque' | 'cash' | null;
+    isCheckIssued: boolean;
 }
 export default async function extractData(text: string) : Promise<ProcessedData> {
     const MODEL_NAME = 'gemini-1.0-pro';
@@ -49,7 +49,7 @@ export default async function extractData(text: string) : Promise<ProcessedData>
     });
     try {
         // eslint-disable-next-line max-len
-        const result = await chat.sendMessage(`What is the date (dd-mm-YYYY), amount (in number format), description (in short) and 'cash or cheque', extracted from the following text in JSON format?\n${text}`);
+        const result = await chat.sendMessage(`What is the date (dd-mm-YYYY), amount (in number format), description (in short) and isChequeIssued (is cheque issued?)', extracted from the following text in JSON format?\n${text}`);
         const { response } = result;
         const parsedString = response.text().replace(/```/g, '').replace(/JSON/gi, '');
         const parsedData = JSON.parse(parsedString);
@@ -57,5 +57,5 @@ export default async function extractData(text: string) : Promise<ProcessedData>
     } catch (e) {
         console.log(e);
     }
-    return { amount: 0, date: '', description: '', 'cash or cheque': null };
+    return { amount: 0, date: '', description: '', isCheckIssued: false };
 }

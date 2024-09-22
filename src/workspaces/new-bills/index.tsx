@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, CircularProgress, IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
 // import BillGrid from './bill-grid';
 import BillTable, { BillTransactionType } from './bill-table';
 import ExpenseForm from './expense';
-import { ExpenseState, GoogleDriveFile, TransType } from './expense-types';
+import { ExpenseState, GoogleDriveFile } from './expense-types';
 import {
     extractBillData, fetchFiles, getDataInSheetFormat, saveCashTransSheet, saveOnlineTransactionWithBill,
 } from './bill-utils';
@@ -46,7 +46,7 @@ export default function NewBills() {
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill.id, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    if (data.transactionType === TransType.Cash) {
+                    if (!data.isCheckIssued) {
                         const finalData = [getDataInSheetFormat(data, selectedBill.id)];
                         saveCashTransSheet(finalData);
                     } else {

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { fetchFilesFromFolder } from '../../services/googleapis/drive-util';
 import gsheetUtil from '../../services/googleapis/gsheet-util-impl';
-import { ExpenseState, GoogleDriveFile, TransType } from './expense-types';
+import { ExpenseState, GoogleDriveFile } from './expense-types';
 import TransMapExecutor from '../../utils/trans-map-executor';
 import { TransCategory } from '../../utils/trans-category';
 import catMapJson from '../../services/cat-map/cat-map';
@@ -119,6 +119,8 @@ export const setCategory = (data: ExpenseState, longDescription?: string) => {
     }
 };
 
+const BillDataCache: { [cacheKey: string]: any } = {};
+
 export function extractBillData(
     fileName: string | undefined,
     bill: GoogleDriveFile,
@@ -129,26 +131,29 @@ export function extractBillData(
             data = parseExpenseInfo(fileName);
         }
         if (!data.amount || !data.date || !data.description) {
-            const fileUrl = `https://drive.usercontent.google.com/download?id=${bill.id}`;
-            getVisionRetry(fileUrl).then(async (response: any) => {
-                if (response?.data?.ParsedResults) {
-                    const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
-                    const parsedData: ProcessedData = await extractData(parsedText);
-                    const parsedFormData: ExpenseState = {
-                        ...parsedData,
-                        transactionType: parsedData['cash or cheque']?.toLowerCase() === 'cheque'
-                            ? TransType.Online : TransType.Cash,
-                    };
-                    setCategory(parsedFormData, parsedText!.toLowerCase());
-                    resolve(parsedFormData);
-                } else {
-                    const parsedFormData = ({
-                        ...data,
-                    });
-                    setCategory(parsedFormData);
-                    resolve(parsedFormData);
-                }
-            });
+            if (BillDataCache[bill.id]) {
+                resolve(BillDataCache[bill.id]);
+            } else {
+                const fileUrl = `https://drive.usercontent.google.com/download?id=${bill.id}`;
+                getVisionRetry(fileUrl).then(async (response: any) => {
+                    if (response?.data?.ParsedResults) {
+                        const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
+                        const parsedData: ProcessedData = await extractData(parsedText);
+                        const parsedFormData: ExpenseState = {
+                            ...parsedData,
+                        };
+                        setCategory(parsedFormData, parsedText!.toLowerCase());
+                        BillDataCache[bill.id] = parsedFormData;
+                        resolve(parsedFormData);
+                    } else {
+                        const parsedFormData = ({
+                            ...data,
+                        });
+                        setCategory(parsedFormData);
+                        resolve(parsedFormData);
+                    }
+                });
+            }
         } else {
             const parsedFormData = ({
                 ...data,

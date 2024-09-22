@@ -52,9 +52,9 @@ function App() {
                             <MenuItem icon={<ReceiptIcon />} title="Upload Bills">
                                 <Link to="/bills">Upload Bills</Link>
                             </MenuItem>
-                            <MenuItem icon={<CurrencyRupeeIcon />} title="Cash Transactions">
+                            {/* <MenuItem icon={<CurrencyRupeeIcon />} title="Cash Transactions">
                                 <Link to="/cash">Cash Transactions</Link>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem icon={<HandymanIcon />} title="Generate Encrypted Keys">
                                 <Link to="/gen-key">Encrypt Keys</Link>
                             </MenuItem>

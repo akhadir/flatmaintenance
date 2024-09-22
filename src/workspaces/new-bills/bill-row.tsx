@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -27,7 +28,6 @@ interface BillRowProps {
 }
 
 const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCategories }) => {
-    console.log(transaction);
     const [showLoader, setShowLoader] = useState(false);
     const [formData, setFormData] = useState(transaction);
     useEffect(() => {
@@ -36,11 +36,13 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
             const parsedFormData = await extractBillData('', transaction.bill);
             setFormData({
                 ...transaction,
-                parsedFormData,
+                ...parsedFormData,
+                isCash: !parsedFormData.isCheckIssued,
             } as any);
             setShowLoader(false);
         })();
-    }, [transaction]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const handleChange = useCallback(() => {
 
     }, []);
@@ -51,6 +53,8 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             disabled={showLoader}
+                            format="DD-MM-YYYY"
+                            // value={moment(formData.date ?? '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD')}
                             onChange={(date) => console.log(date)} // Handle change accordingly
                         />
                     </LocalizationProvider>
