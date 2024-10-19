@@ -13,7 +13,7 @@ export type ExpenseState = {
     amount?: number,
     description?: string,
     category?: string,
-    isCheckIssued?: boolean;
+    isChequeIssued?: boolean;
 };
 
 export type GoogleDriveFile = {

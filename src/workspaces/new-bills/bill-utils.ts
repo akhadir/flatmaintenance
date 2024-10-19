@@ -8,7 +8,7 @@ import { TransCategory } from '../../utils/trans-category';
 import catMapJson from '../../services/cat-map/cat-map';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
 import { getVision } from '../../services/ocr';
-import extractData, { ProcessedData } from '../../services/googleapis/gemini';
+import { Gemini, ProcessedData } from '../../services/googleapis/gemini';
 import { TransactionType } from '../../services/redux/transactions/trans-types';
 
 export function fetchFiles(
@@ -138,9 +138,12 @@ export function extractBillData(
                 getVisionRetry(fileUrl).then(async (response: any) => {
                     if (response?.data?.ParsedResults) {
                         const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
-                        const parsedData: ProcessedData = await extractData(parsedText);
+                        const parsedData: ProcessedData = await Gemini.getInstance().extractData(parsedText);
                         const parsedFormData: ExpenseState = {
                             ...parsedData,
+                            isChequeIssued:
+                                (typeof parsedData.isChequeIssued === 'boolean') ?
+                                    parsedData.isChequeIssued : parsedData.isChequeIssued === 'true',
                         };
                         setCategory(parsedFormData, parsedText!.toLowerCase());
                         BillDataCache[bill.id] = parsedFormData;

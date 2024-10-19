@@ -46,7 +46,7 @@ export default function NewBills() {
             if (selectedBill && fileInfo) {
                 renameFile(selectedBill.id, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
-                    if (!data.isCheckIssued) {
+                    if (!data.isChequeIssued) {
                         const finalData = [getDataInSheetFormat(data, selectedBill.id)];
                         saveCashTransSheet(finalData);
                     } else {

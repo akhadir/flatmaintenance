@@ -38,7 +38,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
             setFormData({
                 ...transaction,
                 ...parsedFormData,
-                isCash: !parsedFormData.isCheckIssued,
+                isCash: !parsedFormData.isChequeIssued,
             } as any);
             setShowLoader(false);
         })();
@@ -94,7 +94,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                 <TableCell>
                     <Switch
                         disabled={showLoader}
-                        value={formData.isCash}
+                        defaultChecked={formData.isCash}
                     />
                 </TableCell>
                 <TableCell>

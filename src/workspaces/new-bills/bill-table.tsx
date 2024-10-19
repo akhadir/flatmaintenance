@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import React from 'react';
 import {
     Table,
     TableBody,
@@ -8,17 +6,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField,
-    Autocomplete,
     Paper,
-    IconButton,
     Popover,
-    Switch,
 } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import SendIcon from '@mui/icons-material/Send';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { GoogleDriveFile } from './expense-types';
 import { getDriveFileURL } from './bill-utils';
 import BillRow from './bill-row';
@@ -58,51 +48,49 @@ const BillTransactionTable: React.FC<BillTransactionTableProps> = ({ transaction
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
     return (
-        <>
-            <TableContainer component={Paper}>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Date</TableCell>
-                            <TableCell>Description</TableCell>
-                            <TableCell>Amount</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Is Cash</TableCell>
-                            <TableCell>Bill Preview</TableCell>
-                            <TableCell>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {transactions.map((transaction) => (
-                            <BillRow
-                                key={transaction.bill.id}
-                                previewBill={onMouseEnter}
-                                transaction={transaction}
-                                expenseCategories={expenseCategories}
-                            />
-                        ))}
-                    </TableBody>
-                </Table>
-                {!!previewBill && (
-                    <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={onMouseLeave}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                    >
-                        <iframe
-                            className="expense-bill-img"
-                            src={getDriveFileURL(previewBill.id)}
-                            title="Expense Bill"
+        <TableContainer component={Paper}>
+            <Table size="small">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Description</TableCell>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>Category</TableCell>
+                        <TableCell>Is Cash</TableCell>
+                        <TableCell>Bill Preview</TableCell>
+                        <TableCell>Action</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {transactions.filter((_tran, index) => index === 0).map((transaction) => (
+                        <BillRow
+                            key={transaction.bill.id}
+                            previewBill={onMouseEnter}
+                            transaction={transaction}
+                            expenseCategories={expenseCategories}
                         />
-                    </Popover>
-                )}
-            </TableContainer>
-        </>
+                    ))}
+                </TableBody>
+            </Table>
+            {!!previewBill && (
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={onMouseLeave}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                >
+                    <iframe
+                        className="expense-bill-img"
+                        src={getDriveFileURL(previewBill.id)}
+                        title="Expense Bill"
+                    />
+                </Popover>
+            )}
+        </TableContainer>
     );
 };
 
