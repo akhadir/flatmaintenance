@@ -290,7 +290,7 @@ export default {
     402: [{
         Description: [{
             opr: 'having',
-            value: ['DARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES'],
+            value: ['cooldharsha', 'DHARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES'],
         }],
     }],
     403: [{
