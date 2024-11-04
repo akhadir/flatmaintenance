@@ -8,7 +8,7 @@ export default {
     '002': [{
         Description: [{
             opr: 'having',
-            value: ['shainv', 'potti', 'MAHESH', 'NAGARAJ MUTHUSAMY', 'NAGARAJ'],
+            value: ['jyotiprakash.jpl.99', 'jyoti prakash', 'jyotiprakash', 'shainv', 'potti', 'MAHESH', 'NAGARAJ MUTHUSAMY', 'NAGARAJ'],
         }],
     }],
     '003': [{
@@ -290,7 +290,7 @@ export default {
     402: [{
         Description: [{
             opr: 'having',
-            value: ['JITHA', 'JITHAJAMES', 'JITHA JAMES'],
+            value: ['DARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES'],
         }],
     }],
     403: [{
