@@ -67,12 +67,12 @@ const BillTransactionTable: React.FC<BillTransactionTableProps> = (
                     <TableHead>
                         <TableRow>
                             {/* <TableCell>#</TableCell> */}
+                            <TableCell>Bill Preview</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell>Description</TableCell>
                             <TableCell>Amount</TableCell>
                             <TableCell>Category</TableCell>
                             <TableCell>Is Cash</TableCell>
-                            <TableCell>Bill Preview</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>

@@ -39,12 +39,12 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
     useEffect(() => {
         (async () => {
             setShowLoader(true);
-            // const parsedFormData = await extractBillData('', transaction.bill);
-            // setFormData({
-            //     ...transaction,
-            //     ...parsedFormData,
-            //     isCash: !parsedFormData.isChequeIssued,
-            // } as any);
+            const parsedFormData = await extractBillData('', transaction.bill);
+            setFormData({
+                ...transaction,
+                ...parsedFormData,
+                isCash: !parsedFormData.isChequeIssued,
+            } as any);
             setShowLoader(false);
         })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +58,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
     });
 
     const handleChange = useCallback((event: any) => {
-        const { name, value } = event.target;
+        const { name, value } = event.target || event;
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -95,17 +95,30 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
             setErrorData({ ...errorData });
         } else {
             const formDataClone = JSON.parse(JSON.stringify(formData));
-            formDataClone.date = moment(formDataClone.date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             callback(formDataClone);
             setFormCompleted(true);
         }
     }, [callback, errorData, formData]);
+    useEffect(() => {
+        if (!formData.date) {
+            const date = '01-04-2024';
+            setFormData({ ...formData, date });
+        }
+    }, [formData, formData.date]);
     return (
         <>
             <TableRow key={formData.bill.id} className={formCompleted ? 'form-completed bill-row' : 'bill-row'}>
                 {/* <TableCell>
                     <Checkbox onChange={handleChange} name="enable" value />
                 </TableCell> */}
+                <TableCell>
+                    <IconButton
+                        disabled={showLoader}
+                        onMouseEnter={(e) => previewBill(e, transaction.bill)}
+                    >
+                        <OpenInNewIcon />
+                    </IconButton>
+                </TableCell>
                 <TableCell className={errorData.date ? 'cell-error' : ''}>
                     <Tooltip title={errorData.date}>
                         <div className="date-wrapper">
@@ -113,8 +126,9 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                                 <DatePicker
                                     disabled={showLoader}
                                     format="DD-MM-YYYY"
-                                    value={dayjs(moment(formData.date || '01-04-2024', 'DD-MM-YYYY').format('YYYY-MM-DD'))}
-                                    onChange={handleChange}
+                                    closeOnSelect
+                                    value={dayjs(moment(formData.date, 'DD-MM-YYYY').format('YYYY-MM-DD'))}
+                                    onChange={(e: any) => handleChange({ value: e.format('DD-MM-YYYY'), name: 'date' })}
                                 />
                             </LocalizationProvider>
                         </div>
@@ -161,17 +175,12 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                 </TableCell>
                 <TableCell>
                     <Switch
+                        name="isCash"
                         disabled={showLoader}
-                        defaultChecked={formData.isCash}
+                        checked={!!formData.isCash}
+                        value
+                        onClick={() => handleChange({ name: 'isCash', value: !formData.isCash })}
                     />
-                </TableCell>
-                <TableCell>
-                    <IconButton
-                        disabled={showLoader}
-                        onMouseEnter={(e) => previewBill(e, transaction.bill)}
-                    >
-                        <OpenInNewIcon />
-                    </IconButton>
                 </TableCell>
                 <TableCell>
                     <IconButton
