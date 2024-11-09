@@ -145,4 +145,65 @@ describe('Testing Library:::ColQueryExecutor', () => {
         });
         expect(out).toBeTruthy();
     });
+
+    it('Test a buggy scenario', () => {
+        const colQExec = new ColQueryExecutor({
+            Description: [
+              {
+                opr: "having",
+                value: [
+                  "PRAVEENVIJAY",
+                  "PRAVEEN VIJAY",
+                ],
+              },
+            ],
+        });
+        const out = colQExec.run({
+            Date: '04/04/2021',
+            Description: 'NEFT-N133243035410252-AKARSH PRAVEEN RAJ',
+            Credit: null,
+            Debit: 3200,
+            Total: 122323,
+        });
+        expect(out).toBeTruthy();
+    });
+
+    it('Test a buggy scenario with skip sondex', () => {
+        const colQExec = new ColQueryExecutor({
+            Description: [
+              {
+                opr: "having",
+                value: [
+                  "PRAVEENVIJAY",
+                  "PRAVEEN VIJAY",
+                ],
+              },
+            ],
+        });
+        const out = colQExec.run({
+            Date: '04/04/2021',
+            Description: 'NEFT-N133243035410252-AKARSH PRAVEEN RAJ',
+            Credit: null,
+            Debit: 3200,
+            Total: 122323,
+        }, true);
+        expect(out).toBeFalsy();
+    });
+
+    it('Test a buggy scenario - 2 with skip sondex', () => {
+        const colQExec = new ColQueryExecutor({
+            Description: [{
+                opr: 'having',
+                value: ['TARANBIR', 'IMPSMBRSur'],
+            }],
+        });
+        const out = colQExec.run({
+            Date: '04/04/2021',
+            Description: 'NEFT-N133243035410252-AKARSH PRAVEEN RAJ',
+            Credit: null,
+            Debit: 3200,
+            Total: 122323,
+        }, true);
+        expect(out).toBeFalsy();
+    });
 });

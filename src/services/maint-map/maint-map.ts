@@ -38,7 +38,7 @@ export default {
     '008': [{
         Description: [{
             opr: 'having',
-            value: ['NITHINS', '/008', 'Repaka'],
+            value: ['NITHIN', '/008', 'Repaka'],
         }],
     }],
     '009': [{
@@ -56,7 +56,7 @@ export default {
     '011': [{
         Description: [{
             opr: 'having',
-            value: ['AKARSH'],
+            value: ['AKARSH', 'AKARSHPRAVEENRAJ'],
         }],
     }],
     '012': [{
@@ -92,7 +92,7 @@ export default {
     105: [{
         Description: [{
             opr: 'having',
-            value: ['VIKASVERMA', 'VIKAS VERMA', 'MB105', '105MAINTENA', '8892757591'],
+            value: ['MURUGAN', 'VIKASVERMA', 'VIKAS VERMA', 'MB105', '105MAINTENA', '8892757591'],
         }],
     }],
     106: [{
@@ -164,7 +164,7 @@ export default {
     205: [{
         Description: [{
             opr: 'having',
-            value: ['VIKRAMADITYA'],
+            value: ['VIKRAMADITYA', 'IKRAMADITYA'],
         }],
     }],
     206: [{
@@ -338,7 +338,7 @@ export default {
     410: [{
         Description: [{
             opr: 'having',
-            value: ['rohinimh19', 'ROHINI', 'MALLIKARJUN'],
+            value: ['SIVASANKAR', 'HANUMANTHA', 'GANGJI', 'rohinimh19', 'ROHINI', 'MALLIKARJUN'],
         }],
     }],
     411: [{
@@ -350,7 +350,7 @@ export default {
     412: [{
         Description: [{
             opr: 'having',
-            value: ['CHIRANJAN'],
+            value: ['CHIRANJAN', 'PAVITHRADM', 'PAVITHRA'],
         }],
     }],
 };

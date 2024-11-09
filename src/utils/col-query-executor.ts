@@ -9,7 +9,7 @@ export default class ColQueryExecutor {
         this.query = inpQuery;
     }
 
-    run(transaction: { [index: string]: any }) {
+    run(transaction: { [index: string]: any }, skipSoundex = false) {
         return Object.keys(this.query).every((columnName) => {
             const children = this.query[columnName];
             let out = false;
@@ -17,14 +17,14 @@ export default class ColQueryExecutor {
                 out = children.every((query) => {
                     const qExecutor = new QueryExecutor(query);
                     const fieldVal: any = transaction[columnName];
-                    return qExecutor.run(fieldVal);
+                    return qExecutor.run(fieldVal, skipSoundex);
                 });
             } else {
                 const logicalExec = new LogicalExecutor(children);
                 out = logicalExec.run((query) => {
                     const qExecutor = new QueryExecutor(query as Query);
                     const fieldVal: any = transaction[columnName];
-                    return qExecutor.run(fieldVal);
+                    return qExecutor.run(fieldVal, skipSoundex);
                 });
             }
             return out;

@@ -1,0 +1,9 @@
+.bill-workspace .submit-all {
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.bill-workspace .form-completed {
+    background-color: aquamarine;
+}

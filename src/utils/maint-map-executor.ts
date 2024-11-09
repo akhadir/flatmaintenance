@@ -22,13 +22,13 @@ export default class MaintMapExecutor {
                         if (Array.isArray(children)) {
                             out = children.every((colQuery) => {
                                 const fieldQExecutor = new ColQueryExecutor(colQuery);
-                                return fieldQExecutor.run(ctrans);
+                                return fieldQExecutor.run(ctrans, true);
                             });
                         } else {
                             const logicalExec = new LogicalExecutor(children);
                             out = logicalExec.run((colQuery) => {
                                 const fieldQExecutor = new ColQueryExecutor(colQuery as ColQuery);
-                                return fieldQExecutor.run(ctrans);
+                                return fieldQExecutor.run(ctrans, true);
                             });
                         }
                         return out;

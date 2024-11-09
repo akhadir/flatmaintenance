@@ -15,3 +15,6 @@
 .bill-row input {
     height: 0.4rem !important
 }
+.bill-row .cell-error {
+    border: 2px solid red;
+}

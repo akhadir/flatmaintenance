@@ -38,4 +38,40 @@ describe('Testing Library:::QueryExecutor', () => {
         const out = qExec.run('14100');
         expect(out).toBeTruthy();
     });
+
+    it('Tests soundex', async () => {
+        expect(QueryExecutor).toBeDefined();
+        const qExec = new QueryExecutor({
+            opr: "having",
+            value: [
+              "PRAVEENVIJAY",
+              "PRAVEEN VIJAY",
+            ],
+          });
+        const out = qExec.run('NEFT-N133243035410252-AKARSH PRAVEEN RAJ');
+        expect(out).toBeTruthy();
+    });
+
+    it('Tests a soudex skip', async () => {
+        expect(QueryExecutor).toBeDefined();
+        const qExec = new QueryExecutor({
+            opr: "having",
+            value: [
+              "PRAVEENVIJAY",
+              "PRAVEEN VIJAY",
+            ],
+          });
+        const out = qExec.run('NEFT-N133243035410252-AKARSH PRAVEEN RAJ', true);
+        expect(out).toBeFalsy();
+    });
+
+    it('Tests a soudex skip', async () => {
+        expect(QueryExecutor).toBeDefined();
+        const qExec = new QueryExecutor({
+            opr: 'having',
+            value: ['TARANBIR', 'IMPSMBRSur'],
+        });
+        const out = qExec.run('NEFT-N133243035410252-AKARSH PRAVEEN RAJ', true);
+        expect(out).toBeFalsy();
+    });
 });

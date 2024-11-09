@@ -40,17 +40,18 @@ export default function NewBills() {
         setOpenDialog(true);
     }, [fileList]);
 
-    const handleClose = useCallback((data?: ExpenseState) => {
-        if (selectedBill && data?.date) {
-            const fileInfo = fileList.find((file) => file.id === selectedBill.id);
-            if (selectedBill && fileInfo) {
-                renameFile(selectedBill.id, fileInfo.name).then(() => {
+    const handleClose = useCallback((data?: ExpenseState, billId?: string) => {
+        const selectedBillId = billId || selectedBill?.id;
+        if (selectedBillId && data?.date) {
+            const fileInfo = fileList.find((file) => file.id === selectedBillId);
+            if (selectedBillId && fileInfo) {
+                renameFile(selectedBillId, fileInfo.name).then(() => {
                     fetchFiles(setFilesList, selectedFolder);
                     if (!data.isChequeIssued) {
-                        const finalData = [getDataInSheetFormat(data, selectedBill.id)];
+                        const finalData = [getDataInSheetFormat(data, selectedBillId)];
                         saveCashTransSheet(finalData);
                     } else {
-                        saveOnlineTransactionWithBill(data, selectedBill.id);
+                        saveOnlineTransactionWithBill(data, selectedBillId);
                     }
                 });
             }
@@ -99,7 +100,13 @@ export default function NewBills() {
             )}
             <h3 className="inline-h3">Unprocessed Bills</h3>
             {!selectedFolder && <FolderGrid folders={folders} handleClick={handleFolderClick} />}
-            {!!selectedFolder && <BillTable transactions={billsObj} expenseCategories={expenseCategories} />}
+            {!!selectedFolder && (
+                <BillTable
+                    handleSubmit={handleClose}
+                    transactions={billsObj}
+                    expenseCategories={expenseCategories}
+                />
+            )}
             {!!selectedBill && openDialog && (
                 <ExpenseForm
                     {...formData}

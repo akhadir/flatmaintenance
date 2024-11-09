@@ -1,4 +1,4 @@
-import { soundex } from 'soundex-code';
+import { soundex } from './soundex';
 import { Query } from '../services/cat-map/cat-map-types';
 
 class QueryExecutor {
@@ -8,7 +8,7 @@ class QueryExecutor {
         this.query = inpQuery;
     }
 
-    public run(fieldVal: any): boolean {
+    public run(fieldVal: any, skipSoundex = false): boolean {
         let res = false;
         const { opr, value: queryVal } = this.query;
         if (fieldVal && queryVal) {
@@ -45,13 +45,13 @@ class QueryExecutor {
                             const qval = item.toString();
                             const text = fieldVal.toLowerCase();
                             const keyword = qval.toLowerCase();
-                            return text.indexOf(keyword) > -1 || checkSoundexInText(keyword, text);
+                            return text.indexOf(keyword) > -1 || (!skipSoundex && checkSoundexInText(keyword, text));
                         });
                     } else {
                         const qval = queryVal.toString();
                         const text = fieldVal.toLowerCase();
                         const keyword = qval.toLowerCase();
-                        res = text.indexOf(keyword) > -1 || checkSoundexInText(keyword, text);
+                        res = text.indexOf(keyword) > -1 || (!skipSoundex && checkSoundexInText(keyword, text));
                     }
                 }
                 break;
