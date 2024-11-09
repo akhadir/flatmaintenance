@@ -50,7 +50,7 @@ function App() {
                                 <Link to="/cat">Categorize Transactions</Link>
                             </MenuItem>
                             <MenuItem icon={<ReceiptIcon />} title="Upload Bills">
-                                <Link to="/bills">Upload Bills</Link>
+                                <Link to="/bills">Process Bills</Link>
                             </MenuItem>
                             {/* <MenuItem icon={<CurrencyRupeeIcon />} title="Cash Transactions">
                                 <Link to="/cash">Cash Transactions</Link>
