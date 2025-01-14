@@ -31,7 +31,18 @@ jobs:
     # - run: npm test
     - name: Deploy to GitHub Pages
       if: success()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+      run: |
+        # Configure git
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+
+        # Initialize a new repository in the build directory
+        cd build
+        git init
+
+        # Add and commit all files
+        git add .
+        git commit -m "Deploy to GitHub Pages"
+
+        # Force push to the gh-pages branch of the repository
+        git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/akhadir.github.io.git" master:gh-pages
