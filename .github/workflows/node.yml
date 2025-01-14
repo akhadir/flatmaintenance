@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -45,4 +48,4 @@ jobs:
         git commit -m "Deploy to GitHub Pages"
 
         # Force push to the gh-pages branch of the repository
-        git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/akhadir/akhadir.github.io.git" master:gh-pages
+        git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/akhadir/akhadir.github.io.git"
