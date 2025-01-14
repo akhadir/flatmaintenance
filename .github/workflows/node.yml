@@ -36,8 +36,8 @@ jobs:
       if: success()
       run: |
         # Configure git
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
+        git config --global user.name "akhadir"
+        git config --global user.email "abk0680@yahoo.com"
 
         # Initialize a new repository in the build directory
         cd build
