@@ -47,5 +47,5 @@ jobs:
         git add .
         git commit -m "Deploy to GitHub Pages"
 
-        # Force push to the gh-pages branch of the repository
-        git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/akhadir/akhadir.github.io.git" master
+        # Force push to the master branch of the repository
+        git push --force "https://x-access-token:${{ secrets.KHADIR_GITHUB_PAGES_ACCESS_TOKEN }}@github.com/akhadir/akhadir.github.io.git" master
