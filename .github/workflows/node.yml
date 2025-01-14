@@ -42,6 +42,6 @@ jobs:
       if: success()
       run: |
         curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Authorization: token ${{ secrets.WORKFLOW_ACCESS_TOKEN }}" \
         https://api.github.com/repos/akhadir/akhadir.github.io/dispatches \
         -d '{"event_type": "sync_changes", "client_payload": {"branch": "master"}}'
