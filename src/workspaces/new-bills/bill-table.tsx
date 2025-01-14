@@ -8,6 +8,7 @@ import {
     TableRow,
     Paper,
     Popover,
+    Button,
 } from '@mui/material';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
 import {
@@ -27,17 +28,15 @@ export type BillTransactionType = {
     bill: GoogleDriveFile;
 };
 
-// Define the categories for the autocomplete combo box
-const categories = ['Food', 'Entertainment', 'Utilities', 'Transport', 'Miscellaneous'];
-
 interface BillTransactionTableProps {
     transactions: BillTransactionType[];
     expenseCategories: CatItem[];
     handleSubmit: (bill?: ExpenseState, billId?: string) => void;
+    handleSplit: (bill: GoogleDriveFile) => void;
 }
 
 const BillTransactionTable: React.FC<BillTransactionTableProps> = (
-    { transactions, expenseCategories, handleSubmit }) => {
+    { transactions, expenseCategories, handleSubmit, handleSplit }) => {
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [previewBill, setPreviewBill] = React.useState<GoogleDriveFile>();
     const onMouseEnter = (event: React.MouseEvent<HTMLButtonElement>, bill: GoogleDriveFile) => {
@@ -54,14 +53,16 @@ const BillTransactionTable: React.FC<BillTransactionTableProps> = (
     const id = open ? 'simple-popover' : undefined;
     return (
         <>
-            {/* <Button
-                className="submit-all"
-                aria-label="submit"
-                onClick={handleSubmit}
-                size="small"
-            >
-                Submit
-            </Button> */}
+            {transactions.length === 1 && (
+                <Button
+                    className="split-all"
+                    aria-label="split"
+                    onClick={() => handleSplit(transactions[0].bill)}
+                    size="small"
+                >
+                    Split the Bill
+                </Button>
+            )}
             <TableContainer component={Paper}>
                 <Table size="small">
                     <TableHead>

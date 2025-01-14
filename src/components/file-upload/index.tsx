@@ -17,10 +17,10 @@ export const FileUpload = (props: FileUploadProps) => {
     return (
         <>
             {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-            <p>Upload a transaction file (.xls) to process.</p>
+            <p>Upload a transaction file (.csv or xls) to process.</p>
             <div className="file-upload-wrapper">
                 <FilePicker
-                    extensions={['xls', 'xlsx']}
+                    extensions={['csv', 'xls', 'xlsx']}
                     onChange={onUpload}
                     onError={onError}
                 >

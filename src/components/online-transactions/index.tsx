@@ -10,7 +10,6 @@ import FileSave from '../file-save';
 import { Transaction } from '../../services/service-types';
 import { GoogleSheet } from '../../services/redux/google-sheet/sheet-types';
 import './index.css';
-import dataUtils from './data-utils';
 
 function getSteps() {
     return ['File Upload', 'File Preview', 'Save'];
@@ -22,9 +21,13 @@ export const OnlineTransactionParser = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [fileName, setFileName] = useState('');
     const [bankTransactions, setBankTransactions] = useState<Transaction[]>([]);
-    const parseXLS = useCallback((file: File) => {
+    const parseDataFile = useCallback((file: File) => {
         setFileName(file.name);
-        fileParserUtil.parseXLS(file).then((resp: Transaction[]) => {
+        let parserFunction = fileParserUtil.parseXLS;
+        if (file.type === 'text/csv') {
+            parserFunction = fileParserUtil.parseCsvFile;
+        }
+        parserFunction(file).then((resp: Transaction[]) => {
             sheetConfig.appData.transactions = resp;
             resp.reverse();
             setBankTransactions(resp);
@@ -35,7 +38,7 @@ export const OnlineTransactionParser = () => {
     const getStepContent = useCallback((step: number) => {
         switch (step) {
         case 0:
-            return (<FileUpload onUpload={parseXLS} />);
+            return (<FileUpload onUpload={parseDataFile} />);
         case 1:
             return (<FilePreview name={fileName} xlsData={bankTransactions} />);
         case 2:
@@ -43,7 +46,7 @@ export const OnlineTransactionParser = () => {
         default:
             return 'Unknown step';
         }
-    }, [bankTransactions, parseXLS, fileName]);
+    }, [bankTransactions, parseDataFile, fileName]);
     const [skipped, setSkipped] = useState(new Set<number>());
     const steps = getSteps();
 

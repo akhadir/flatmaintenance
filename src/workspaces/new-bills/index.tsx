@@ -13,6 +13,7 @@ import FolderGrid from './folder-grid';
 import { TransSheet } from '../../services/sheet';
 import { CatItem } from '../../services/service-types';
 import './new-bills.css';
+import splitAndSaveLocally from '../../services/pdf/split-pdf';
 
 export default function NewBills() {
     const [showLoader, setShowLoader] = useState(false);
@@ -39,6 +40,12 @@ export default function NewBills() {
         setFormData(parsedFormData);
         setOpenDialog(true);
     }, [fileList]);
+
+    const handleSplit = useCallback((bill: GoogleDriveFile) => {
+        splitAndSaveLocally(bill.id)
+            .then(() => console.log('Operation completed successfully.'))
+            .catch((error) => console.error('Error:', error));
+    }, []);
 
     const handleClose = useCallback((data?: ExpenseState, billId?: string) => {
         const selectedBillId = billId || selectedBill?.id;
@@ -105,6 +112,7 @@ export default function NewBills() {
                     handleSubmit={handleClose}
                     transactions={billsObj}
                     expenseCategories={expenseCategories}
+                    handleSplit={handleSplit}
                 />
             )}
             {!!selectedBill && openDialog && (

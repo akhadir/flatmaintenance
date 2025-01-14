@@ -85,7 +85,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                     </TableHead>
                     <TableBody>
                         {filteredRows.map((row, index) => (
-                            <TableRow key={row.Description}>
+                            <TableRow key={`${row.Date}-${row.Description}`}>
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
