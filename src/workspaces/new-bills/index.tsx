@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CircularProgress, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { VERIFIED_FILE_PREFIX, renameFile } from '../../services/googleapis/drive-util';
-// import BillGrid from './bill-grid';
 import BillTable, { BillTransactionType } from './bill-table';
 import ExpenseForm from './expense';
 import { ExpenseState, GoogleDriveFile } from './expense-types';
@@ -13,9 +12,9 @@ import FolderGrid from './folder-grid';
 import { TransSheet } from '../../services/sheet';
 import { CatItem } from '../../services/service-types';
 import './new-bills.css';
-import splitAndSaveLocally from '../../services/pdf/split-pdf';
 
 export default function NewBills() {
+    const [month, setMonth] = useState('');
     const [showLoader, setShowLoader] = useState(false);
     const [fileList, setFilesList] = useState<GoogleDriveFile[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
@@ -27,7 +26,8 @@ export default function NewBills() {
         description: '',
         category: '',
     });
-    const handleFolderClick = useCallback((folderId: string) => {
+    const handleFolderClick = useCallback((folderId: string, folderName: string) => {
+        setMonth(folderName);
         setSelectedFolder(folderId);
     }, []);
     const handleClick = useCallback(async (image: GoogleDriveFile) => {
@@ -42,9 +42,9 @@ export default function NewBills() {
     }, [fileList]);
 
     const handleSplit = useCallback((bill: GoogleDriveFile) => {
-        splitAndSaveLocally(bill.id)
-            .then(() => console.log('Operation completed successfully.'))
-            .catch((error) => console.error('Error:', error));
+        // splitAndSaveLocally(bill.id)
+        //     .then(() => console.log('Operation completed successfully.'))
+        //     .catch((error) => console.error('Error:', error));
     }, []);
 
     const handleClose = useCallback((data?: ExpenseState, billId?: string) => {
@@ -98,6 +98,12 @@ export default function NewBills() {
     const folders = useMemo(() => fileList.filter(
         (file) => file.mimeType === 'application/vnd.google-apps.folder'), [fileList]);
 
+    const title = useMemo(() => {
+        if (selectedFolder) {
+            return `Unprocessed Bills - ${month}`;
+        }
+        return 'Unprocessed Bills';
+    }, [month, selectedFolder]);
     return (
         <div className="bill-workspace">
             {!!selectedFolder && (
@@ -105,7 +111,7 @@ export default function NewBills() {
                     <ArrowBackIcon />
                 </IconButton>
             )}
-            <h3 className="inline-h3">Unprocessed Bills</h3>
+            <h3 className="inline-h3">{title}</h3>
             {!selectedFolder && <FolderGrid folders={folders} handleClick={handleFolderClick} />}
             {!!selectedFolder && (
                 <BillTable

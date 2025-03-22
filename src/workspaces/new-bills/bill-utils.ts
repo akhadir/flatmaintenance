@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import moment from 'moment';
 import { fetchFilesFromFolder } from '../../services/googleapis/drive-util';
@@ -7,9 +8,13 @@ import TransMapExecutor from '../../utils/trans-map-executor';
 import { TransCategory } from '../../utils/trans-category';
 import catMapJson from '../../services/cat-map/cat-map';
 import { parseExpenseInfo } from '../../services/ocr/parser-utils';
-import { getVision } from '../../services/ocr';
+import { getVision as getOCRVision } from '../../services/ocr';
+import Ollama, { OllamaApiResponse } from '../../services/ollama';
 import { Gemini, ProcessedData } from '../../services/googleapis/gemini';
 import { TransactionType } from '../../services/redux/transactions/trans-types';
+import { getConfig } from '../../services';
+
+const USE_OLLAMA = true;
 
 export function fetchFiles(
     setFilesList: React.Dispatch<React.SetStateAction<GoogleDriveFile[]>>,
@@ -107,6 +112,7 @@ export const getDataInSheetFormat = (data: ExpenseState, selectedBill?: string) 
 };
 
 export const setCategory = (data: ExpenseState, longDescription?: string) => {
+    const category = Ollama.getCategory(data);
     const value: TransactionType = getDataInSheetFormat(data);
     if (!value.Description && longDescription) {
         value.Description = longDescription;
@@ -134,48 +140,71 @@ export function extractBillData(
             if (BillDataCache[bill.id]) {
                 resolve(BillDataCache[bill.id]);
             } else {
-                const fileUrl = `https://drive.usercontent.google.com/download?id=${bill.id}`;
-                getVisionRetry(fileUrl).then(async (response: any) => {
-                    if (response?.data?.ParsedResults) {
-                        const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
-                        const parsedData: ProcessedData = await Gemini.getInstance().extractData(parsedText);
-                        const parsedFormData: ExpenseState = {
-                            ...parsedData,
-                            isChequeIssued:
-                                (typeof parsedData.isChequeIssued === 'boolean') ?
-                                    parsedData.isChequeIssued : parsedData.isChequeIssued === 'true',
-                        };
-                        setCategory(parsedFormData, parsedText!.toLowerCase());
-                        BillDataCache[bill.id] = parsedFormData;
-                        resolve(parsedFormData);
-                    } else {
-                        const parsedFormData = ({
-                            ...data,
-                        });
-                        setCategory(parsedFormData);
-                        resolve(parsedFormData);
-                    }
+                const { googleAPIKey: apiKey } = getConfig();
+                // const fileUrl = `https://drive.usercontent.google.com/download?id=${bill.id}`;
+                const fileUrl = `https://www.googleapis.com/drive/v2/files/${bill.id}?key=${apiKey}&alt=media&source=downloadUrl`;
+                const getFunc = USE_OLLAMA ? Ollama.getVision.bind(Ollama) : getOCRVision;
+                const visionHandler = USE_OLLAMA
+                    ? handleOllamaResponse
+                    : handleOCRSpaceResponse;
+                getVisionRetry(fileUrl, getFunc).then(async (response: any) => {
+                    const parsedFormData = await visionHandler(response, data);
+                    BillDataCache[bill.id] = parsedFormData;
+                    resolve(parsedFormData);
                 });
             }
         } else {
             const parsedFormData = ({
                 ...data,
             });
-            setCategory(parsedFormData);
             resolve(parsedFormData);
         }
     });
     return promise;
 }
-
-const getVisionRetry = (url: string, RETRY_COUNT = 3) => {
+const handleOllamaResponse = async (response: OllamaApiResponse) => {
+    const parsedResp = JSON.parse(response.message.content);
+    const data: ExpenseState = JSON.parse(response.message.content);
+    if (!data.date || data.date.length !== 10) {
+        data.date = '01-01-2024';
+    }
+    data.isChequeIssued = !parsedResp.cash;
+    if (!data.category) {
+        const catResp = await Ollama.getCategory(parsedResp.description);
+        if (catResp) {
+            data.category = JSON.parse(response.message.content).category;
+        }
+    }
+    return Promise.resolve(data);
+};
+const handleOCRSpaceResponse = async (response: any, data: ExpenseState) => {
+    let parsedFormData: ExpenseState;
+    if (response?.data?.ParsedResults) {
+        const parsedText = response.data.ParsedResults[0]?.ParsedText || '';
+        const parsedData: ProcessedData = await Gemini.getInstance().extractData(parsedText);
+        parsedFormData = {
+            ...parsedData,
+            isChequeIssued:
+                (typeof parsedData.isChequeIssued === 'boolean') ?
+                    parsedData.isChequeIssued : parsedData.isChequeIssued === 'true',
+        };
+        setCategory(parsedFormData, parsedText!.toLowerCase());
+    } else {
+        parsedFormData = ({
+            ...data,
+        });
+        setCategory(parsedFormData);
+    }
+    return parsedFormData;
+};
+const getVisionRetry = (url: string, getVision: (url: string) => any, RETRY_COUNT = 3) => {
     const promise = new Promise((resolve, reject) => {
         getVision(url).then(async (response: any) => {
             RETRY_COUNT -= 1;
             if (response || RETRY_COUNT === 0) {
                 resolve(response);
             } else if (!response) {
-                const resp = await getVisionRetry(url, RETRY_COUNT);
+                const resp = await getVisionRetry(url, getVision, RETRY_COUNT);
                 resolve(resp);
             }
         });

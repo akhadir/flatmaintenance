@@ -2,14 +2,17 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import { GoogleDriveFile } from './expense-types';
 
-type FolderGridProp = { folders: GoogleDriveFile[]; handleClick:(folderId: string) => void };
+type FolderGridProp = {
+    folders: GoogleDriveFile[];
+    handleClick: (folderId: string, folderName: string) => void;
+};
 const FolderGrid = ({ folders, handleClick }: FolderGridProp) => {
     const sortedFolders = folders.length ? customSortByMonth(folders) : [];
     return (
         <div>
             <Grid container spacing={2}>
                 {sortedFolders.map((folder, index) => (
-                    <Grid item key={`Image ${index + 1}`} xs={2} onClick={() => handleClick(folder.id)}>
+                    <Grid item key={`Image ${index + 1}`} xs={2} onClick={() => handleClick(folder.id, folder.name)}>
                         <img
                             src="/images/folder.jpg"
                             id={`folder-${folder.name}`}

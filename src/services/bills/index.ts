@@ -35,7 +35,7 @@ export const dimCategoryMap : { [category: string]: TransCategory[] } = {
     LONG: [TransCategory.Bescom, TransCategory.BWSSB],
     VOUCHER: [
         TransCategory['House Keeping Salary'],
-        TransCategory.Gardener,
+        TransCategory['Garden Maintenance'],
         TransCategory['Audit Fees'],
         TransCategory['Garbage Collection Vendor / BBMP'],
         TransCategory['Apartment Work By Security and Others'],

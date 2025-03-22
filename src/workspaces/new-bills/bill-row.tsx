@@ -16,6 +16,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import SyncIcon from '@mui/icons-material/Sync';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import dayjs from 'dayjs';
@@ -36,19 +37,16 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
     const [showLoader, setShowLoader] = useState(false);
     const [formData, setFormData] = useState(transaction);
     const [formCompleted, setFormCompleted] = useState(false);
-    useEffect(() => {
-        (async () => {
-            setShowLoader(true);
-            const parsedFormData = await extractBillData('', transaction.bill);
-            setFormData({
-                ...transaction,
-                ...parsedFormData,
-                isCash: !parsedFormData.isChequeIssued,
-            } as any);
-            setShowLoader(false);
-        })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const fetch = useCallback(async () => {
+        setShowLoader(true);
+        const parsedFormData = await extractBillData('', transaction.bill);
+        setFormData({
+            ...transaction,
+            ...parsedFormData,
+            isCash: !parsedFormData.isChequeIssued,
+        } as any);
+        setShowLoader(false);
+    }, [transaction]);
     const [errorData, setErrorData] = useState({
         date: '',
         amount: '',
@@ -183,6 +181,15 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                     />
                 </TableCell>
                 <TableCell>
+                    {!showLoader && (
+                        <IconButton
+                            disabled={showLoader || formCompleted}
+                            aria-label="fetch"
+                            onClick={fetch}
+                        >
+                            <SyncIcon />
+                        </IconButton>
+                    )}
                     <IconButton
                         disabled={showLoader || formCompleted}
                         aria-label="submit"
@@ -190,6 +197,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                     >
                         <SendIcon />
                     </IconButton>
+
                 </TableCell>
             </TableRow>
             {showLoader && (

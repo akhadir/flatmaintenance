@@ -5,7 +5,7 @@ export enum TransCategory {
     'Bescom' = 'Bescom',
     'House Keeping Salary' = 'House Keeping Salary',
     'Security' = 'Security',
-    'Gardener' = 'Gardener',
+    'Garden Maintenance' = 'Garden Maintenance',
     'Garbage Collection Vendor / BBMP' = 'Garbage Collection Vendor / BBMP',
     'Borewell And Motor Maintenance' = 'Borewell And Motor Maintenance',
     'Annual Bonus' = 'Annual Bonus',

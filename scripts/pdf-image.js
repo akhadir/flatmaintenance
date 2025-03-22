@@ -20,6 +20,7 @@ fileList.forEach((file) => {
         console.log('Pdf to image started');
         // From here, the images can be used for other stuff or just saved if that's required:
         outputImages1.then(function (outputImages) {
+            console.log('Image: ', outputImages);
             let imgFile;
             for (let i = 0; i < outputImages.length; i++) {
                 imgFile = `${file.name}.png`;
