@@ -118,7 +118,7 @@ const appData: AppData = {
 export const setSheetMonth = (sheetTitle: string) => {
     appData.transSheetMonth = sheetTitle;
 };
-const SPREADSHEET_ID = '1aumDbLSTH31n1MFpguM0-THWslbR3ZPNCXSlI72WuBo';
+const SPREADSHEET_ID = '10nggWYtniiCR4rd0sG6CVtNFTK3p8QjJyg0XhhLti28';
 const appConfig: ApplicationConfig = {
     secret: sessionStorage.getItem('session-id') || '',
     SPREADSHEET_ID,
