@@ -69,13 +69,13 @@ export default {
     '012': [{
         Description: [{
             opr: 'having',
-            value: ['kbg2000@okicici', 'K B GANESH', 'GANESH', 'VIVEKNAYAK', 'VIVEK NAYAK'],
+            value: ['kbg2000@okicici', 'K B GANESH', 'GANESH', 'VIVEKNAYAK', 'VIVEK NAYAK', '8489950068'],
         }],
     }],
     101: [{
         Description: [{
             opr: 'having',
-            value: ['VIJAYAKUMAR T', 'VIJAYAKUMAR'],
+            value: ['VIJAYAKUMAR T', 'VIJAYAKUMAR', 'NIHARIKA', 'NIHARIKA PODDAR'],
         }],
     }],
     102: [{
@@ -297,7 +297,7 @@ export default {
     402: [{
         Description: [{
             opr: 'having',
-            value: ['cooldharsha', 'DHARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES'],
+            value: ['cooldharsha', 'DHARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES', 'geetha.vaidyanathan', 'aprabhu1983@okicici'],
         }],
     }],
     403: [{
@@ -345,13 +345,13 @@ export default {
     410: [{
         Description: [{
             opr: 'having',
-            value: ['SIVASANKAR', 'HANUMANTHA', 'GANGJI', 'rohinimh19', 'ROHINI', 'MALLIKARJUN'],
+            value: ['SIVASANKAR', 'HANUMANTHA', 'GANGJI', 'rohinimh19', 'ROHINI', 'MALLIKARJUN', 'koyena', 'koyena98@oksbi', 'chiranjeev'],
         }],
     }],
     411: [{
         Description: [{
             opr: 'having',
-            value: ['NATESAN', 'ADITYA KOLLURI', 'ADITYAKOLLURI', 'santumahapatra', 'santu mahapatra'],
+            value: ['NATESAN', 'ADITYA KOLLURI', 'ADITYAKOLLURI', 'santumahapatra', 'santu mahapatra', 'HIMANSHU TIWARI'],
         }],
     }],
     412: [{
