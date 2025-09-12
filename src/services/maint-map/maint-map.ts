@@ -172,7 +172,7 @@ export default {
     205: [{
         Description: [{
             opr: 'having',
-            value: ['VIKRAMADITYA', 'IKRAMADITYA'],
+            value: ['VIKRAMADITYA', 'IKRAMADITYA', 'SUNDARRAJU'],
         }],
     }],
     206: [{
@@ -340,7 +340,7 @@ export default {
     409: [{
         Description: [{
             opr: 'having',
-            value: ['PRABU', 'SUNDARRAJU', 'Jeevanantham'],
+            value: ['Jeevanantham'],
         }],
     }],
     410: [{
