@@ -8,6 +8,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import HandymanIcon from '@mui/icons-material/Handyman';
+import SettingsIcon from '@mui/icons-material/Settings';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import store from './services/redux/store';
@@ -57,6 +58,9 @@ function App() {
                             </MenuItem> */}
                             <MenuItem icon={<HandymanIcon />} title="Generate Encrypted Keys">
                                 <Link to="/gen-key">Encrypt Keys</Link>
+                            </MenuItem>
+                            <MenuItem icon={<SettingsIcon />} title="Settings">
+                                <Link to="/settings">Settings</Link>
                             </MenuItem>
                             {/* <SubMenu title="Components">
                             <MenuItem>Component 1</MenuItem>

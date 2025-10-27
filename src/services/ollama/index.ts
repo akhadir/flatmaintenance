@@ -5,7 +5,7 @@ import PDFToImagesConverter from '../pdf-to-image';
 type RequestRedirect = 'follow' | 'error' | 'manual'
 
 // const LLAVA_LLAMA_MODEL = 'llava-llama3';
-const GEMMA3_MODEL = 'gemma3:latest';
+const GEMMA3_MODEL = 'gemma3';
 const QWEN25_3B_MODEL = 'qwen2.5:3b';
 const LLM_MODEL = GEMMA3_MODEL;
 
@@ -28,13 +28,21 @@ export type OllamaApiResponse = {
 const Ollama = {
     getVision: async (imageURL: string): Promise<OllamaApiResponse | null> => {
         const body = await Ollama.getVisionRequestBody(imageURL);
+        // const username = 'khadir';
+        // const password = 'khadir123';
+        // const encodedAuth = Buffer.from(`${username}:${password}`).toString('base64');
+        // const chatURL = 'http://localhost:11434/api/chat';
+        const chatURL = (window as any).OLLAMA_CHAT_API_URL || 'http://localhost:11434/api/chat';
         const requestOptions = {
             method: 'POST',
             body: JSON.stringify(body),
             redirect: 'follow' as RequestRedirect,
+            // headers: {
+            //     Authorization: `Basic ${encodedAuth}`,
+            // },
         };
         try {
-            const response = await fetch('http://localhost:11434/api/chat', requestOptions);
+            const response = await fetch(chatURL, requestOptions);
             console.log(response);
             return response.json();
         } catch (error) {
@@ -62,7 +70,7 @@ const Ollama = {
     getCatRequestBody: async(data: string, categoryList: string[]) => {
         const categories = categoryList.join(', ');
         return {
-            model: QWEN25_3B_MODEL,
+            model: LLM_MODEL,
             messages: [
                 {
                     role: 'system', // "system" is a prompt to define how the model should act.
@@ -131,16 +139,19 @@ Description: ${data}`,
                     'amount',
                     'cash',
                     'description',
+                    'category',
                 ],
             },
             messages: [
                 {
                     role: 'user',
                     content: `What text do you read in this image? Fetch data like Amount, Date, is Cash or Cheque transaction and Description.
-Default is cash transaction unless the word 'cheque' found.
-Date: Date format should be 'dd/mm/yyyy'. If the year is not found, use the current year. If day is not found, use '01' as day. If month is not found, use '03' as month.
-Followng is the list of categories. ${categories}
-Figure out the category based on the image input.`,
+Amount: Amount should be the total amount mentioned in the bill.
+Cash: Default is cash transaction unless the word 'cheque' found.
+Date: Date format should be 'dd/mm/yyyy'. Date should fall mostly under current financial year. If the year is not found, use the current year. If day is not found, use '01' as day. If month is not found, use '03' as month.
+Category: Figure out the category based on the image input. Default should be "Miscelleneous Expenses". Followng is the list of categories.
+${categories}
+`,
                 },
                 {
                     role: 'user',
