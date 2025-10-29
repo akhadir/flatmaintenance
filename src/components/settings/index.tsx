@@ -9,7 +9,7 @@ function Settings(): React.ReactElement {
     const [saved, setSaved] = useState<boolean>(false);
 
     useEffect(() => {
-        const existingApi = (window as any).OLLAMA_CHAT_API_URL ?? '';
+        const existingApi = (window as any).OLLAMA_API_URL ?? '';
         const existingKey = (window as any).SECRET_KEY ?? '';
         setApiUrl(existingApi);
         setSecretKey(existingKey);
@@ -17,7 +17,7 @@ function Settings(): React.ReactElement {
 
     const updateApiUrl = (value: string) => {
         setApiUrl(value);
-        (window as any).OLLAMA_CHAT_API_URL = value;
+        (window as any).OLLAMA_API_URL = value;
         setSaved(true);
         setTimeout(() => setSaved(false), 1500);
     };

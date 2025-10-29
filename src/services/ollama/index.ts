@@ -31,8 +31,12 @@ const Ollama = {
         // const username = 'khadir';
         // const password = 'khadir123';
         // const encodedAuth = Buffer.from(`${username}:${password}`).toString('base64');
-        // const chatURL = 'http://localhost:11434/api/chat';
-        const chatURL = (window as any).OLLAMA_CHAT_API_URL || 'http://localhost:11434/api/chat';
+        // const chatURL = 'http://localhost:11434';
+        let OllamaURL: string = (window as any).OLLAMA_API_URL || 'http://localhost:11434';
+        if (OllamaURL.endsWith('/')) {
+            OllamaURL = OllamaURL.slice(0, -1);
+        }
+        const chatURL = `${OllamaURL}/api/chat`;
         const requestOptions = {
             method: 'POST',
             body: JSON.stringify(body),
