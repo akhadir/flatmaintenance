@@ -202,7 +202,7 @@ export default {
     210: [{
         Description: [{
             opr: 'having',
-            value: ['TARANBIR', 'IMPSMBRSur'],
+            value: ['TARANBIR', 'IMPSMBRSur', 'GOWTHAM KUMAR'],
         }],
     }],
     211: [{
