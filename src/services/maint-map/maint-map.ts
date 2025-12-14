@@ -298,7 +298,7 @@ export default {
     402: [{
         Description: [{
             opr: 'having',
-            value: ['cooldharsha', 'DHARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES', 'geetha.vaidyanathan', 'aprabhu1983@okicici'],
+            value: ['cooldharsha', 'DHARSHA', 'JITHA', 'JITHAJAMES', 'JITHA JAMES', 'geetha.vaidyanathan', 'aprabhu1983@okicici', 'SATHIYA NATARAJAN'],
         }],
     }],
     403: [{
