@@ -12,7 +12,7 @@ import {
     doMonthlyMaintSplit,
     filterTransactions,
 } from '../../services/redux/transactions/trans-actions';
-import { TransactionType, TransData } from '../../services/redux/transactions/trans-types';
+import { MonthlyMaintSplit, TransactionType, TransData } from '../../services/redux/transactions/trans-types';
 import CategorizeCash from './categorize-cash';
 import CategorizeOnline from './categorize-online';
 import { TransCategory } from '../../utils/trans-category';
@@ -57,7 +57,7 @@ function Categorizer() {
         });
     }, [monthlyCatSplit]);
     const saveMaitenenceSplit = useCallback(() => {
-        gsheetUtil.udpateMaintenanceSheet(monthlyMaintSplit as any).then(() => {
+        gsheetUtil.udpateMaintenanceSheet(monthlyMaintSplit as MonthlyMaintSplit).then(() => {
             console.log('Saved');
             setMessage('Maintenence Split Updated');
         });

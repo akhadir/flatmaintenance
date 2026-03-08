@@ -28,7 +28,7 @@ export default {
     '004': [{
         Description: [{
             opr: 'having',
-            value: ['ANAND ESHWARDAS', 'ANAND', 'ESHWARDAS'],
+            value: ['ANAND ESHWARDAS', 'ANAND', 'ESHWARDAS', 'ARAVINDHG', 'SATHEESH'],
         }],
     }],
     '005': [{
@@ -40,7 +40,7 @@ export default {
     '007': [{
         Description: [{
             opr: 'having',
-            value: ['007'],
+            value: ['NAVEENGOPINATH'],
         }],
     }],
     '008': [{
@@ -106,7 +106,7 @@ export default {
     106: [{
         Description: [{
             opr: 'having',
-            value: ['mr.uttammohanty', 'uttam'],
+            value: ['mr.uttammohanty', 'uttam', 'RAMAPRIYAN'],
         }],
     }],
     107: [{
@@ -148,7 +148,7 @@ export default {
     201: [{
         Description: [{
             opr: 'having',
-            value: ['ESWAR KRISHNAN', 'ESWAR', 'KARTHIKEYAN', 'flat201', 'ARIJIT'],
+            value: ['ESWAR KRISHNAN', 'ESWAR', 'KARTHIKEYAN', 'flat201', 'ARIJIT', '9036421473'],
         }],
     }],
     202: [{
@@ -238,7 +238,7 @@ export default {
     304: [{
         Description: [{
             opr: 'having',
-            value: ['MEHDI'],
+            value: ['MEHDI', 'AQUIL'],
         }],
     }],
     305: [{
@@ -304,7 +304,7 @@ export default {
     403: [{
         Description: [{
             opr: 'having',
-            value: ['8147758124', 'shaheer'],
+            value: ['8147758124', 'shaheer', 'SANDRA'],
         }],
     }],
     404: [{
