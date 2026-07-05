@@ -8,7 +8,7 @@ Write a Javascript code to categorize the input text using the following informa
     e. Apartment Maintenance
     e. Electrical Work
     f. Miscellaneous Expenses
-2. If the text further has the amount 8500, it should be categorized as 'Housekeeping Salary' or
+2. If the text further has the amount 9000, it should be categorized as 'Housekeeping Salary' or
 3. If the text further has the amount 800 or is having the text 'Adinarayana', it should be categorized as 'Sewage Tank Cleaning' or
 4. If the text further has the text 'Garden Work', it should be categorized as 'Garden Work' or
 5. If the text further has the text 'Apartment Work', it should be categorized as 'Apartment Work' or
@@ -25,5 +25,5 @@ Write a Javascript code to categorize the input text using the following informa
 16. If the text has 'Borewell', it should be categorized as 'Borewell Maintenance'
 17. If the text has 'Water', it should be categorized as 'Drinking Water For Security'
 18. If the text has 'Security' or '41000', it should be categorized as 'Security Service'
-19. If the text has 'broom' or 'phenoyl' or 'mop' or 'pencil' or 'file' or 'folder' or 'tape' or 'powder', it should be categorized as 'HK Items'
+19. If the text has 'broom' or 'phenoyl' or 'mop' or 'pencil' or 'file' or 'folder' or 'tape' or 'powder' or grocery or any housekeeping(HK) items, it should be categorized as 'HK Items Purchased'
 20. If the text has 'bulbs' or 'switch' or 'light', it should be categorized as 'Electrical Items'

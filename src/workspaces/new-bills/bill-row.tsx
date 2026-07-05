@@ -1,5 +1,11 @@
 /* eslint-disable max-len */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useState,
+} from 'react';
 import moment from 'moment';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,6 +32,11 @@ import { extractBillData } from './bill-utils';
 import { CatItem } from '../../services/service-types';
 import './bill-row.css';
 
+export interface BillRowHandle {
+    fetchBill: () => Promise<void>;
+    isFetching: () => boolean;
+}
+
 interface BillRowProps {
     transaction: BillTransactionType;
     expenseCategories: CatItem[];
@@ -33,20 +44,35 @@ interface BillRowProps {
     previewBill: (event: React.MouseEvent<HTMLButtonElement>, bill: GoogleDriveFile) => void;
 }
 
-const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCategories, callback }) => {
+const BillRowComponent = (
+    { transaction, previewBill, expenseCategories, callback }: BillRowProps,
+    ref: React.ForwardedRef<BillRowHandle>,
+): React.ReactElement => {
     const [showLoader, setShowLoader] = useState(false);
     const [formData, setFormData] = useState(transaction);
     const [formCompleted, setFormCompleted] = useState(false);
-    const fetch = useCallback(async () => {
+    const fetchBill = useCallback(async () => {
+        if (showLoader) {
+            return;
+        }
+
         setShowLoader(true);
-        const parsedFormData = await extractBillData('', transaction.bill);
-        setFormData({
-            ...transaction,
-            ...parsedFormData,
-            isCash: !parsedFormData.isChequeIssued,
-        } as any);
-        setShowLoader(false);
-    }, [transaction]);
+        try {
+            const parsedFormData = await extractBillData('', transaction.bill);
+            setFormData({
+                ...transaction,
+                ...parsedFormData,
+                isCash: !parsedFormData.isChequeIssued,
+            } as any);
+        } finally {
+            setShowLoader(false);
+        }
+    }, [showLoader, transaction]);
+
+    useImperativeHandle(ref, () => ({
+        fetchBill,
+        isFetching: () => showLoader,
+    }), [fetchBill, showLoader]);
     const [errorData, setErrorData] = useState({
         date: '',
         amount: '',
@@ -185,7 +211,7 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
                         <IconButton
                             disabled={showLoader || formCompleted}
                             aria-label="fetch"
-                            onClick={fetch}
+                            onClick={fetchBill}
                         >
                             <SyncIcon />
                         </IconButton>
@@ -208,5 +234,8 @@ const BillRow: React.FC<BillRowProps> = ({ transaction, previewBill, expenseCate
         </>
     );
 };
+
+const BillRow = forwardRef<BillRowHandle, BillRowProps>(BillRowComponent);
+BillRow.displayName = 'BillRow';
 
 export default BillRow;

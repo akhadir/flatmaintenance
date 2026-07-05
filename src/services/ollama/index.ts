@@ -109,7 +109,7 @@ Description: ${data}`,
                 dataURIs.push(...base64Images);
             }
         } else {
-            console.log('Data URI: ', dataURI);
+            // console.log('Data URI: ', dataURI);
             dataURIs.push(dataURI.replace(/data:.+;base64,/, ''));
         }
         return {
