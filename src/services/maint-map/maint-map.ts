@@ -58,7 +58,7 @@ export default {
     '010': [{
         Description: [{
             opr: 'having',
-            value: ['ANANTH', 'BHASKAR', 'PAKALAPATI'],
+            value: ['ANANTH A D', 'BHASKAR', 'PAKALAPATI'],
         }],
     }],
     '011': [{
@@ -124,7 +124,7 @@ export default {
     109: [{
         Description: [{
             opr: 'having',
-            value: ['K S A RAJA RAM KUMAR', 'RAJARAMKUMAR'],
+            value: ['K S A RAJA RAM KUMAR', 'RAJARAMKUMAR', 'K S A RAJA RAM', 'K S A RAJA'],
         }],
     }],
     110: [{
@@ -160,7 +160,7 @@ export default {
     203: [{
         Description: [{
             opr: 'having',
-            value: ['NILOTPALDAS'],
+            value: ['NILOTPALDAS', 'NILOTPAL DAS', 'NILOTPAL'],
         }],
     }],
     204: [{
@@ -172,7 +172,7 @@ export default {
     205: [{
         Description: [{
             opr: 'having',
-            value: ['VIKRAMADITYA', 'IKRAMADITYA', 'SUNDARRAJU'],
+            value: ['VIKRAMADITYA', 'IKRAMADITYA', 'SUNDARRAJU', 'THILIP', 'PONNUSAMYTHILIP'],
         }],
     }],
     206: [{
@@ -280,7 +280,7 @@ export default {
     311: [{
         Description: [{
             opr: 'having',
-            value: ['GURUPRASADA', 'CHOKKADI'],
+            value: ['GURUPRASADA', 'CHOKKADI', 'ARJUN', 'ARJUN S V'],
         }],
     }],
     312: [{
@@ -292,7 +292,7 @@ export default {
     401: [{
         Description: [{
             opr: 'having',
-            value: ['HARISHA'],
+            value: ['HARISHA', 'ARISHA BHATTA', 'ARISHA'],
         }],
     }],
     402: [{
@@ -346,13 +346,13 @@ export default {
     410: [{
         Description: [{
             opr: 'having',
-            value: ['SIVASANKAR', 'HANUMANTHA', 'GANGJI', 'rohinimh19', 'ROHINI', 'MALLIKARJUN', 'koyena', 'koyena98@oksbi', 'chiranjeev'],
+            value: ['HANUMANTHA', 'chiranjeev', 'dadhichchiran', 'chiran jeev'],
         }],
     }],
     411: [{
         Description: [{
             opr: 'having',
-            value: ['NATESAN', 'ADITYA KOLLURI', 'ADITYAKOLLURI', 'santumahapatra', 'santu mahapatra', 'HIMANSHU TIWARI'],
+            value: ['NATESAN', 'HIMANSHU TIWARI', '8005002121'],
         }],
     }],
     412: [{
