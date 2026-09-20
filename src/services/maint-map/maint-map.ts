@@ -172,7 +172,7 @@ export default {
     205: [{
         Description: [{
             opr: 'having',
-            value: ['VIKRAMADITYA', 'IKRAMADITYA', 'SUNDARRAJU', 'THILIP', 'PONNUSAMYTHILIP'],
+            value: ['VIKRAMADITYA', 'IKRAMADITYA', 'THILIP', 'PONNUSAMYTHILIP'],
         }],
     }],
     206: [{
@@ -202,7 +202,7 @@ export default {
     210: [{
         Description: [{
             opr: 'having',
-            value: ['TARANBIR', 'IMPSMBRSur', 'GOWTHAM KUMAR'],
+            value: ['IMPSMBRSur', 'GOWTHAM KUMAR', 'SUNDARRAJU'],
         }],
     }],
     211: [{
